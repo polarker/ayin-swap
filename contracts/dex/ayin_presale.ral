@@ -1,0 +1,51 @@
+Contract AyinPresale (
+    ayinToken: ByteVec,
+    tokensForSale: U256,
+    mut alphPerToken: U256,
+    mut saleOpen: Bool,
+    mut tokensSold: U256
+) {
+    enum ErrorCodes {
+        SaleNotOpen = 0
+        NotEnoughTokens = 1
+    }
+
+    pub fn tokensLeft() -> U256 {
+        return tokensForSale - tokensSold
+    }
+
+    pub fn getAlphPerToken() -> U256 {
+        return alphPerToken
+    }
+
+    pub fn getSaleOpen() -> Bool {
+        return saleOpen
+    }
+
+    @using(updateFields = true)
+    pub fn setSaleOpen(open: Bool) -> () {
+        saleOpen = open
+    }
+
+    @using(updateFields = true)
+    pub fn setAlphPerToken(apt: U256) -> () {
+        alphPerToken = apt
+    }
+
+    @using(assetsInContract = true, preapprovedAssets = true, updateFields = true)
+    pub fn buy(amount: U256) -> () {
+        assert!(saleOpen, ErrorCodes.SaleNotOpen)
+        assert!(tokensLeft() - amount >= 0, ErrorCodes.NotEnoughTokens)
+
+        let totalPrice = amount * alphPerToken / 1e18
+        transferTokenToSelf!(callerAddress!(), ALPH, totalPrice)
+
+        tokensSold = tokensSold + amount
+
+        if (tokensSold == tokensForSale) {
+            saleOpen = false
+        }
+
+        transferTokenFromSelf!(callerAddress!(), ayinToken, amount)
+    }
+}
