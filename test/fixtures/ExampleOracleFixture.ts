@@ -1,6 +1,6 @@
-import { ContractState } from '@alephium/web3'
-import { ExampleOracleSimple, TokenPairTypes } from '../../artifacts/ts'
-import { ContractFixture, randomContractAddress } from './DexFixture'
+import { ContractState } from '@alephium/web3';
+import { ExampleOracleSimple, TokenPairTypes } from '../../artifacts/ts';
+import { ContractFixture, randomContractAddress } from './DexFixture';
 
 export enum OracleErrorCodes {
   FullDivOverflow  = 0,
@@ -11,7 +11,7 @@ export enum OracleErrorCodes {
 }
 
 export function createExampleOracle(pairState: ContractState<TokenPairTypes.Fields>) {
-  const address = randomContractAddress()
+  const address = randomContractAddress();
   const contractState = ExampleOracleSimple.stateForTest({
     pair: pairState.contractId,
     price0CumulativeLast: pairState.fields.price0CumulativeLast,
@@ -19,6 +19,6 @@ export function createExampleOracle(pairState: ContractState<TokenPairTypes.Fiel
     blockTimeStampLast: pairState.fields.blockTimeStampLast,
     price0Average: 0n,
     price1Average: 0n
-  }, undefined, address)
-  return new ContractFixture(contractState, [pairState], address)
+  }, undefined, address);
+  return new ContractFixture(contractState, [pairState], address);
 }
