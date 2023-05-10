@@ -170,7 +170,7 @@ export const StakingAccount = new Factory(
   Contract.fromJson(
     StakingAccountContractJson,
     "",
-    "723639a03c2d5bb41a944b2e0ff18623f719a913227370156fcb2067a67ba1f3"
+    "93206f74364efca5bce147089b8a7958cd5e5bd75498f7696c69721745309187"
   )
 );
 

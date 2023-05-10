@@ -51,9 +51,9 @@ Contract StakingAccount(
 
         transferTokenFromSelf!(staker, tokenId, amount)
 
-        if (amountStaked < 1) {
-            destroySelf!(staker)
-        }
+        //if (amountStaked < 1) {
+        //    destroySelf!(staker)
+        //}
     }
 
     @using(preapprovedAssets = true, checkExternalCaller = false)

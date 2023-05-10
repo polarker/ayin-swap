@@ -103,7 +103,7 @@ export const AyinToken = new Factory(
   Contract.fromJson(
     AyinTokenContractJson,
     "",
-    "81b5dad9ec529b4f2cbb9d7a6a3749f34ba25d839d22af2ea29e27c6ad0e0726"
+    "fb162e8a9cc0f20a5673b6cd85899a072c31c768e48865b4c354976845f572ea"
   )
 );
 
