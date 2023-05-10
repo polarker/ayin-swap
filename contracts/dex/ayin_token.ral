@@ -1,0 +1,21 @@
+import "std/fungible_token_interface"
+
+Contract AyinToken(
+    totalSupply: U256
+) implements IFungibleToken {
+    pub fn getSymbol() -> ByteVec {
+        return #505554494e
+    }
+
+    pub fn getName() -> ByteVec {
+        return #505554494e
+    }
+
+    pub fn getDecimals() -> U256 {
+        return 18
+    }
+
+    pub fn getTotalSupply() -> U256 {
+        return totalSupply
+    }
+}
