@@ -1,0 +1,65 @@
+Contract Staking(
+    rewardsTokenId: ByteVec,
+    rewardRate: U256,
+    mut totalAmountStaked: U256,
+    mut rewardPerTokenStored: U256,
+    mut lastUpdateTime: U256
+) {
+
+    @using(updateFields = true)
+    fn updateReward(account: StakingAccount) -> () {
+        rewardPerTokenStored = calculateRewardPerToken()
+        lastUpdateTime = blockTimeStamp!()
+
+        let reward = earned(account)
+
+        account.setRewards(reward, rewardPerTokenStored)
+    }
+
+    fn earned(acc: StakingAccount) -> U256 {
+        let staked = acc.getAmountStaked()
+        let rewardPerTokenPaid = acc.getRewardPerTokenPaid()
+        let currentRewardPerToken = calculateRewardPerToken()
+        let pastRewards = acc.getRewards()
+
+        let earnedRewards = ((staked * (currentRewardPerToken - rewardPerTokenPaid)) / 1e18) + pastRewards
+
+        return earnedRewards
+    }
+
+    fn calculateRewardPerToken() -> U256 {
+        if (totalAmountStaked == 0) {
+            return rewardPerTokenStored
+        }
+
+        return rewardPerTokenStored + ((blockTimeStamp!() - lastUpdateTime) * rewardRate * 1e18) / totalAmountStaked
+    }
+
+    @using(preapprovedAssets = true, updateFields = true)
+    pub fn stake(stakingAccount: StakingAccount, amount: U256) -> () {
+        updateReward(stakingAccount)
+
+        let staker = stakingAccount.getStaker()
+        let tokenId = stakingAccount.getTokenId()
+
+        totalAmountStaked = totalAmountStaked + amount
+        stakingAccount.stake{staker -> tokenId: amount}(amount)
+    }
+
+    @using(preapprovedAssets = true, updateFields = true)
+    pub fn unstake(stakingAccount: StakingAccount, amount: U256) -> () {
+        totalAmountStaked = totalAmountStaked - amount
+        updateReward(stakingAccount)
+
+        stakingAccount.unstake(amount)
+    }
+
+    @using(assetsInContract = true)
+    pub fn claimRewards(stakingAccount: StakingAccount) -> () {
+        updateReward(stakingAccount)
+        let stakingRewards = stakingAccount.getRewards()
+
+        let self = selfAddress!()
+        stakingAccount.claimRewards{self -> rewardsTokenId: stakingRewards}(stakingRewards)
+    }
+}

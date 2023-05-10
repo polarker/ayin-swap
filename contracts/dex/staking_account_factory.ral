@@ -1,0 +1,26 @@
+Contract StakingAccountFactory(tokenId: ByteVec, rewardTokenId: ByteVec, stakingTemplateId: ByteVec) {
+    event StakingStarted(staker: Address, tokenId: ByteVec, amount: U256)
+
+    @using(preapprovedAssets = true)
+    pub fn createStakingAccount(staker: Address, amount: U256) -> () {
+        let immFields = encodeToByteVec!(
+            tokenId,
+            rewardTokenId,
+            staker
+        )
+
+        let mutFields = encodeToByteVec!(
+            amount,
+            blockTimeStamp!()
+        )
+
+        copyCreateSubContract!{staker -> ALPH: 1 alph, tokenId: amount}(
+            toByteVec!(staker),
+            stakingTemplateId,
+            immFields,
+            mutFields
+        )
+    
+        emit StakingStarted(staker, tokenId, amount)
+    }
+}

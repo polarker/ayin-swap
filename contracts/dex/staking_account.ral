@@ -1,0 +1,63 @@
+Contract StakingAccount(
+    tokenId: ByteVec,
+    rewardsTokenId: ByteVec,
+    staker: Address,
+    mut amountStaked: U256,
+    mut rewardPerTokenPaid: U256,
+    mut rewards: U256
+) {
+    pub fn getTokenId() -> ByteVec {
+        return tokenId
+    }
+
+    pub fn getRewardsTokenId() -> ByteVec {
+        return rewardsTokenId
+    }
+
+    pub fn getStaker() -> Address {
+        return staker
+    }
+
+    pub fn getAmountStaked() -> U256 {
+        return amountStaked
+    }
+
+    pub fn getRewardPerTokenPaid() -> U256 {
+        return rewardPerTokenPaid
+    }
+
+    pub fn getRewards() -> U256 {
+        return rewards
+    }
+
+    @using(updateFields = true, checkExternalCaller = false)
+    pub fn setRewards(newRewards: U256, newRewardPerToken: U256) -> () {
+        rewards = newRewards
+        rewardPerTokenPaid = newRewardPerToken
+    }
+
+    @using(assetsInContract = true, preapprovedAssets = true, updateFields = true, checkExternalCaller = false)
+    pub fn stake(amount: U256) -> () { 
+        transferTokenToSelf!(staker, tokenId, amount)
+
+        amountStaked = amountStaked + amount
+    }
+
+    @using(assetsInContract = true, updateFields = true, checkExternalCaller = false)
+    pub fn unstake(amount: U256) -> () {
+        assert!(amountStaked >= amount, 1)
+
+        amountStaked = amountStaked - amount
+
+        transferTokenFromSelf!(staker, tokenId, amount)
+
+        if (amountStaked < 1) {
+            destroySelf!(staker)
+        }
+    }
+
+    @using(preapprovedAssets = true, checkExternalCaller = false)
+    pub fn claimRewards(rewardsAmount: U256) -> () {
+        transferToken!(callerAddress!(), staker, rewardsTokenId,rewardsAmount)
+    }
+}
