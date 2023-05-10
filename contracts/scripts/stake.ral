@@ -1,0 +1,8 @@
+TxScript Stake(staking: Staking, stakingAccFactory: StakingAccountFactory, sender: Address, amount: U256) {
+    let stakingAccId = subContractIdOf!(stakingAccFactory, toByteVec!(sender))
+
+    let stakingAccount = StakingAccount(stakingAccId)
+    let tokenId = stakingAccount.getTokenId()
+
+    staking.stake{sender -> tokenId: amount}(stakingAccount, amount)
+}

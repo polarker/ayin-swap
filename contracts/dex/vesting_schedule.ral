@@ -1,0 +1,57 @@
+Contract VestingSchedule(
+  tokenId: ByteVec,
+  amountTotal: U256,
+  beneficiary: Address,
+  start: U256,
+  duration: U256,
+  mut released: U256
+) extends Constants() {
+
+  pub fn getTokenId() -> ByteVec {
+    return tokenId
+  }
+
+  pub fn getVestedTotalAmount() -> U256 {
+    return amountTotal
+  }
+
+  pub fn getReleaseableAmount() -> U256 {
+    let currentTime = blockTimeStamp!()
+
+    if (currentTime <= start) {
+      return 0
+    }
+
+    if (currentTime >= start + duration) {
+      return amountTotal - released
+    }
+
+    let timeFromStart = currentTime - start
+    let vestedAmount = amountTotal * timeFromStart / duration - released
+
+    return vestedAmount
+  }
+
+  @using(assetsInContract = true, updateFields = true, checkExternalCaller = false)
+  pub fn claimVestedTokens() -> () {
+    let caller = callerAddress!()
+    assert!(caller == beneficiary, ErrorCodes.InvalidCallerAddress)
+    
+    let releaseableAmount = getReleaseableAmount()
+    released = released + releaseableAmount
+    
+    transferTokenFromSelf!(beneficiary, tokenId, releaseableAmount)
+  }
+
+  pub fn getReleased() -> U256 {
+    return released
+  }
+
+  pub fn getBeneficiary() -> Address {
+    return beneficiary
+  }
+
+  pub fn getReleaseAt() -> U256 {
+    return start + duration
+  }
+}
