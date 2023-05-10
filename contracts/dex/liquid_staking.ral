@@ -1,0 +1,99 @@
+import "std/fungible_token_interface"
+
+Contract LiquidStaking(
+    gainPerMillisecond: U256,
+    tokenId: ByteVec,
+    symbol: ByteVec,
+    name: ByteVec,
+    mut updatedAt: U256,
+    mut currentXTokenPrice: U256,
+    mut rewardPool: U256,
+    mut totalSupply: U256
+) implements IFungibleToken {
+    event Mint(sender: Address, amount: U256, newSupply: U256)
+    event Burn(sender: Address, amount: U256, newSupply: U256)
+    event PriceChanged(newPrice: U256)
+
+    pub fn getCurrentPrice() -> U256 {
+        if (totalSupply == 0) {
+            return currentXTokenPrice
+        }
+
+        let rewardPerMillisecond = gainPerMillisecond * rewardPool / 1e18
+        let elapsed = blockTimeStamp!() - updatedAt
+        let projectedReward = rewardPerMillisecond * elapsed * 1e18
+
+        let reward = if (projectedReward > rewardPool) rewardPool else projectedReward
+
+        let currentPrice = currentXTokenPrice + reward * 1e18 / totalSupply
+        return currentPrice
+    }
+
+    @using(updateFields = true)
+    fn updatePrice() -> () {
+        let newPrice = getCurrentPrice()
+        let accumulatedReward = (newPrice - currentXTokenPrice) * totalSupply / 1e18
+
+        if (rewardPool <= accumulatedReward) {
+            rewardPool = 0
+        } else {
+            rewardPool = rewardPool - accumulatedReward
+        }
+        
+        currentXTokenPrice = newPrice
+        updatedAt = blockTimeStamp!()
+
+        emit PriceChanged(currentXTokenPrice)
+    }
+
+    @using(assetsInContract = true, preapprovedAssets = true, updateFields = true)
+    pub fn stake(amount: U256) -> () {
+        updatePrice()
+        let xTokenAmount = amount * 1e18 / currentXTokenPrice
+        
+        transferTokenToSelf!(callerAddress!(), tokenId, amount)
+        transferTokenFromSelf!(callerAddress!(), selfTokenId!(), xTokenAmount)
+
+        totalSupply = totalSupply + xTokenAmount
+
+        emit Mint(callerAddress!(), xTokenAmount, totalSupply)
+    }
+
+    @using(assetsInContract = true, preapprovedAssets = true, updateFields = true)
+    pub fn unstake(amount: U256) -> () {
+        updatePrice()
+        let tokenAmount = amount * currentXTokenPrice / 1e18
+
+        transferTokenToSelf!(callerAddress!(), selfTokenId!(), amount)
+        transferTokenFromSelf!(callerAddress!(), tokenId, tokenAmount)
+
+        totalSupply = totalSupply - amount
+
+        emit Burn(callerAddress!(), amount, totalSupply)
+    }
+
+    @using(assetsInContract = true, preapprovedAssets = true, updateFields = true)
+    pub fn topUpRewards(amount: U256) -> () {
+        updatePrice()
+
+        transferTokenToSelf!(callerAddress!(), tokenId, amount)
+
+        rewardPool = rewardPool + amount
+    }
+
+    pub fn getSymbol() -> ByteVec {
+        return symbol
+    }
+
+    pub fn getName() -> ByteVec {
+        return name
+    }
+
+    pub fn getDecimals() -> U256 {
+        return 18
+    }
+
+    pub fn getTotalSupply() -> U256 {
+        return totalSupply
+    }
+}
