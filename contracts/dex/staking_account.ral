@@ -30,12 +30,14 @@ Contract StakingAccount(
         return rewards
     }
 
+    // anyone can call this function
     @using(updateFields = true, checkExternalCaller = false)
     pub fn setRewards(newRewards: U256, newRewardPerToken: U256) -> () {
         rewards = newRewards
         rewardPerTokenPaid = newRewardPerToken
     }
 
+    // anyone can call this function
     @using(assetsInContract = true, preapprovedAssets = true, updateFields = true, checkExternalCaller = false)
     pub fn stake(amount: U256) -> () { 
         transferTokenToSelf!(staker, tokenId, amount)
@@ -43,6 +45,7 @@ Contract StakingAccount(
         amountStaked = amountStaked + amount
     }
 
+    // anyone can call this function
     @using(assetsInContract = true, updateFields = true, checkExternalCaller = false)
     pub fn unstake(amount: U256) -> () {
         assert!(amountStaked >= amount, 1)
@@ -56,6 +59,7 @@ Contract StakingAccount(
         //}
     }
 
+    // anyone can call this function
     @using(preapprovedAssets = true, checkExternalCaller = false)
     pub fn claimRewards(rewardsAmount: U256) -> () {
         transferToken!(callerAddress!(), staker, rewardsTokenId,rewardsAmount)

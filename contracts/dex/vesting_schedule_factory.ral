@@ -11,23 +11,15 @@ Contract VestingScheduleFactory(
     beneficiary: Address,
     duration: U256
   ) -> () {
-    assert!(duration > 0, 1)
-    assert!(amount > 0, 1)
+    assert!(duration > 0, 1) // Nit: Better introduce explicit error codes
+    assert!(amount > 0, 1) // Nit: Better introduce explicit error codes
     
     let start = blockTimeStamp!()
-    let encodedImmFields = encodeToByteVec!(
-      tokenId,
-      amount,
-      beneficiary,
-      start,
-      duration
-    )
-    let encodedMutFields = encodeToByteVec!(
-      0
-    )
+    // We have introduced this helper function since web3 0.11.x
+    let (encodedImmFields, encodedMutFields) = VestingSchedule.encodeFields!(tokenId, amount, beneficiary, start, duration)
 
     let scheduleId = copyCreateSubContract!{payer -> ALPH: 1 alph, tokenId: amount}(
-      encodeToByteVec!(beneficiary),
+      encodeToByteVec!(beneficiary), // we could use `toByteVec!(address)` which is much more efficient.
       vestingScheduleTemplateId,
       encodedImmFields,
       encodedMutFields
@@ -37,7 +29,7 @@ Contract VestingScheduleFactory(
   }
 
   pub fn getVestingScheduleByAddress(address: Address)-> VestingSchedule {
-    let vestingScheduleId = subContractId!(encodeToByteVec!(address))
+    let vestingScheduleId = subContractId!(encodeToByteVec!(address)) // we could use `toByteVec!(address)` which is much more efficient.
     
     return VestingSchedule(vestingScheduleId)
   }

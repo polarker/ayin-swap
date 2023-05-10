@@ -32,10 +32,11 @@ Contract VestingSchedule(
     return vestedAmount
   }
 
-  @using(assetsInContract = true, updateFields = true, checkExternalCaller = false)
+  // If this is called twice, 2 * releaseableAmount will be transferred to beneficiary
+  @using(assetsInContract = true, updateFields = true)
   pub fn claimVestedTokens() -> () {
     let caller = callerAddress!()
-    assert!(caller == beneficiary, ErrorCodes.InvalidCallerAddress)
+    checkCaller!(caller == beneficiary, ErrorCodes.InvalidCallerAddress) // use checkCaller instead of assert avoid `checkExternalCaller = false`
     
     let releaseableAmount = getReleaseableAmount()
     released = released + releaseableAmount

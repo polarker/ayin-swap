@@ -23,12 +23,12 @@ Contract AyinPresale (
     }
 
     @using(updateFields = true)
-    pub fn setSaleOpen(open: Bool) -> () {
+    pub fn setSaleOpen(open: Bool) -> () { // no admin check for now
         saleOpen = open
     }
 
     @using(updateFields = true)
-    pub fn setAlphPerToken(apt: U256) -> () {
+    pub fn setAlphPerToken(apt: U256) -> () { // no admin check for now
         alphPerToken = apt
     }
 
@@ -38,7 +38,7 @@ Contract AyinPresale (
         assert!(tokensLeft() - amount >= 0, ErrorCodes.NotEnoughTokens)
 
         let totalPrice = amount * alphPerToken / 1e18
-        transferTokenToSelf!(callerAddress!(), ALPH, totalPrice)
+        transferTokenToSelf!(callerAddress!(), ALPH, totalPrice) // The amount needs to be totalPrice * 1e18; we will see how to improve this
 
         tokensSold = tokensSold + amount
 
@@ -48,4 +48,6 @@ Contract AyinPresale (
 
         transferTokenFromSelf!(callerAddress!(), ayinToken, amount)
     }
+
+    // Q: it seems the deposited ALPH is not used?
 }

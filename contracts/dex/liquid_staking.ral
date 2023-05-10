@@ -60,7 +60,7 @@ Contract LiquidStaking(
     }
 
     @using(assetsInContract = true, preapprovedAssets = true, updateFields = true)
-    pub fn unstake(amount: U256) -> () {
+    pub fn unstake(amount: U256) -> () { // Nit: s/amount/xTokenAmount
         updatePrice()
         let tokenAmount = amount * currentXTokenPrice / 1e18
 
