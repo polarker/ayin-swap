@@ -1,27 +1,18 @@
 {
   "version": "v2.1.0",
-  "name": "TestToken",
-  "bytecode": "050509121b40244030010000000102ce0002010000000102ce0102010000000102ce0202010000000102ce03020102020200041600b11601ab",
-  "codeHash": "0831d766037e7873066276e891997881e8787f4fb4bd9d154925d80869efa129",
+  "name": "AyinToken",
+  "bytecode": "02040e1c4025402e0100000001021405505554494e020100000001021405505554494e02010000000102131202010000000102ce0002",
+  "codeHash": "81b5dad9ec529b4f2cbb9d7a6a3749f34ba25d839d22af2ea29e27c6ad0e0726",
   "fieldsSig": {
     "names": [
-      "symbol",
-      "name",
-      "decimals",
       "totalSupply",
       "__stdInterfaceId"
     ],
     "types": [
-      "ByteVec",
-      "ByteVec",
-      "U256",
       "U256",
       "ByteVec"
     ],
     "isMutable": [
-      false,
-      false,
-      false,
       false,
       false
     ]
@@ -75,25 +66,6 @@
       "returnTypes": [
         "U256"
       ]
-    },
-    {
-      "name": "getToken",
-      "usePreapprovedAssets": false,
-      "useAssetsInContract": true,
-      "isPublic": true,
-      "paramNames": [
-        "sender",
-        "amount"
-      ],
-      "paramTypes": [
-        "Address",
-        "U256"
-      ],
-      "paramIsMutable": [
-        false,
-        false
-      ],
-      "returnTypes": []
     }
   ],
   "stdInterfaceId": "0001"

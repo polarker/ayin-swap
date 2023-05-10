@@ -1,33 +1,21 @@
 {
   "version": "v2.1.0",
-  "name": "AddLiquidity",
-  "bytecodeTemplate": "0101030002001c0c0e{2}010617011700{0}7a1600{3}a31601{4}a3{2}{0}{3}{4}{5}{6}{7}13070f{1}0101181818",
+  "name": "Stake",
+  "bytecodeTemplate": "01010300030016{1}{2}47cc1700160017010c0d160101001702{2}1602{3}a31601{3}0e0c{0}0103",
   "fieldsSig": {
     "names": [
+      "staking",
+      "stakingAccFactory",
       "sender",
-      "router",
-      "pair",
-      "amount0Desired",
-      "amount1Desired",
-      "amount0Min",
-      "amount1Min",
-      "deadline"
+      "amount"
     ],
     "types": [
+      "ByteVec",
+      "ByteVec",
       "Address",
-      "ByteVec",
-      "ByteVec",
-      "U256",
-      "U256",
-      "U256",
-      "U256",
       "U256"
     ],
     "isMutable": [
-      false,
-      false,
-      false,
-      false,
       false,
       false,
       false,

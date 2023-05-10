@@ -1,7 +1,10 @@
-import { Deployer, DeployFunction } from '@alephium/cli'
-import { TokenPair } from '../artifacts/ts'
+import { Deployer, DeployFunction } from '@alephium/cli';
+import { StakingAccount, TokenPair, VestingSchedule } from '../artifacts/ts';
+import { randomP2PKHAddress } from '../test/fixtures/DexFixture';
 
-const deployTokenPairTemplate: DeployFunction<undefined> = async (deployer: Deployer): Promise<void> => {
+const deployTokenPairTemplate: DeployFunction<undefined> = async (
+  deployer: Deployer
+): Promise<void> => {
   const initialFields = {
     token0Id: '',
     token1Id: '',
@@ -10,10 +13,46 @@ const deployTokenPairTemplate: DeployFunction<undefined> = async (deployer: Depl
     blockTimeStampLast: 0n,
     price0CumulativeLast: 0n,
     price1CumulativeLast: 0n,
-    totalSupply: 0n
-  }
-  const result = await deployer.deployContract(TokenPair, { initialFields: initialFields })
-  console.log(`TokenPair template contract address: ${result.contractInstance.address}, contract id: ${result.contractInstance.contractId}`)
-}
+    totalSupply: 0n,
+  };
+  const tokenPairResult = await deployer.deployContract(TokenPair, {
+    initialFields: initialFields,
+  });
+  console.log(
+    `TokenPair template contract address: ${tokenPairResult.contractInstance.address}, contract id: ${tokenPairResult.contractInstance.contractId}`
+  );
 
-export default deployTokenPairTemplate
+  const scheduleInitialFields = {
+    tokenId: '',
+    amountTotal: 0n,
+    beneficiary: randomP2PKHAddress(),
+    start: 0n,
+    duration: 0n,
+    released: 0n,
+  };
+
+  const vestingScheduleResult = await deployer.deployContract(VestingSchedule, {
+    initialFields: scheduleInitialFields,
+  });
+
+  console.log(
+    `VestingSchedule template contract address: ${vestingScheduleResult.contractInstance.address}, contract id: ${vestingScheduleResult.contractInstance.contractId}`
+  );
+
+  const scheduleResult = await deployer.deployContract(VestingSchedule, {
+    initialFields: scheduleInitialFields,
+  });
+
+  await deployer.deployContract(StakingAccount, {
+    initialFields: {
+      tokenId: '',
+      rewardsTokenId: '',
+      staker: deployer.account.address,
+      amountStaked: 0n,
+      rewardPerTokenPaid: 0n,
+      rewards: 0n,
+    },
+  });
+};
+
+export default deployTokenPairTemplate;

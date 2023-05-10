@@ -1,0 +1,199 @@
+{
+  "version": "v2.1.0",
+  "name": "LiquidStaking",
+  "bytecode": "090909121b4024408540c240f54128413d010000000102ce0202010000000102ce0302010000000102131202010000000102a0030201000005014028a0030c2f4c02a00102ce00a0022c13c40de0b6b3a76400002d170056a0002b1701160016012c13c40de0b6b3a76400002c17021602a002334c02a0024a0116021703a001160313c40de0b6b3a76400002ca0032d2a170416040200000002001c000417001600a0012ba0032c13c40de0b6b3a76400002d1701a0021601324c030ca1024a04a00216012ba1021600a10156a10007a0015e0101010200180005160013c40de0b6b3a76400002ca0012d1701b4ce011600acb4b11601aba00316012aa10305b41601a0036001010102001800051600a0012c13c40de0b6b3a76400002d1701b4b11600acb4ce011601aba00316002ba10306b41600a003600101010100090005b4ce011600aca00216002aa102",
+  "codeHash": "3b5886d5aa5ffaefa5536f058fbc7e39d256cfcb0b5d9be72f47e134edea4a37",
+  "fieldsSig": {
+    "names": [
+      "gainPerMillisecond",
+      "tokenId",
+      "symbol",
+      "name",
+      "updatedAt",
+      "currentXTokenPrice",
+      "rewardPool",
+      "totalSupply",
+      "__stdInterfaceId"
+    ],
+    "types": [
+      "U256",
+      "ByteVec",
+      "ByteVec",
+      "ByteVec",
+      "U256",
+      "U256",
+      "U256",
+      "U256",
+      "ByteVec"
+    ],
+    "isMutable": [
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      true,
+      true,
+      false
+    ]
+  },
+  "eventsSig": [
+    {
+      "name": "Mint",
+      "fieldNames": [
+        "sender",
+        "amount",
+        "newSupply"
+      ],
+      "fieldTypes": [
+        "Address",
+        "U256",
+        "U256"
+      ]
+    },
+    {
+      "name": "Burn",
+      "fieldNames": [
+        "sender",
+        "amount",
+        "newSupply"
+      ],
+      "fieldTypes": [
+        "Address",
+        "U256",
+        "U256"
+      ]
+    },
+    {
+      "name": "PriceChanged",
+      "fieldNames": [
+        "newPrice"
+      ],
+      "fieldTypes": [
+        "U256"
+      ]
+    }
+  ],
+  "functions": [
+    {
+      "name": "getSymbol",
+      "usePreapprovedAssets": false,
+      "useAssetsInContract": false,
+      "isPublic": true,
+      "paramNames": [],
+      "paramTypes": [],
+      "paramIsMutable": [],
+      "returnTypes": [
+        "ByteVec"
+      ]
+    },
+    {
+      "name": "getName",
+      "usePreapprovedAssets": false,
+      "useAssetsInContract": false,
+      "isPublic": true,
+      "paramNames": [],
+      "paramTypes": [],
+      "paramIsMutable": [],
+      "returnTypes": [
+        "ByteVec"
+      ]
+    },
+    {
+      "name": "getDecimals",
+      "usePreapprovedAssets": false,
+      "useAssetsInContract": false,
+      "isPublic": true,
+      "paramNames": [],
+      "paramTypes": [],
+      "paramIsMutable": [],
+      "returnTypes": [
+        "U256"
+      ]
+    },
+    {
+      "name": "getTotalSupply",
+      "usePreapprovedAssets": false,
+      "useAssetsInContract": false,
+      "isPublic": true,
+      "paramNames": [],
+      "paramTypes": [],
+      "paramIsMutable": [],
+      "returnTypes": [
+        "U256"
+      ]
+    },
+    {
+      "name": "getCurrentPrice",
+      "usePreapprovedAssets": false,
+      "useAssetsInContract": false,
+      "isPublic": true,
+      "paramNames": [],
+      "paramTypes": [],
+      "paramIsMutable": [],
+      "returnTypes": [
+        "U256"
+      ]
+    },
+    {
+      "name": "updatePrice",
+      "usePreapprovedAssets": false,
+      "useAssetsInContract": false,
+      "isPublic": false,
+      "paramNames": [],
+      "paramTypes": [],
+      "paramIsMutable": [],
+      "returnTypes": []
+    },
+    {
+      "name": "stake",
+      "usePreapprovedAssets": true,
+      "useAssetsInContract": true,
+      "isPublic": true,
+      "paramNames": [
+        "amount"
+      ],
+      "paramTypes": [
+        "U256"
+      ],
+      "paramIsMutable": [
+        false
+      ],
+      "returnTypes": []
+    },
+    {
+      "name": "unstake",
+      "usePreapprovedAssets": true,
+      "useAssetsInContract": true,
+      "isPublic": true,
+      "paramNames": [
+        "amount"
+      ],
+      "paramTypes": [
+        "U256"
+      ],
+      "paramIsMutable": [
+        false
+      ],
+      "returnTypes": []
+    },
+    {
+      "name": "topUpRewards",
+      "usePreapprovedAssets": true,
+      "useAssetsInContract": true,
+      "isPublic": true,
+      "paramNames": [
+        "amount"
+      ],
+      "paramTypes": [
+        "U256"
+      ],
+      "paramIsMutable": [
+        false
+      ],
+      "returnTypes": []
+    }
+  ],
+  "stdInterfaceId": "0001"
+}

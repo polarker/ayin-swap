@@ -1,59 +1,35 @@
 {
   "version": "v2.1.0",
-  "name": "TestToken",
-  "bytecode": "050509121b40244030010000000102ce0002010000000102ce0102010000000102ce0202010000000102ce03020102020200041600b11601ab",
-  "codeHash": "0831d766037e7873066276e891997881e8787f4fb4bd9d154925d80869efa129",
+  "name": "AyinPresale",
+  "bytecode": "05060c151e402840324073010000000104ce01a0022b02010000000102a00002010000000102a001020100010100021600a1010100010100021600a10001010102004021a0010c7b000016002b0c340d7b1600a0002c13c40de0b6b3a76400002d1701b41601a9a00216002aa102a002ce012f4c0204a101b4ce001600ab",
+  "codeHash": "97cb2b09014f7c1117c10f3f073521ec513f9c13bd792a43da99a728e3f09e45",
   "fieldsSig": {
     "names": [
-      "symbol",
-      "name",
-      "decimals",
-      "totalSupply",
-      "__stdInterfaceId"
+      "ayinToken",
+      "tokensForSale",
+      "alphPerToken",
+      "saleOpen",
+      "tokensSold"
     ],
     "types": [
       "ByteVec",
-      "ByteVec",
       "U256",
       "U256",
-      "ByteVec"
+      "Bool",
+      "U256"
     ],
     "isMutable": [
       false,
       false,
-      false,
-      false,
-      false
+      true,
+      true,
+      true
     ]
   },
   "eventsSig": [],
   "functions": [
     {
-      "name": "getSymbol",
-      "usePreapprovedAssets": false,
-      "useAssetsInContract": false,
-      "isPublic": true,
-      "paramNames": [],
-      "paramTypes": [],
-      "paramIsMutable": [],
-      "returnTypes": [
-        "ByteVec"
-      ]
-    },
-    {
-      "name": "getName",
-      "usePreapprovedAssets": false,
-      "useAssetsInContract": false,
-      "isPublic": true,
-      "paramNames": [],
-      "paramTypes": [],
-      "paramIsMutable": [],
-      "returnTypes": [
-        "ByteVec"
-      ]
-    },
-    {
-      "name": "getDecimals",
+      "name": "tokensLeft",
       "usePreapprovedAssets": false,
       "useAssetsInContract": false,
       "isPublic": true,
@@ -65,7 +41,7 @@
       ]
     },
     {
-      "name": "getTotalSupply",
+      "name": "getAlphPerToken",
       "usePreapprovedAssets": false,
       "useAssetsInContract": false,
       "isPublic": true,
@@ -77,24 +53,64 @@
       ]
     },
     {
-      "name": "getToken",
+      "name": "getSaleOpen",
       "usePreapprovedAssets": false,
-      "useAssetsInContract": true,
+      "useAssetsInContract": false,
+      "isPublic": true,
+      "paramNames": [],
+      "paramTypes": [],
+      "paramIsMutable": [],
+      "returnTypes": [
+        "Bool"
+      ]
+    },
+    {
+      "name": "setSaleOpen",
+      "usePreapprovedAssets": false,
+      "useAssetsInContract": false,
       "isPublic": true,
       "paramNames": [
-        "sender",
-        "amount"
+        "open"
       ],
       "paramTypes": [
-        "Address",
+        "Bool"
+      ],
+      "paramIsMutable": [
+        false
+      ],
+      "returnTypes": []
+    },
+    {
+      "name": "setAlphPerToken",
+      "usePreapprovedAssets": false,
+      "useAssetsInContract": false,
+      "isPublic": true,
+      "paramNames": [
+        "apt"
+      ],
+      "paramTypes": [
         "U256"
       ],
       "paramIsMutable": [
-        false,
+        false
+      ],
+      "returnTypes": []
+    },
+    {
+      "name": "buy",
+      "usePreapprovedAssets": true,
+      "useAssetsInContract": true,
+      "isPublic": true,
+      "paramNames": [
+        "amount"
+      ],
+      "paramTypes": [
+        "U256"
+      ],
+      "paramIsMutable": [
         false
       ],
       "returnTypes": []
     }
-  ],
-  "stdInterfaceId": "0001"
+  ]
 }

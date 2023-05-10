@@ -2,9 +2,17 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export * from "./AyinPresale";
+export * from "./AyinToken";
+export * from "./LiquidStaking";
 export * from "./Router";
+export * from "./Staking";
+export * from "./StakingAccount";
+export * from "./StakingAccountFactory";
 export * from "./TokenPair";
 export * from "./TokenPairFactory";
+export * from "./VestingSchedule";
+export * from "./VestingScheduleFactory";
 export * from "./ExampleOracleSimple";
 export * from "./FullMathTest";
 export * from "./MathTest";

@@ -4,11 +4,11 @@ Contract AyinToken(
     totalSupply: U256
 ) implements IFungibleToken {
     pub fn getSymbol() -> ByteVec {
-        return #505554494e
+        return #4159494e
     }
 
     pub fn getName() -> ByteVec {
-        return #505554494e
+        return #4159494e
     }
 
     pub fn getDecimals() -> U256 {
