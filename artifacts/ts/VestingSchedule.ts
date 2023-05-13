@@ -152,7 +152,7 @@ export const VestingSchedule = new Factory(
   Contract.fromJson(
     VestingScheduleContractJson,
     "",
-    "41278bde84daf41ba06dbae02b9e1b167b859c6b955b15b219f5c12929dae436"
+    "055df83c5ec0305049f83ff22b4bfda303d970ea398708ab671ec7ed7dbf2676"
   )
 );
 

@@ -1,13 +1,13 @@
 Abstract Contract Permissions(
     mut owner: Address
 ) {
-    enum ErrorCodes {
+    enum PermissionsErrorCodes {
         Forbidden = 0
     }
 
     fn onlyOwner() -> () {
         let caller = callerAddress!()
-        checkCaller!(caller == owner, ErrorCodes.Forbidden)
+        checkCaller!(caller == owner, PermissionsErrorCodes.Forbidden)
     }
 
     @using(checkExternalCaller = true, updateFields = true)

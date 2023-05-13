@@ -1,17 +1,20 @@
 {
   "version": "v2.1.0",
   "name": "VestingScheduleFactory",
-  "bytecode": "010412404840a240b301000202010816000d1340703b2c16012d0201000103011f16000f334c191600170116000e2d0d2a170216021601314c0b16021701160016022d16022a0e2d17024a311601020d020103050900402f16040c330d7b16020c330d7b5617051601160216031605160413056417060c130164170716007a13c40de0b6b3a7640000a216011602a31603130164ce0016061607c1170805160816011603160216051604740100010201071600130164cb1701160102",
-  "codeHash": "edc1387c5925d269d5f7cf36a016529b7505d02984115e01258719ed52fc0672",
+  "bytecode": "0204101c40774088000000010007b417001600a000450c7b01000101000300001600a10001030408004030000016030c330c7b16010c330d7b5617041600160116021604160313056417050c1301641706b47a13c40de0b6b3a7640000a216001601a31602130164ce0016051606c1170705160716001602160116041603740100010201071600130164cb1701160102",
+  "codeHash": "0f1a48fedffc242c3e47924417a70946aea2c9576b0f9ea83b3f2d591f606069",
   "fieldsSig": {
     "names": [
-      "vestingScheduleTemplateId"
+      "vestingScheduleTemplateId",
+      "owner"
     ],
     "types": [
-      "ByteVec"
+      "ByteVec",
+      "Address"
     ],
     "isMutable": [
-      false
+      false,
+      true
     ]
   },
   "eventsSig": [
@@ -37,43 +40,30 @@
   ],
   "functions": [
     {
-      "name": "uqdiv",
+      "name": "onlyOwner",
       "usePreapprovedAssets": false,
       "useAssetsInContract": false,
-      "isPublic": true,
-      "paramNames": [
-        "a",
-        "b"
-      ],
-      "paramTypes": [
-        "U256",
-        "U256"
-      ],
-      "paramIsMutable": [
-        false,
-        false
-      ],
-      "returnTypes": [
-        "U256"
-      ]
+      "isPublic": false,
+      "paramNames": [],
+      "paramTypes": [],
+      "paramIsMutable": [],
+      "returnTypes": []
     },
     {
-      "name": "sqrt",
+      "name": "changeOwner",
       "usePreapprovedAssets": false,
       "useAssetsInContract": false,
       "isPublic": true,
       "paramNames": [
-        "y"
+        "newOwner"
       ],
       "paramTypes": [
-        "U256"
+        "Address"
       ],
       "paramIsMutable": [
         false
       ],
-      "returnTypes": [
-        "U256"
-      ]
+      "returnTypes": []
     },
     {
       "name": "createSchedule",
@@ -81,21 +71,18 @@
       "useAssetsInContract": false,
       "isPublic": true,
       "paramNames": [
-        "payer",
         "tokenId",
         "amount",
         "beneficiary",
         "duration"
       ],
       "paramTypes": [
-        "Address",
         "ByteVec",
         "U256",
         "Address",
         "U256"
       ],
       "paramIsMutable": [
-        false,
         false,
         false,
         false,

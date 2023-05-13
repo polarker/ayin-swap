@@ -39,8 +39,12 @@ Contract VestingSchedule(
     
     let releaseableAmount = getReleaseableAmount()
     released = released + releaseableAmount
-    
-    transferTokenFromSelf!(beneficiary, tokenId, releaseableAmount)
+
+    if (released == amountTotal) {
+        destroySelf!(beneficiary)
+    } else {
+        transferTokenFromSelf!(beneficiary, tokenId, releaseableAmount)
+    }
   }
 
   pub fn getReleased() -> U256 {

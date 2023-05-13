@@ -30,6 +30,7 @@ import { default as VestingScheduleFactoryContractJson } from "../dex/vesting_sc
 export namespace VestingScheduleFactoryTypes {
   export type Fields = {
     vestingScheduleTemplateId: HexString;
+    owner: Address;
   };
 
   export type State = ContractState<Fields>;
@@ -44,14 +45,6 @@ export namespace VestingScheduleFactoryTypes {
   }>;
 
   export interface CallMethodTable {
-    uqdiv: {
-      params: CallContractParams<{ a: bigint; b: bigint }>;
-      result: CallContractResult<bigint>;
-    };
-    sqrt: {
-      params: CallContractParams<{ y: bigint }>;
-      result: CallContractResult<bigint>;
-    };
     getVestingScheduleByAddress: {
       params: CallContractParams<{ address: Address }>;
       result: CallContractResult<HexString>;
@@ -80,27 +73,26 @@ class Factory extends ContractFactory<
   }
 
   tests = {
-    uqdiv: async (
-      params: TestContractParams<
-        VestingScheduleFactoryTypes.Fields,
-        { a: bigint; b: bigint }
+    onlyOwner: async (
+      params: Omit<
+        TestContractParams<VestingScheduleFactoryTypes.Fields, never>,
+        "testArgs"
       >
-    ): Promise<TestContractResult<bigint>> => {
-      return testMethod(this, "uqdiv", params);
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "onlyOwner", params);
     },
-    sqrt: async (
+    changeOwner: async (
       params: TestContractParams<
         VestingScheduleFactoryTypes.Fields,
-        { y: bigint }
+        { newOwner: Address }
       >
-    ): Promise<TestContractResult<bigint>> => {
-      return testMethod(this, "sqrt", params);
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "changeOwner", params);
     },
     createSchedule: async (
       params: TestContractParams<
         VestingScheduleFactoryTypes.Fields,
         {
-          payer: Address;
           tokenId: HexString;
           amount: bigint;
           beneficiary: Address;
@@ -126,7 +118,7 @@ export const VestingScheduleFactory = new Factory(
   Contract.fromJson(
     VestingScheduleFactoryContractJson,
     "",
-    "edc1387c5925d269d5f7cf36a016529b7505d02984115e01258719ed52fc0672"
+    "0f1a48fedffc242c3e47924417a70946aea2c9576b0f9ea83b3f2d591f606069"
   )
 );
 
@@ -158,16 +150,6 @@ export class VestingScheduleFactoryInstance extends ContractInstance {
   }
 
   methods = {
-    uqdiv: async (
-      params: VestingScheduleFactoryTypes.CallMethodParams<"uqdiv">
-    ): Promise<VestingScheduleFactoryTypes.CallMethodResult<"uqdiv">> => {
-      return callMethod(VestingScheduleFactory, this, "uqdiv", params);
-    },
-    sqrt: async (
-      params: VestingScheduleFactoryTypes.CallMethodParams<"sqrt">
-    ): Promise<VestingScheduleFactoryTypes.CallMethodResult<"sqrt">> => {
-      return callMethod(VestingScheduleFactory, this, "sqrt", params);
-    },
     getVestingScheduleByAddress: async (
       params: VestingScheduleFactoryTypes.CallMethodParams<"getVestingScheduleByAddress">
     ): Promise<

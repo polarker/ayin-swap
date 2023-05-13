@@ -7,7 +7,7 @@ Contract AyinPresale (
     mut alphBalance: U256,
     mut owner: Address
 ) extends Permissions(owner) {
-    enum PresaleErrorCodes {
+    enum ErrorCodes {
         SaleNotOpen = 0
         NotEnoughTokens = 1
     }
@@ -42,8 +42,8 @@ Contract AyinPresale (
 
     @using(assetsInContract = true, preapprovedAssets = true, updateFields = true)
     pub fn buy(amount: U256) -> () {
-        assert!(saleOpen, PresaleErrorCodes.SaleNotOpen)
-        assert!(getTokensLeft() - amount >= 0, PresaleErrorCodes.NotEnoughTokens)
+        assert!(saleOpen, ErrorCodes.SaleNotOpen)
+        assert!(getTokensLeft() - amount >= 0, ErrorCodes.NotEnoughTokens)
 
         let totalPrice = amount * alphPerToken / 1e18
         transferTokenToSelf!(callerAddress!(), ALPH, totalPrice)

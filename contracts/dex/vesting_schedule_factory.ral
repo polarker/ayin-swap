@@ -1,44 +1,51 @@
 Contract VestingScheduleFactory(
-  vestingScheduleTemplateId: ByteVec
-) extends Math() {
-  event VestingScheduleCreated(schedule: ByteVec, token: ByteVec, beneiciary: Address, amount: U256, start: U256, duration: U256)
+    vestingScheduleTemplateId: ByteVec,
+    mut owner: Address
+) extends Permissions(owner) {
+    event VestingScheduleCreated(schedule: ByteVec, token: ByteVec, beneiciary: Address, amount: U256, start: U256, duration: U256)
 
-  @using(preapprovedAssets = true)
-  pub fn createSchedule(
-    payer: Address,
-    tokenId: ByteVec,
-    amount: U256,
-    beneficiary: Address,
-    duration: U256
-  ) -> () {
-    assert!(duration > 0, 1)
-    assert!(amount > 0, 1)
-    
-    let start = blockTimeStamp!()
-    let encodedImmFields = encodeToByteVec!(
-      tokenId,
-      amount,
-      beneficiary,
-      start,
-      duration
-    )
-    let encodedMutFields = encodeToByteVec!(
-      0
-    )
+    enum ErrorCodes {
+        InvalidDuration = 0
+        InvalidAmount = 1
+    }
 
-    let scheduleId = copyCreateSubContract!{payer -> ALPH: 1 alph, tokenId: amount}(
-      encodeToByteVec!(beneficiary),
-      vestingScheduleTemplateId,
-      encodedImmFields,
-      encodedMutFields
-    )
+    @using(checkExternalCaller = true, preapprovedAssets = true)
+    pub fn createSchedule(
+        tokenId: ByteVec,
+        amount: U256,
+        beneficiary: Address,
+        duration: U256
+    ) -> () {
+        onlyOwner()
 
-    emit VestingScheduleCreated(scheduleId, tokenId, beneficiary, amount, start, duration)
-  }
+        assert!(duration > 0, ErrorCodes.InvalidDuration)
+        assert!(amount > 0, ErrorCodes.InvalidAmount)
+        
+        let start = blockTimeStamp!()
+        let encodedImmFields = encodeToByteVec!(
+            tokenId,
+            amount,
+            beneficiary,
+            start,
+            duration
+        )
+        let encodedMutFields = encodeToByteVec!(
+            0
+        )
 
-  pub fn getVestingScheduleByAddress(address: Address)-> VestingSchedule {
-    let vestingScheduleId = subContractId!(encodeToByteVec!(address))
-    
-    return VestingSchedule(vestingScheduleId)
-  }
+        let scheduleId = copyCreateSubContract!{callerAddress!() -> ALPH: 1 alph, tokenId: amount}(
+            encodeToByteVec!(beneficiary),
+            vestingScheduleTemplateId,
+            encodedImmFields,
+            encodedMutFields
+        )
+
+        emit VestingScheduleCreated(scheduleId, tokenId, beneficiary, amount, start, duration)
+    }
+
+    pub fn getVestingScheduleByAddress(address: Address)-> VestingSchedule {
+        let vestingScheduleId = subContractId!(encodeToByteVec!(address))
+        
+        return VestingSchedule(vestingScheduleId)
+    }
 }
