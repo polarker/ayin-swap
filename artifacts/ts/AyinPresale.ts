@@ -34,13 +34,18 @@ export namespace AyinPresaleTypes {
     alphPerToken: bigint;
     saleOpen: boolean;
     tokensSold: bigint;
+    alphBalance: bigint;
     owner: Address;
   };
 
   export type State = ContractState<Fields>;
 
   export interface CallMethodTable {
-    tokensLeft: {
+    getAlphBalance: {
+      params: Omit<CallContractParams<{}>, "args">;
+      result: CallContractResult<bigint>;
+    };
+    getTokensLeft: {
       params: Omit<CallContractParams<{}>, "args">;
       result: CallContractResult<bigint>;
     };
@@ -89,13 +94,21 @@ class Factory extends ContractFactory<
     ): Promise<TestContractResult<null>> => {
       return testMethod(this, "changeOwner", params);
     },
-    tokensLeft: async (
+    getAlphBalance: async (
       params: Omit<
         TestContractParams<AyinPresaleTypes.Fields, never>,
         "testArgs"
       >
     ): Promise<TestContractResult<bigint>> => {
-      return testMethod(this, "tokensLeft", params);
+      return testMethod(this, "getAlphBalance", params);
+    },
+    getTokensLeft: async (
+      params: Omit<
+        TestContractParams<AyinPresaleTypes.Fields, never>,
+        "testArgs"
+      >
+    ): Promise<TestContractResult<bigint>> => {
+      return testMethod(this, "getTokensLeft", params);
     },
     getAlphPerToken: async (
       params: Omit<
@@ -128,6 +141,38 @@ class Factory extends ContractFactory<
     ): Promise<TestContractResult<null>> => {
       return testMethod(this, "buy", params);
     },
+    withdrawToken_: async (
+      params: TestContractParams<
+        AyinPresaleTypes.Fields,
+        { tokenId: HexString; amount: bigint; sendTo: Address }
+      >
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "withdrawToken_", params);
+    },
+    withdrawAlph: async (
+      params: TestContractParams<
+        AyinPresaleTypes.Fields,
+        { amount: bigint; sendTo: Address }
+      >
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "withdrawAlph", params);
+    },
+    withdrawAyin: async (
+      params: TestContractParams<
+        AyinPresaleTypes.Fields,
+        { amount: bigint; sendTo: Address }
+      >
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "withdrawAyin", params);
+    },
+    destroy: async (
+      params: TestContractParams<
+        AyinPresaleTypes.Fields,
+        { remainingBalancesTo: Address }
+      >
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "destroy", params);
+    },
   };
 }
 
@@ -136,7 +181,7 @@ export const AyinPresale = new Factory(
   Contract.fromJson(
     AyinPresaleContractJson,
     "",
-    "fa1fc32797ce2e48e5bac1a5d5278c7a9a5590e1d0bc9535cd10a7fce88e38c0"
+    "035655bcd0e1aa2ee8e3b180f124fca0ed938538ebface8d4a6ed1d77cf0764b"
   )
 );
 
@@ -151,13 +196,23 @@ export class AyinPresaleInstance extends ContractInstance {
   }
 
   methods = {
-    tokensLeft: async (
-      params?: AyinPresaleTypes.CallMethodParams<"tokensLeft">
-    ): Promise<AyinPresaleTypes.CallMethodResult<"tokensLeft">> => {
+    getAlphBalance: async (
+      params?: AyinPresaleTypes.CallMethodParams<"getAlphBalance">
+    ): Promise<AyinPresaleTypes.CallMethodResult<"getAlphBalance">> => {
       return callMethod(
         AyinPresale,
         this,
-        "tokensLeft",
+        "getAlphBalance",
+        params === undefined ? {} : params
+      );
+    },
+    getTokensLeft: async (
+      params?: AyinPresaleTypes.CallMethodParams<"getTokensLeft">
+    ): Promise<AyinPresaleTypes.CallMethodResult<"getTokensLeft">> => {
+      return callMethod(
+        AyinPresale,
+        this,
+        "getTokensLeft",
         params === undefined ? {} : params
       );
     },

@@ -1,9 +1,10 @@
 Contract AyinPresale (
     ayinToken: ByteVec,
-    tokensForSale: U256,
+    mut tokensForSale: U256,
     mut alphPerToken: U256,
     mut saleOpen: Bool,
     mut tokensSold: U256,
+    mut alphBalance: U256,
     mut owner: Address
 ) extends Permissions(owner) {
     enum PresaleErrorCodes {
@@ -11,7 +12,11 @@ Contract AyinPresale (
         NotEnoughTokens = 1
     }
 
-    pub fn tokensLeft() -> U256 {
+    pub fn getAlphBalance() -> U256 {
+        return alphBalance
+    }
+
+    pub fn getTokensLeft() -> U256 {
         return tokensForSale - tokensSold
     }
 
@@ -38,11 +43,12 @@ Contract AyinPresale (
     @using(assetsInContract = true, preapprovedAssets = true, updateFields = true)
     pub fn buy(amount: U256) -> () {
         assert!(saleOpen, PresaleErrorCodes.SaleNotOpen)
-        assert!(tokensLeft() - amount >= 0, PresaleErrorCodes.NotEnoughTokens)
+        assert!(getTokensLeft() - amount >= 0, PresaleErrorCodes.NotEnoughTokens)
 
         let totalPrice = amount * alphPerToken / 1e18
         transferTokenToSelf!(callerAddress!(), ALPH, totalPrice)
 
+        alphBalance = alphBalance + totalPrice
         tokensSold = tokensSold + amount
 
         if (tokensSold == tokensForSale) {
@@ -50,5 +56,33 @@ Contract AyinPresale (
         }
 
         transferTokenFromSelf!(callerAddress!(), ayinToken, amount)
+    }
+
+    @using(assetsInContract = true)
+    fn withdrawToken_(tokenId: ByteVec, amount: U256, sendTo: Address) -> () {
+        onlyOwner()
+
+        transferTokenFromSelf!(sendTo, tokenId, amount)
+    }
+
+    @using(checkExternalCaller = true, updateFields = true)
+    pub fn withdrawAlph(amount: U256, sendTo: Address) -> () {
+        withdrawToken_(ALPH, amount, sendTo)
+
+        alphBalance = alphBalance - amount
+    }
+
+    @using(checkExternalCaller = true, updateFields = true)
+    pub fn withdrawAyin(amount: U256, sendTo: Address) -> () {
+        withdrawToken_(ayinToken, amount, sendTo)
+
+        tokensForSale = tokensForSale - amount
+    }
+
+    @using(assetsInContract = true, checkExternalCaller = true)
+    pub fn destroy(remainingBalancesTo: Address) -> () {
+        onlyOwner()
+
+        destroySelf!(remainingBalancesTo)
     }
 }
