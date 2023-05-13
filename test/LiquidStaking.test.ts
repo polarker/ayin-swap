@@ -18,7 +18,7 @@ describe('XAyin ', () => {
     const state = createLiquidStaking();
     const sender = randomP2PKHAddress();
 
-    const testResult = await LiquidStaking.tests.stake({
+    const testResult = await LiquidStaking.tests.mint({
       initialFields: state.selfState.fields,
       initialAsset: state.selfState.asset,
       testArgs: {
@@ -52,12 +52,12 @@ describe('XAyin ', () => {
 
     expect(outputs?.tokens?.[0].amount).toEqual(oneAlph);
 
-    const withdrawResult = await LiquidStaking.tests.unstake({
+    const withdrawResult = await LiquidStaking.tests.burn({
       initialFields: updatedState.fields,
       initialAsset: updatedState.asset,
       address: state.address,
       testArgs: {
-        amount: oneAlph,
+        xTokenAmount: oneAlph,
       },
       blockTimeStamp: 1000000,
       inputAssets: [
@@ -90,7 +90,7 @@ describe('XAyin ', () => {
       (c) => c.address === state.address
     ) as LiquidStakingTypes.State;
 
-    const stakeResult = await LiquidStaking.tests.stake({
+    const stakeResult = await LiquidStaking.tests.mint({
       initialFields: updatedState.fields,
       initialAsset: updatedState.asset,
       testArgs: {

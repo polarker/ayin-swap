@@ -1,7 +1,7 @@
 import "std/fungible_token_interface"
 
 Contract LiquidStaking(
-    gainPerMillisecond: U256,
+    gainPerMillisecond: U256, // Percentage of rewardPool to be paid as a reward each millisecond where 1e18 is 100% of the pool
     tokenId: ByteVec,
     symbol: ByteVec,
     name: ByteVec,
@@ -14,18 +14,25 @@ Contract LiquidStaking(
     event Burn(sender: Address, amount: U256, newSupply: U256)
     event PriceChanged(newPrice: U256)
 
+    // Reward paid per 1 xToken
+    pub fn getCurrentRewardPerMillisecond() -> U256 {
+        let rewardPerMillisecond = gainPerMillisecond * rewardPool / totalSupply
+
+        return rewardPerMillisecond
+    }
+
     pub fn getCurrentPrice() -> U256 {
         if (totalSupply == 0) {
             return currentXTokenPrice
         }
 
-        let rewardPerMillisecond = gainPerMillisecond * rewardPool / 1e18
+        let rewardPerMillisecond = getCurrentRewardPerMillisecond()
         let elapsed = blockTimeStamp!() - updatedAt
-        let projectedReward = rewardPerMillisecond * elapsed * 1e18
+        let projectedReward = rewardPerMillisecond * elapsed
 
         let reward = if (projectedReward > rewardPool) rewardPool else projectedReward
 
-        let currentPrice = currentXTokenPrice + reward * 1e18 / totalSupply
+        let currentPrice = currentXTokenPrice + reward
         return currentPrice
     }
 
@@ -47,7 +54,7 @@ Contract LiquidStaking(
     }
 
     @using(assetsInContract = true, preapprovedAssets = true, updateFields = true)
-    pub fn stake(amount: U256) -> () {
+    pub fn mint(amount: U256) -> () {
         updatePrice()
         let xTokenAmount = amount * 1e18 / currentXTokenPrice
         
@@ -60,16 +67,16 @@ Contract LiquidStaking(
     }
 
     @using(assetsInContract = true, preapprovedAssets = true, updateFields = true)
-    pub fn unstake(amount: U256) -> () {
+    pub fn burn(xTokenAmount: U256) -> () {
         updatePrice()
-        let tokenAmount = amount * currentXTokenPrice / 1e18
+        let tokenAmount = xTokenAmount * currentXTokenPrice / 1e18
 
-        transferTokenToSelf!(callerAddress!(), selfTokenId!(), amount)
+        transferTokenToSelf!(callerAddress!(), selfTokenId!(), xTokenAmount)
         transferTokenFromSelf!(callerAddress!(), tokenId, tokenAmount)
 
-        totalSupply = totalSupply - amount
+        totalSupply = totalSupply - xTokenAmount
 
-        emit Burn(callerAddress!(), amount, totalSupply)
+        emit Burn(callerAddress!(), xTokenAmount, totalSupply)
     }
 
     @using(assetsInContract = true, preapprovedAssets = true, updateFields = true)
@@ -79,6 +86,10 @@ Contract LiquidStaking(
         transferTokenToSelf!(callerAddress!(), tokenId, amount)
 
         rewardPool = rewardPool + amount
+    }
+
+    pub fn getTokenId() -> ByteVec {
+        return tokenId
     }
 
     pub fn getSymbol() -> ByteVec {

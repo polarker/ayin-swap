@@ -1,8 +1,8 @@
 {
   "version": "v2.1.0",
   "name": "LiquidStaking",
-  "bytecode": "090909121b4024408540c240f54128413d010000000102ce0202010000000102ce0302010000000102131202010000000102a0030201000005014028a0030c2f4c02a00102ce00a0022c13c40de0b6b3a76400002d170056a0002b1701160016012c13c40de0b6b3a76400002c17021602a002334c02a0024a0116021703a001160313c40de0b6b3a76400002ca0032d2a170416040200000002001c000417001600a0012ba0032c13c40de0b6b3a76400002d1701a0021601324c030ca1024a04a00216012ba1021600a10156a10007a0015e0101010200180005160013c40de0b6b3a76400002ca0012d1701b4ce011600acb4b11601aba00316012aa10305b41601a0036001010102001800051600a0012c13c40de0b6b3a76400002d1701b4b11600acb4ce011601aba00316002ba10306b41600a003600101010100090005b4ce011600aca00216002aa102",
-  "codeHash": "3b5886d5aa5ffaefa5536f058fbc7e39d256cfcb0b5d9be72f47e134edea4a37",
+  "bytecode": "090b09121b40244037407040ad40e0411341284131010000000102ce0202010000000102ce0302010000000102131202010000000102a00302010000010108ce00a0022ca0032d170016000201000005011ea0030c2f4c02a001020004170056a0002b1701160016012c17021602a002334c02a0024a0116021703a00116032a170416040200000002001c000517001600a0012ba0032c13c40de0b6b3a76400002d1701a0021601324c030ca1024a04a00216012ba1021600a10156a10007a0015e0101010200180006160013c40de0b6b3a76400002ca0012d1701b4ce011600acb4b11601aba00316012aa10305b41601a0036001010102001800061600a0012c13c40de0b6b3a76400002d1701b4b11600acb4ce011601aba00316002ba10306b41600a003600101010100090006b4ce011600aca00216002aa102010000000102ce0102",
+  "codeHash": "148a1f3afc807a4ef4e21ba07db124956203b7910db76027064987e9c0139a2b",
   "fieldsSig": {
     "names": [
       "gainPerMillisecond",
@@ -125,6 +125,18 @@
       ]
     },
     {
+      "name": "getCurrentRewardPerMillisecond",
+      "usePreapprovedAssets": false,
+      "useAssetsInContract": false,
+      "isPublic": true,
+      "paramNames": [],
+      "paramTypes": [],
+      "paramIsMutable": [],
+      "returnTypes": [
+        "U256"
+      ]
+    },
+    {
       "name": "getCurrentPrice",
       "usePreapprovedAssets": false,
       "useAssetsInContract": false,
@@ -147,7 +159,7 @@
       "returnTypes": []
     },
     {
-      "name": "stake",
+      "name": "mint",
       "usePreapprovedAssets": true,
       "useAssetsInContract": true,
       "isPublic": true,
@@ -163,12 +175,12 @@
       "returnTypes": []
     },
     {
-      "name": "unstake",
+      "name": "burn",
       "usePreapprovedAssets": true,
       "useAssetsInContract": true,
       "isPublic": true,
       "paramNames": [
-        "amount"
+        "xTokenAmount"
       ],
       "paramTypes": [
         "U256"
@@ -193,6 +205,18 @@
         false
       ],
       "returnTypes": []
+    },
+    {
+      "name": "getTokenId",
+      "usePreapprovedAssets": false,
+      "useAssetsInContract": false,
+      "isPublic": true,
+      "paramNames": [],
+      "paramTypes": [],
+      "paramIsMutable": [],
+      "returnTypes": [
+        "ByteVec"
+      ]
     }
   ],
   "stdInterfaceId": "0001"

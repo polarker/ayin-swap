@@ -70,9 +70,17 @@ export namespace LiquidStakingTypes {
       params: Omit<CallContractParams<{}>, "args">;
       result: CallContractResult<bigint>;
     };
+    getCurrentRewardPerMillisecond: {
+      params: Omit<CallContractParams<{}>, "args">;
+      result: CallContractResult<bigint>;
+    };
     getCurrentPrice: {
       params: Omit<CallContractParams<{}>, "args">;
       result: CallContractResult<bigint>;
+    };
+    getTokenId: {
+      params: Omit<CallContractParams<{}>, "args">;
+      result: CallContractResult<HexString>;
     };
   }
   export type CallMethodParams<T extends keyof CallMethodTable> =
@@ -130,6 +138,14 @@ class Factory extends ContractFactory<
     ): Promise<TestContractResult<bigint>> => {
       return testMethod(this, "getTotalSupply", params);
     },
+    getCurrentRewardPerMillisecond: async (
+      params: Omit<
+        TestContractParams<LiquidStakingTypes.Fields, never>,
+        "testArgs"
+      >
+    ): Promise<TestContractResult<bigint>> => {
+      return testMethod(this, "getCurrentRewardPerMillisecond", params);
+    },
     getCurrentPrice: async (
       params: Omit<
         TestContractParams<LiquidStakingTypes.Fields, never>,
@@ -146,20 +162,31 @@ class Factory extends ContractFactory<
     ): Promise<TestContractResult<null>> => {
       return testMethod(this, "updatePrice", params);
     },
-    stake: async (
+    mint: async (
       params: TestContractParams<LiquidStakingTypes.Fields, { amount: bigint }>
     ): Promise<TestContractResult<null>> => {
-      return testMethod(this, "stake", params);
+      return testMethod(this, "mint", params);
     },
-    unstake: async (
-      params: TestContractParams<LiquidStakingTypes.Fields, { amount: bigint }>
+    burn: async (
+      params: TestContractParams<
+        LiquidStakingTypes.Fields,
+        { xTokenAmount: bigint }
+      >
     ): Promise<TestContractResult<null>> => {
-      return testMethod(this, "unstake", params);
+      return testMethod(this, "burn", params);
     },
     topUpRewards: async (
       params: TestContractParams<LiquidStakingTypes.Fields, { amount: bigint }>
     ): Promise<TestContractResult<null>> => {
       return testMethod(this, "topUpRewards", params);
+    },
+    getTokenId: async (
+      params: Omit<
+        TestContractParams<LiquidStakingTypes.Fields, never>,
+        "testArgs"
+      >
+    ): Promise<TestContractResult<HexString>> => {
+      return testMethod(this, "getTokenId", params);
     },
   };
 }
@@ -169,7 +196,7 @@ export const LiquidStaking = new Factory(
   Contract.fromJson(
     LiquidStakingContractJson,
     "",
-    "3b5886d5aa5ffaefa5536f058fbc7e39d256cfcb0b5d9be72f47e134edea4a37"
+    "148a1f3afc807a4ef4e21ba07db124956203b7910db76027064987e9c0139a2b"
   )
 );
 
@@ -283,6 +310,18 @@ export class LiquidStakingInstance extends ContractInstance {
         params === undefined ? {} : params
       );
     },
+    getCurrentRewardPerMillisecond: async (
+      params?: LiquidStakingTypes.CallMethodParams<"getCurrentRewardPerMillisecond">
+    ): Promise<
+      LiquidStakingTypes.CallMethodResult<"getCurrentRewardPerMillisecond">
+    > => {
+      return callMethod(
+        LiquidStaking,
+        this,
+        "getCurrentRewardPerMillisecond",
+        params === undefined ? {} : params
+      );
+    },
     getCurrentPrice: async (
       params?: LiquidStakingTypes.CallMethodParams<"getCurrentPrice">
     ): Promise<LiquidStakingTypes.CallMethodResult<"getCurrentPrice">> => {
@@ -290,6 +329,16 @@ export class LiquidStakingInstance extends ContractInstance {
         LiquidStaking,
         this,
         "getCurrentPrice",
+        params === undefined ? {} : params
+      );
+    },
+    getTokenId: async (
+      params?: LiquidStakingTypes.CallMethodParams<"getTokenId">
+    ): Promise<LiquidStakingTypes.CallMethodResult<"getTokenId">> => {
+      return callMethod(
+        LiquidStaking,
+        this,
+        "getTokenId",
         params === undefined ? {} : params
       );
     },
