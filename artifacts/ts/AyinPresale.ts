@@ -34,6 +34,7 @@ export namespace AyinPresaleTypes {
     alphPerToken: bigint;
     saleOpen: boolean;
     tokensSold: bigint;
+    owner: Address;
   };
 
   export type State = ContractState<Fields>;
@@ -75,6 +76,19 @@ class Factory extends ContractFactory<
   }
 
   tests = {
+    onlyOwner: async (
+      params: Omit<
+        TestContractParams<AyinPresaleTypes.Fields, never>,
+        "testArgs"
+      >
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "onlyOwner", params);
+    },
+    changeOwner: async (
+      params: TestContractParams<AyinPresaleTypes.Fields, { newOwner: Address }>
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "changeOwner", params);
+    },
     tokensLeft: async (
       params: Omit<
         TestContractParams<AyinPresaleTypes.Fields, never>,
@@ -122,7 +136,7 @@ export const AyinPresale = new Factory(
   Contract.fromJson(
     AyinPresaleContractJson,
     "",
-    "97cb2b09014f7c1117c10f3f073521ec513f9c13bd792a43da99a728e3f09e45"
+    "fa1fc32797ce2e48e5bac1a5d5278c7a9a5590e1d0bc9535cd10a7fce88e38c0"
   )
 );
 

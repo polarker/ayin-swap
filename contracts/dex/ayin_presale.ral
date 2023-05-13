@@ -3,9 +3,10 @@ Contract AyinPresale (
     tokensForSale: U256,
     mut alphPerToken: U256,
     mut saleOpen: Bool,
-    mut tokensSold: U256
-) {
-    enum ErrorCodes {
+    mut tokensSold: U256,
+    mut owner: Address
+) extends Permissions(owner) {
+    enum PresaleErrorCodes {
         SaleNotOpen = 0
         NotEnoughTokens = 1
     }
@@ -22,20 +23,22 @@ Contract AyinPresale (
         return saleOpen
     }
 
-    @using(updateFields = true)
+    @using(updateFields = true, checkExternalCaller = true)
     pub fn setSaleOpen(open: Bool) -> () {
+        onlyOwner()
         saleOpen = open
     }
 
-    @using(updateFields = true)
+    @using(updateFields = true, checkExternalCaller = true)
     pub fn setAlphPerToken(apt: U256) -> () {
+        onlyOwner()
         alphPerToken = apt
     }
 
     @using(assetsInContract = true, preapprovedAssets = true, updateFields = true)
     pub fn buy(amount: U256) -> () {
-        assert!(saleOpen, ErrorCodes.SaleNotOpen)
-        assert!(tokensLeft() - amount >= 0, ErrorCodes.NotEnoughTokens)
+        assert!(saleOpen, PresaleErrorCodes.SaleNotOpen)
+        assert!(tokensLeft() - amount >= 0, PresaleErrorCodes.NotEnoughTokens)
 
         let totalPrice = amount * alphPerToken / 1e18
         transferTokenToSelf!(callerAddress!(), ALPH, totalPrice)
