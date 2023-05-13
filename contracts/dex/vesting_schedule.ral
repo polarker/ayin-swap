@@ -32,19 +32,17 @@ Contract VestingSchedule(
     return vestedAmount
   }
 
-  @using(assetsInContract = true, updateFields = true, checkExternalCaller = false)
+  @using(assetsInContract = true, updateFields = true)
   pub fn claimVestedTokens() -> () {
-    let caller = callerAddress!()
-    assert!(caller == beneficiary, ErrorCodes.InvalidCallerAddress)
+    checkCaller!(callerAddress!() == beneficiary, ErrorCodes.InvalidCallerAddress)
     
     let releaseableAmount = getReleaseableAmount()
     released = released + releaseableAmount
 
-    if (released == amountTotal) {
-        destroySelf!(beneficiary)
-    } else {
-        transferTokenFromSelf!(beneficiary, tokenId, releaseableAmount)
-    }
+    transferTokenFromSelf!(beneficiary, tokenId, releaseableAmount)
+    // if (released == amountTotal) {
+    //     destroySelf!(beneficiary)
+    // }
   }
 
   pub fn getReleased() -> U256 {

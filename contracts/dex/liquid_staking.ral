@@ -53,7 +53,7 @@ Contract LiquidStaking(
         emit PriceChanged(currentXTokenPrice)
     }
 
-    @using(assetsInContract = true, preapprovedAssets = true, updateFields = true)
+    @using(assetsInContract = true, preapprovedAssets = true, updateFields = true, checkExternalCaller = false)
     pub fn mint(amount: U256) -> () {
         updatePrice()
         let xTokenAmount = amount * 1e18 / currentXTokenPrice
@@ -66,7 +66,7 @@ Contract LiquidStaking(
         emit Mint(callerAddress!(), xTokenAmount, totalSupply)
     }
 
-    @using(assetsInContract = true, preapprovedAssets = true, updateFields = true)
+    @using(assetsInContract = true, preapprovedAssets = true, updateFields = true, checkExternalCaller = false)
     pub fn burn(xTokenAmount: U256) -> () {
         updatePrice()
         let tokenAmount = xTokenAmount * currentXTokenPrice / 1e18
@@ -79,7 +79,7 @@ Contract LiquidStaking(
         emit Burn(callerAddress!(), xTokenAmount, totalSupply)
     }
 
-    @using(assetsInContract = true, preapprovedAssets = true, updateFields = true)
+    @using(assetsInContract = true, preapprovedAssets = true, updateFields = true, checkExternalCaller = false)
     pub fn topUpRewards(amount: U256) -> () {
         updatePrice()
 

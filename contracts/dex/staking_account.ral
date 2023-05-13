@@ -38,13 +38,15 @@ Contract StakingAccount(
 
     @using(assetsInContract = true, preapprovedAssets = true, updateFields = true, checkExternalCaller = false)
     pub fn stake(amount: U256) -> () { 
+        assert!(callerAddress!() == staker, 0)
         transferTokenToSelf!(staker, tokenId, amount)
 
         amountStaked = amountStaked + amount
     }
 
-    @using(assetsInContract = true, updateFields = true, checkExternalCaller = false)
+    @using(assetsInContract = true, updateFields = true)
     pub fn unstake(amount: U256) -> () {
+        checkCaller!(callerAddress!() == staker, 0)
         assert!(amountStaked >= amount, 1)
 
         amountStaked = amountStaked - amount
@@ -58,6 +60,7 @@ Contract StakingAccount(
 
     @using(preapprovedAssets = true, checkExternalCaller = false)
     pub fn claimRewards(rewardsAmount: U256) -> () {
+        checkCaller!(callerAddress!() == staker, 0)
         transferToken!(callerAddress!(), staker, rewardsTokenId,rewardsAmount)
     }
 }

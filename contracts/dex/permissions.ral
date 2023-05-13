@@ -5,14 +5,14 @@ Abstract Contract Permissions(
         Forbidden = 0
     }
 
-    fn onlyOwner() -> () {
-        let caller = callerAddress!()
-        checkCaller!(caller == owner, PermissionsErrorCodes.Forbidden)
+    fn onlyOwner(caller: Address) -> () {
+        checkCaller!(callerAddress!() == selfAddress!(), PermissionsErrorCodes.Forbidden)
+        assert!(caller == owner, PermissionsErrorCodes.Forbidden)
     }
 
     @using(checkExternalCaller = true, updateFields = true)
     pub fn changeOwner(newOwner: Address) -> () {
-        onlyOwner()
+        onlyOwner(callerAddress!())
 
         owner = newOwner
     }

@@ -173,6 +173,7 @@ export function createVestingSchedule(
   start = 0n,
   duration = 1n
 ) {
+  const address = randomContractAddress();
   const state = VestingSchedule.stateForTest(
     {
       tokenId,
@@ -182,10 +183,11 @@ export function createVestingSchedule(
       amountTotal,
       released: 0n,
     },
-    { alphAmount: oneAlph, tokens: [{ id: tokenId, amount: amountTotal }] }
+    { alphAmount: oneAlph, tokens: [{ id: tokenId, amount: amountTotal }] },
+    address
   );
 
-  return new ContractFixture(state, [], randomContractAddress());
+  return new ContractFixture(state, [], address);
 }
 
 export function createStaking(
@@ -271,10 +273,11 @@ export function createLiquidStaking() {
   return new ContractFixture(state, [], address);
 }
 
-export function createVestingScheduleFactory() {
+export function createVestingScheduleFactory(owner: string) {
   const scheduleTemplate = createVestingSchedule();
   const state = VestingScheduleFactory.stateForTest({
     vestingScheduleTemplateId: scheduleTemplate.contractId,
+    owner,
   });
 
   return new ContractFixture(

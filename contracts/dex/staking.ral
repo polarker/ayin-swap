@@ -4,7 +4,7 @@ Contract Staking(
     mut totalAmountStaked: U256,
     mut rewardPerTokenStored: U256,
     mut lastUpdateTime: U256
-) {
+) extends Constants() {
 
     @using(updateFields = true)
     fn updateReward(account: StakingAccount) -> () {
@@ -42,22 +42,30 @@ Contract Staking(
         let staker = stakingAccount.getStaker()
         let tokenId = stakingAccount.getTokenId()
 
-        totalAmountStaked = totalAmountStaked + amount
+        checkCaller!(callerAddress!() == staker, ErrorCodes.InvalidCallerAddress)
+
         stakingAccount.stake{staker -> tokenId: amount}(amount)
+        totalAmountStaked = totalAmountStaked + amount
     }
 
     @using(preapprovedAssets = true, updateFields = true)
     pub fn unstake(stakingAccount: StakingAccount, amount: U256) -> () {
-        totalAmountStaked = totalAmountStaked - amount
         updateReward(stakingAccount)
 
+        let staker = stakingAccount.getStaker()
+        checkCaller!(callerAddress!() == staker, ErrorCodes.InvalidCallerAddress)
+
         stakingAccount.unstake(amount)
+        totalAmountStaked = totalAmountStaked - amount
     }
 
     @using(assetsInContract = true)
     pub fn claimRewards(stakingAccount: StakingAccount) -> () {
         updateReward(stakingAccount)
         let stakingRewards = stakingAccount.getRewards()
+        let staker = stakingAccount.getStaker()
+
+        checkCaller!(callerAddress!() == staker, 1)
 
         let self = selfAddress!()
         stakingAccount.claimRewards{self -> rewardsTokenId: stakingRewards}(stakingRewards)

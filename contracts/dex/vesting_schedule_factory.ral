@@ -9,14 +9,14 @@ Contract VestingScheduleFactory(
         InvalidAmount = 1
     }
 
-    @using(checkExternalCaller = true, preapprovedAssets = true)
+    @using(preapprovedAssets = true)
     pub fn createSchedule(
         tokenId: ByteVec,
         amount: U256,
         beneficiary: Address,
         duration: U256
     ) -> () {
-        onlyOwner()
+        checkCaller!(callerAddress!() == owner, 11)
 
         assert!(duration > 0, ErrorCodes.InvalidDuration)
         assert!(amount > 0, ErrorCodes.InvalidAmount)

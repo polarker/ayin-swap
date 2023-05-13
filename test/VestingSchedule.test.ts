@@ -1,4 +1,4 @@
-import { number256ToBigint, web3 } from '@alephium/web3';
+import { web3 } from '@alephium/web3';
 import {
   buildProject,
   createVestingSchedule,
@@ -6,7 +6,7 @@ import {
   expandTo18Decimals,
   oneAlph,
   randomP2PKHAddress,
-  randomTokenId
+  randomTokenId,
 } from './fixtures/DexFixture';
 import { VestingSchedule } from '../artifacts/ts';
 import { expectAssertionError } from '@alephium/web3-test';
@@ -24,7 +24,13 @@ describe('test vesting schedule', () => {
     const duration = 1000n;
     const beneficiary = randomP2PKHAddress();
     const start = 0n;
-    const fixture = createVestingSchedule(tokenId, beneficiary, amountTotal, start, duration);
+    const fixture = createVestingSchedule(
+      tokenId,
+      beneficiary,
+      amountTotal,
+      start,
+      duration
+    );
 
     const createdAt = fixture.selfState.fields.start;
 
@@ -32,7 +38,7 @@ describe('test vesting schedule', () => {
       initialFields: fixture.selfState.fields,
       initialAsset: fixture.selfState.asset,
       blockTimeStamp: Number(createdAt),
-      address: fixture.address
+      address: fixture.address,
     });
 
     expect(testResult.returns).toEqual(0n);
@@ -41,7 +47,7 @@ describe('test vesting schedule', () => {
       initialFields: fixture.selfState.fields,
       initialAsset: fixture.selfState.asset,
       blockTimeStamp: Number(createdAt + duration / 2n),
-      address: fixture.address
+      address: fixture.address,
     });
 
     expect(testResult.returns).toEqual(amountTotal / 2n);
@@ -50,7 +56,7 @@ describe('test vesting schedule', () => {
       initialFields: fixture.selfState.fields,
       initialAsset: fixture.selfState.asset,
       blockTimeStamp: Number(createdAt + duration),
-      address: fixture.address
+      address: fixture.address,
     });
 
     expect(testResult.returns).toEqual(amountTotal);
@@ -59,7 +65,7 @@ describe('test vesting schedule', () => {
       initialFields: fixture.selfState.fields,
       initialAsset: fixture.selfState.asset,
       blockTimeStamp: Number(createdAt + duration + 1n),
-      address: fixture.address
+      address: fixture.address,
     });
 
     expect(testResult.returns).toEqual(amountTotal);
@@ -80,12 +86,14 @@ describe('test vesting schedule', () => {
       inputAssets: [
         {
           address: beneficiary,
-          asset: { alphAmount: oneAlph }
-        }
-      ]
+          asset: { alphAmount: oneAlph },
+        },
+      ],
     });
 
-    const output = releaseResult.txOutputs.find((o) => o.address === beneficiary && o.tokens?.length === 1);
+    const output = releaseResult.txOutputs.find(
+      (o) => o.address === beneficiary && o.tokens?.length === 1
+    );
 
     expect(output?.tokens?.[0].id).toEqual(tokenId);
     expect(output?.tokens?.[0].amount).toEqual(amountTotal);
@@ -97,11 +105,15 @@ describe('test vesting schedule', () => {
       inputAssets: [
         {
           address: nonBeneficiary,
-          asset: { alphAmount: oneAlph }
-        }
-      ]
+          asset: { alphAmount: oneAlph },
+        },
+      ],
     });
 
-    expectAssertionError(releaseFailResult, fixture.address, ErrorCodes.InvalidCallerAddress);
+    expectAssertionError(
+      releaseFailResult,
+      fixture.address,
+      ErrorCodes.InvalidCallerAddress
+    );
   }, 10000);
 });
