@@ -15,5 +15,6 @@ export * from "./VestingScheduleFactory";
 export * from "./ExampleOracleSimple";
 export * from "./FullMathTest";
 export * from "./MathTest";
+export * from "./PermissionsTest";
 export * from "./TestToken";
 export * from "./scripts";

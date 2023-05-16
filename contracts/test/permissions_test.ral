@@ -1,0 +1,7 @@
+Contract PermissionsTest(mut owner: Address) extends Permissions(owner) {
+    pub fn something_private() -> U256 {
+        onlyOwner(callerAddress!())
+
+        return 42
+    }
+}
