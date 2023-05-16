@@ -1,0 +1,15 @@
+Abstract Contract Pauseable(mut owner: Address, mut paused: Bool) extends Permissions(owner) {
+    @using(updateFields = true)
+    pub fn pause() -> () {
+        onlyOwner(callerAddress!())
+
+        paused_ = true
+    }
+
+    @using(updateFields = true)
+    pub fn unpause() -> () {
+        onlyOwner(callerAddress!())
+
+        paused_ = false
+    }
+}

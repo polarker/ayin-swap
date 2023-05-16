@@ -1,19 +1,24 @@
 Contract Staking(
+    tokenId: ByteVec,
     rewardsTokenId: ByteVec,
-    rewardRate: U256,
+    stakingAccountTemplateId: ByteVec,
+    mut rewardRate: U256,
     mut totalAmountStaked: U256,
     mut rewardPerTokenStored: U256,
-    mut lastUpdateTime: U256
-) extends Constants() {
-
-    @using(updateFields = true)
-    fn updateReward(account: StakingAccount) -> () {
-        rewardPerTokenStored = calculateRewardPerToken()
-        lastUpdateTime = blockTimeStamp!()
-
+    mut lastUpdateTime: U256,
+    mut owner: Address
+) extends Constants(), StakingAccountFactory(tokenId, rewardsTokenId, stakingAccountTemplateId), Permissions(owner) {
+    fn updateStakerReward(account: StakingAccount) -> () {
+        updateReward()
         let reward = earned(account)
 
         account.setRewards(reward, rewardPerTokenStored)
+    }
+
+    @using(updateFields = true)
+    fn updateReward() -> () {
+        rewardPerTokenStored = calculateRewardPerToken()
+        lastUpdateTime = blockTimeStamp!()
     }
 
     fn earned(acc: StakingAccount) -> U256 {
@@ -35,39 +40,50 @@ Contract Staking(
         return rewardPerTokenStored + ((blockTimeStamp!() - lastUpdateTime) * rewardRate * 1e18) / totalAmountStaked
     }
 
-    @using(preapprovedAssets = true, updateFields = true)
-    pub fn stake(stakingAccount: StakingAccount, amount: U256) -> () {
-        updateReward(stakingAccount)
+    @using(preapprovedAssets = true, updateFields = true, checkExternalCaller = false)
+    pub fn stake(amount: U256) -> () {
+        let staker = callerAddress!()
+        if (stakingAccountExists(staker)) {
+            let stakingAccount = getStakingAccount(staker)
+            updateStakerReward(stakingAccount)
 
-        let staker = stakingAccount.getStaker()
-        let tokenId = stakingAccount.getTokenId()
-
-        checkCaller!(callerAddress!() == staker, ErrorCodes.InvalidCallerAddress)
-
-        stakingAccount.stake{staker -> tokenId: amount}(amount)
+            stakingAccount.stake{staker -> tokenId: amount}(amount)
+        } else {
+            updateReward()
+            createStakingAccount{staker -> ALPH: 1 alph, tokenId: amount}(staker, amount, rewardPerTokenStored)
+        }
+        
         totalAmountStaked = totalAmountStaked + amount
     }
 
-    @using(preapprovedAssets = true, updateFields = true)
-    pub fn unstake(stakingAccount: StakingAccount, amount: U256) -> () {
-        updateReward(stakingAccount)
+    @using(preapprovedAssets = true, updateFields = true, checkExternalCaller = false)
+    pub fn unstake(amount: U256) -> () {
+        let staker = callerAddress!()
+        let stakingAccount = getStakingAccount(staker)
 
-        let staker = stakingAccount.getStaker()
-        checkCaller!(callerAddress!() == staker, ErrorCodes.InvalidCallerAddress)
+        updateStakerReward(stakingAccount)
 
         stakingAccount.unstake(amount)
         totalAmountStaked = totalAmountStaked - amount
     }
 
-    @using(assetsInContract = true)
-    pub fn claimRewards(stakingAccount: StakingAccount) -> () {
-        updateReward(stakingAccount)
-        let stakingRewards = stakingAccount.getRewards()
-        let staker = stakingAccount.getStaker()
+    @using(assetsInContract = true, checkExternalCaller = false)
+    pub fn claimRewards() -> () {
+        let staker = callerAddress!()
+        let stakingAccount = getStakingAccount(staker)
 
-        checkCaller!(callerAddress!() == staker, 1)
+        updateStakerReward(stakingAccount)
 
         let self = selfAddress!()
-        stakingAccount.claimRewards{self -> rewardsTokenId: stakingRewards}(stakingRewards)
+        let stakingRewards = stakingAccount.getRewards()
+
+        stakingAccount.claimRewards{self -> rewardsTokenId: stakingRewards}()
+    }
+
+    @using(updateFields = true)
+    pub fn setRewardRate(rate: U256) -> () {
+        onlyOwner(callerAddress!())
+
+        rewardRate = rate
     }
 }

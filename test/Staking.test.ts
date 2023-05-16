@@ -3,7 +3,6 @@ import { Staking, StakingAccountTypes, StakingTypes } from '../artifacts/ts';
 import {
   buildProject,
   createStaking,
-  createStakingAccount,
   oneAlph,
   randomP2PKHAddress,
   randomTokenId,
@@ -17,32 +16,28 @@ describe('Staking ', () => {
   });
 
   test('create staking account', async () => {
-    const token = randomTokenId();
     const reward = randomTokenId();
     const rate = (oneAlph * 100n) / 1000n;
     const staker1 = randomP2PKHAddress();
     const staker2 = randomP2PKHAddress();
     const staker3 = randomP2PKHAddress();
     const staking = createStaking(reward, rate);
-    const acc1 = createStakingAccount(token, reward, staker1);
-    const acc2 = createStakingAccount(token, reward, staker2);
-    const acc3 = createStakingAccount(token, reward, staker3);
+    const token = staking.selfState.fields.tokenId;
 
     let res = await Staking.tests.stake({
       initialFields: staking.selfState.fields,
       initialAsset: staking.selfState.asset,
-      existingContracts: [acc1.selfState],
+      existingContracts: staking.dependencies,
       address: staking.address,
       blockTimeStamp: 0,
       testArgs: {
-        stakingAccount: acc1.address,
         amount: oneAlph * 80n,
       },
       inputAssets: [
         {
           address: staker1,
           asset: {
-            alphAmount: oneAlph,
+            alphAmount: oneAlph * 2n,
             tokens: [{ id: token, amount: oneAlph * 80n }],
           },
         },
@@ -54,24 +49,23 @@ describe('Staking ', () => {
     ) as StakingTypes.State;
 
     const stAcc1 = res.contracts.find(
-      (c) => c.address === acc1.address
+      (c) => c.fields['staker'] === staker1
     ) as StakingAccountTypes.State;
 
     res = await Staking.tests.stake({
       initialFields: st.fields,
       initialAsset: st.asset,
-      existingContracts: [acc2.selfState],
+      existingContracts: staking.dependencies,
       address: st.address,
       blockTimeStamp: 0,
       testArgs: {
-        stakingAccount: acc2.address,
         amount: oneAlph * 20n,
       },
       inputAssets: [
         {
           address: staker2,
           asset: {
-            alphAmount: oneAlph,
+            alphAmount: oneAlph * 2n,
             tokens: [{ id: token, amount: oneAlph * 20n }],
           },
         },
@@ -83,13 +77,13 @@ describe('Staking ', () => {
     ) as StakingTypes.State;
 
     const stAcc2 = res.contracts.find(
-      (c) => c.address === acc2.address
+      (c) => c.fields['staker'] === staker2
     ) as StakingAccountTypes.State;
 
     let earned1 = await Staking.tests.earned({
       initialFields: st.fields,
       address: st.address,
-      existingContracts: [stAcc1],
+      existingContracts: [...staking.dependencies, stAcc1],
       blockTimeStamp: 1000,
       testArgs: {
         acc: stAcc1.address,
@@ -99,7 +93,7 @@ describe('Staking ', () => {
     let earned2 = await Staking.tests.earned({
       initialFields: st.fields,
       address: st.address,
-      existingContracts: [stAcc2],
+      existingContracts: [...staking.dependencies, stAcc2],
       blockTimeStamp: 1000,
       testArgs: {
         acc: stAcc2.address,
@@ -112,7 +106,7 @@ describe('Staking ', () => {
     earned1 = await Staking.tests.earned({
       initialFields: st.fields,
       address: st.address,
-      existingContracts: [stAcc1],
+      existingContracts: [...staking.dependencies, stAcc1],
       blockTimeStamp: 2000,
       testArgs: {
         acc: stAcc1.address,
@@ -122,7 +116,7 @@ describe('Staking ', () => {
     earned2 = await Staking.tests.earned({
       initialFields: st.fields,
       address: st.address,
-      existingContracts: [stAcc2],
+      existingContracts: [...staking.dependencies, stAcc2],
       blockTimeStamp: 2000,
       testArgs: {
         acc: stAcc2.address,
@@ -135,18 +129,17 @@ describe('Staking ', () => {
     res = await Staking.tests.stake({
       initialFields: st.fields,
       initialAsset: st.asset,
-      existingContracts: [acc3.selfState],
+      existingContracts: staking.dependencies,
       address: st.address,
       blockTimeStamp: 3000,
       testArgs: {
-        stakingAccount: acc3.address,
         amount: oneAlph * 100n,
       },
       inputAssets: [
         {
           address: staker3,
           asset: {
-            alphAmount: oneAlph,
+            alphAmount: oneAlph * 2n,
             tokens: [{ id: token, amount: oneAlph * 100n }],
           },
         },
@@ -158,13 +151,13 @@ describe('Staking ', () => {
     ) as StakingTypes.State;
 
     const stAcc3 = res.contracts.find(
-      (c) => c.address === acc3.address
+      (c) => c.fields['staker'] === staker3
     ) as StakingAccountTypes.State;
 
     earned1 = await Staking.tests.earned({
       initialFields: st.fields,
       address: st.address,
-      existingContracts: [stAcc1],
+      existingContracts: [...staking.dependencies, stAcc1],
       blockTimeStamp: 3000,
       testArgs: {
         acc: stAcc1.address,
@@ -174,7 +167,7 @@ describe('Staking ', () => {
     earned2 = await Staking.tests.earned({
       initialFields: st.fields,
       address: st.address,
-      existingContracts: [stAcc2],
+      existingContracts: [...staking.dependencies, stAcc2],
       blockTimeStamp: 3000,
       testArgs: {
         acc: stAcc2.address,
@@ -184,7 +177,7 @@ describe('Staking ', () => {
     const earned3 = await Staking.tests.earned({
       initialFields: st.fields,
       address: st.address,
-      existingContracts: [stAcc3],
+      existingContracts: [...staking.dependencies, stAcc3],
       blockTimeStamp: 4000,
       testArgs: {
         acc: stAcc3.address,
@@ -197,28 +190,26 @@ describe('Staking ', () => {
   }, 10000);
 
   test('claim and withdraw', async () => {
-    const token = randomTokenId();
     const reward = randomTokenId();
     const rate = (oneAlph * 100n) / 1000n;
     const staker = randomP2PKHAddress();
     const staking = createStaking(reward, rate);
-    const acc = createStakingAccount(token, reward, staker);
+    const token = staking.selfState.fields.tokenId;
 
     let res = await Staking.tests.stake({
       initialFields: staking.selfState.fields,
       initialAsset: staking.selfState.asset,
-      existingContracts: [acc.selfState],
+      existingContracts: staking.dependencies,
       address: staking.address,
       blockTimeStamp: 0,
       testArgs: {
-        stakingAccount: acc.address,
         amount: oneAlph,
       },
       inputAssets: [
         {
           address: staker,
           asset: {
-            alphAmount: oneAlph,
+            alphAmount: oneAlph * 2n,
             tokens: [{ id: token, amount: oneAlph }],
           },
         },
@@ -229,13 +220,13 @@ describe('Staking ', () => {
       (c) => c.address === staking.address
     ) as StakingTypes.State;
     let stAcc = res.contracts.find(
-      (c) => c.address === acc.address
+      (c) => c.fields['staker'] === staker
     ) as StakingAccountTypes.State;
 
-    let earned = await Staking.tests.earned({
+    const earned = await Staking.tests.earned({
       initialFields: st.fields,
       address: st.address,
-      existingContracts: [stAcc],
+      existingContracts: [...staking.dependencies, stAcc],
       blockTimeStamp: 1000,
       testArgs: {
         acc: stAcc.address,
@@ -248,13 +239,17 @@ describe('Staking ', () => {
       initialFields: st.fields,
       initialAsset: st.asset,
       address: st.address,
-      existingContracts: [stAcc],
+      existingContracts: [...staking.dependencies, stAcc],
       blockTimeStamp: 1000,
-      testArgs: {
-        stakingAccount: stAcc.address,
-      },
       inputAssets: [{ address: staker, asset: { alphAmount: oneAlph * 2n } }],
     });
+
+    st = res.contracts.find(
+      (c) => c.address === staking.address
+    ) as StakingTypes.State;
+    stAcc = res.contracts.find(
+      (c) => c.address === stAcc.address
+    ) as StakingAccountTypes.State;
 
     const transferedReward = res.txOutputs.find((o) => o.address === staker);
     const rewardTokens = transferedReward?.tokens?.[0];
@@ -269,7 +264,6 @@ describe('Staking ', () => {
       existingContracts: [stAcc],
       blockTimeStamp: 1000,
       testArgs: {
-        stakingAccount: stAcc.address,
         amount: oneAlph,
       },
       inputAssets: [{ address: staker, asset: { alphAmount: oneAlph * 2n } }],
@@ -278,6 +272,7 @@ describe('Staking ', () => {
     st = res.contracts.find(
       (c) => c.address === staking.address
     ) as StakingTypes.State;
+
     stAcc = res.contracts.find(
       (c) => c.address === stAcc.address
     ) as StakingAccountTypes.State;
@@ -287,17 +282,6 @@ describe('Staking ', () => {
 
     expect(tokens?.id).toEqual(token);
     expect(tokens?.amount).toEqual(oneAlph);
-
-    earned = await Staking.tests.earned({
-      initialFields: st.fields,
-      address: st.address,
-      existingContracts: [stAcc],
-      blockTimeStamp: 1_000_000,
-      testArgs: {
-        acc: stAcc.address,
-      },
-    });
-
-    expect(earned.returns).toEqual(0n);
+    expect(stAcc).toBe(undefined);
   }, 10000);
 });

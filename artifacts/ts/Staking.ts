@@ -29,14 +29,40 @@ import { default as StakingContractJson } from "../dex/staking.ral.json";
 // Custom types for the contract
 export namespace StakingTypes {
   export type Fields = {
+    tokenId: HexString;
     rewardsTokenId: HexString;
+    stakingAccountTemplateId: HexString;
     rewardRate: bigint;
     totalAmountStaked: bigint;
     rewardPerTokenStored: bigint;
     lastUpdateTime: bigint;
+    owner: Address;
   };
 
   export type State = ContractState<Fields>;
+
+  export interface CallMethodTable {
+    stakingAccountExists: {
+      params: CallContractParams<{ staker: Address }>;
+      result: CallContractResult<boolean>;
+    };
+    getStakingAccount: {
+      params: CallContractParams<{ staker: Address }>;
+      result: CallContractResult<HexString>;
+    };
+  }
+  export type CallMethodParams<T extends keyof CallMethodTable> =
+    CallMethodTable[T]["params"];
+  export type CallMethodResult<T extends keyof CallMethodTable> =
+    CallMethodTable[T]["result"];
+  export type MultiCallParams = Partial<{
+    [Name in keyof CallMethodTable]: CallMethodTable[Name]["params"];
+  }>;
+  export type MultiCallResults<T extends MultiCallParams> = {
+    [MaybeName in keyof T]: MaybeName extends keyof CallMethodTable
+      ? CallMethodTable[MaybeName]["result"]
+      : undefined;
+  };
 }
 
 class Factory extends ContractFactory<StakingInstance, StakingTypes.Fields> {
@@ -45,8 +71,41 @@ class Factory extends ContractFactory<StakingInstance, StakingTypes.Fields> {
   }
 
   tests = {
-    updateReward: async (
+    stakingAccountExists: async (
+      params: TestContractParams<StakingTypes.Fields, { staker: Address }>
+    ): Promise<TestContractResult<boolean>> => {
+      return testMethod(this, "stakingAccountExists", params);
+    },
+    getStakingAccount: async (
+      params: TestContractParams<StakingTypes.Fields, { staker: Address }>
+    ): Promise<TestContractResult<HexString>> => {
+      return testMethod(this, "getStakingAccount", params);
+    },
+    createStakingAccount: async (
+      params: TestContractParams<
+        StakingTypes.Fields,
+        { staker: Address; amount: bigint; rewardPerTokenPaid: bigint }
+      >
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "createStakingAccount", params);
+    },
+    onlyOwner: async (
+      params: TestContractParams<StakingTypes.Fields, { caller: Address }>
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "onlyOwner", params);
+    },
+    changeOwner: async (
+      params: TestContractParams<StakingTypes.Fields, { newOwner: Address }>
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "changeOwner", params);
+    },
+    updateStakerReward: async (
       params: TestContractParams<StakingTypes.Fields, { account: HexString }>
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "updateStakerReward", params);
+    },
+    updateReward: async (
+      params: Omit<TestContractParams<StakingTypes.Fields, never>, "testArgs">
     ): Promise<TestContractResult<null>> => {
       return testMethod(this, "updateReward", params);
     },
@@ -61,28 +120,24 @@ class Factory extends ContractFactory<StakingInstance, StakingTypes.Fields> {
       return testMethod(this, "calculateRewardPerToken", params);
     },
     stake: async (
-      params: TestContractParams<
-        StakingTypes.Fields,
-        { stakingAccount: HexString; amount: bigint }
-      >
+      params: TestContractParams<StakingTypes.Fields, { amount: bigint }>
     ): Promise<TestContractResult<null>> => {
       return testMethod(this, "stake", params);
     },
     unstake: async (
-      params: TestContractParams<
-        StakingTypes.Fields,
-        { stakingAccount: HexString; amount: bigint }
-      >
+      params: TestContractParams<StakingTypes.Fields, { amount: bigint }>
     ): Promise<TestContractResult<null>> => {
       return testMethod(this, "unstake", params);
     },
     claimRewards: async (
-      params: TestContractParams<
-        StakingTypes.Fields,
-        { stakingAccount: HexString }
-      >
+      params: Omit<TestContractParams<StakingTypes.Fields, never>, "testArgs">
     ): Promise<TestContractResult<null>> => {
       return testMethod(this, "claimRewards", params);
+    },
+    setRewardRate: async (
+      params: TestContractParams<StakingTypes.Fields, { rate: bigint }>
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "setRewardRate", params);
     },
   };
 }
@@ -92,7 +147,7 @@ export const Staking = new Factory(
   Contract.fromJson(
     StakingContractJson,
     "",
-    "480c7a12efa40536ffc8d69c25e58b8d112b7e0f6700254922ab6a2283f61ce0"
+    "e0f605da74c924e60eb003a741cc2d89d3ec9fa5ecd0efa45d8f2e0431aca169"
   )
 );
 
@@ -104,5 +159,28 @@ export class StakingInstance extends ContractInstance {
 
   async fetchState(): Promise<StakingTypes.State> {
     return fetchContractState(Staking, this);
+  }
+
+  methods = {
+    stakingAccountExists: async (
+      params: StakingTypes.CallMethodParams<"stakingAccountExists">
+    ): Promise<StakingTypes.CallMethodResult<"stakingAccountExists">> => {
+      return callMethod(Staking, this, "stakingAccountExists", params);
+    },
+    getStakingAccount: async (
+      params: StakingTypes.CallMethodParams<"getStakingAccount">
+    ): Promise<StakingTypes.CallMethodResult<"getStakingAccount">> => {
+      return callMethod(Staking, this, "getStakingAccount", params);
+    },
+  };
+
+  async multicall<Calls extends StakingTypes.MultiCallParams>(
+    calls: Calls
+  ): Promise<StakingTypes.MultiCallResults<Calls>> {
+    return (await multicallMethods(
+      Staking,
+      this,
+      calls
+    )) as StakingTypes.MultiCallResults<Calls>;
   }
 }

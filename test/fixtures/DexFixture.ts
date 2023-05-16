@@ -197,13 +197,27 @@ export function createStaking(
   totalAmountStaked = 0n
 ) {
   const address = randomContractAddress();
+  const tokenId = randomTokenId();
+  const stakingAccountTemplate = StakingAccount.stateForTest({
+    tokenId,
+    rewardsTokenId,
+    staker: randomP2PKHAddress(),
+    parentContractAddress: address,
+    amountStaked: 0n,
+    rewardPerTokenPaid: 0n,
+    rewards: 0n,
+  });
+
   const state = Staking.stateForTest(
     {
+      tokenId,
       rewardsTokenId,
       rewardRate,
       totalAmountStaked,
       rewardPerTokenStored: rewardPerToken,
+      stakingAccountTemplateId: stakingAccountTemplate.contractId,
       lastUpdateTime: 0n,
+      owner: randomP2PKHAddress(),
     },
     {
       alphAmount: oneAlph * 2n,
@@ -212,10 +226,11 @@ export function createStaking(
     address
   );
 
-  return new ContractFixture(state, [], address);
+  return new ContractFixture(state, [stakingAccountTemplate], address);
 }
 
 export function createStakingAccount(
+  parentContractAddress: string,
   tokenId = randomTokenId(),
   rewardsTokenId = randomTokenId(),
   staker = randomP2PKHAddress(),
@@ -228,6 +243,7 @@ export function createStakingAccount(
     {
       tokenId,
       rewardsTokenId,
+      parentContractAddress,
       staker,
       amountStaked,
       rewardPerTokenPaid,

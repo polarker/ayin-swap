@@ -8,7 +8,6 @@ export * from "./LiquidStaking";
 export * from "./Router";
 export * from "./Staking";
 export * from "./StakingAccount";
-export * from "./StakingAccountFactory";
 export * from "./TokenPair";
 export * from "./TokenPairFactory";
 export * from "./VestingSchedule";

@@ -1,20 +1,23 @@
 {
   "version": "v2.3.1",
   "name": "StakingAccountFactory",
-  "bytecode": "0301404301030204004020ce00ce01160013036416010c0c1303641703170216007a13c40de0b6b3a7640000a2ce001601a31600130164ce0216021603c118051600ce00160160",
-  "codeHash": "89067700a5ba462f22956eec187b200b564de5835b33c89b9a906bc8688b43e1",
+  "bytecode": "0401404501030204004021ce00ce011600ce0213046416010c0c1303641703170216007a13c40de0b6b3a7640000a2ce001601a31600130164ce0316021603c118051600ce00160160",
+  "codeHash": "1c4cd1b05a94b40214d27baab786f9e1ae5958247e368a43513c4f6826623aba",
   "fieldsSig": {
     "names": [
       "tokenId",
       "rewardTokenId",
+      "stakingContractAddress",
       "stakingTemplateId"
     ],
     "types": [
       "ByteVec",
       "ByteVec",
+      "Address",
       "ByteVec"
     ],
     "isMutable": [
+      false,
       false,
       false,
       false

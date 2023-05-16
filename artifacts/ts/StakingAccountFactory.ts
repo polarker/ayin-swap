@@ -31,6 +31,7 @@ export namespace StakingAccountFactoryTypes {
   export type Fields = {
     tokenId: HexString;
     rewardTokenId: HexString;
+    stakingContractAddress: Address;
     stakingTemplateId: HexString;
   };
 
@@ -68,7 +69,7 @@ export const StakingAccountFactory = new Factory(
   Contract.fromJson(
     StakingAccountFactoryContractJson,
     "",
-    "89067700a5ba462f22956eec187b200b564de5835b33c89b9a906bc8688b43e1"
+    "1c4cd1b05a94b40214d27baab786f9e1ae5958247e368a43513c4f6826623aba"
   )
 );
 

@@ -32,6 +32,7 @@ export namespace StakingAccountTypes {
     tokenId: HexString;
     rewardsTokenId: HexString;
     staker: Address;
+    parentContractAddress: Address;
     amountStaked: bigint;
     rewardPerTokenPaid: bigint;
     rewards: bigint;
@@ -155,9 +156,9 @@ class Factory extends ContractFactory<
       return testMethod(this, "unstake", params);
     },
     claimRewards: async (
-      params: TestContractParams<
-        StakingAccountTypes.Fields,
-        { rewardsAmount: bigint }
+      params: Omit<
+        TestContractParams<StakingAccountTypes.Fields, never>,
+        "testArgs"
       >
     ): Promise<TestContractResult<null>> => {
       return testMethod(this, "claimRewards", params);
@@ -170,7 +171,7 @@ export const StakingAccount = new Factory(
   Contract.fromJson(
     StakingAccountContractJson,
     "",
-    "5777923c37da9220d043fb94f9fd3c6a57fc3ab3e79d77d87264fab483205d47"
+    "324daae25f59eb0ca24403d855f4b180c55073d05795349e69db974341ac52bd"
   )
 );
 

@@ -1,13 +1,14 @@
 {
   "version": "v2.3.1",
   "name": "StakingAccount",
-  "bytecode": "060a09121b4024402d40364044405e407f4093010000000102ce0002010000000102ce0102010000000102ce0202010000000102a00002010000000102a00102010000000102a002020100020200041600a1021601a10101010101000db4ce02450c7bce02ce001600aca00016002aa100010201010012b4ce02450c7ba0001600340d7ba00016002ba100ce02ce001600ab01030101000ab4ce02450c7bb4ce02ce011600aa",
-  "codeHash": "5777923c37da9220d043fb94f9fd3c6a57fc3ab3e79d77d87264fab483205d47",
+  "bytecode": "070a09121b4024402d4036404e406c409a40ba010000000102ce0002010000000102ce0102010000000102ce0202010000000102a00002010000000102a00102010000000102a0020201000203000bb417021602ce03450c7b1600a1021601a10101010102000fb417011601ce03450c7bce02ce001600aca00016002aa10001020102001ab417011601ce03450c7ba0001600340d7ba00016002ba100ce02ce001600aba0000d314c02ce02b0010300020010b417001600ce03450c7ba00217010ca1021600ce02ce011601aa",
+  "codeHash": "324daae25f59eb0ca24403d855f4b180c55073d05795349e69db974341ac52bd",
   "fieldsSig": {
     "names": [
       "tokenId",
       "rewardsTokenId",
       "staker",
+      "parentContractAddress",
       "amountStaked",
       "rewardPerTokenPaid",
       "rewards"
@@ -16,11 +17,13 @@
       "ByteVec",
       "ByteVec",
       "Address",
+      "Address",
       "U256",
       "U256",
       "U256"
     ],
     "isMutable": [
+      false,
       false,
       false,
       false,
@@ -159,15 +162,9 @@
       "usePreapprovedAssets": true,
       "useAssetsInContract": false,
       "isPublic": true,
-      "paramNames": [
-        "rewardsAmount"
-      ],
-      "paramTypes": [
-        "U256"
-      ],
-      "paramIsMutable": [
-        false
-      ],
+      "paramNames": [],
+      "paramTypes": [],
+      "paramIsMutable": [],
       "returnTypes": []
     }
   ]

@@ -1,24 +1,38 @@
-Contract StakingAccountFactory(tokenId: ByteVec, rewardTokenId: ByteVec, stakingTemplateId: ByteVec) {
-    event StakingStarted(staker: Address, tokenId: ByteVec, amount: U256)
+Abstract Contract StakingAccountFactory(tokenId: ByteVec, rewardsTokenId: ByteVec, stakingAccountTemplateId: ByteVec) {
+    enum StakingAccountErrorCodes {
+        AlreadyExists = 0
+    }
 
-    @using(preapprovedAssets = true, checkExternalCaller = false)
-    pub fn createStakingAccount(staker: Address, amount: U256) -> () {
+    pub fn stakingAccountExists(staker: Address) -> Bool {
+        let stakingAccountId = subContractId!(toByteVec!(staker))
+
+        return contractExists!(stakingAccountId)
+    }
+
+    pub fn getStakingAccount(staker: Address) -> StakingAccount {
+        let stakingAccountId = subContractId!(toByteVec!(staker))
+        return StakingAccount(stakingAccountId)
+    }
+
+    @using(preapprovedAssets = true)
+    fn createStakingAccount(staker: Address, amount: U256, rewardPerTokenPaid: U256) -> () {
+        assert!(!stakingAccountExists(staker), StakingAccountErrorCodes.AlreadyExists)
+
         let (encodedImmFields, encodedMutFields) = StakingAccount.encodeFields!(
             tokenId,
-            rewardTokenId,
+            rewardsTokenId,
             staker,
+            selfAddress!(),
             amount,
-            0,
+            rewardPerTokenPaid,
             0
         )
 
         copyCreateSubContract!{staker -> ALPH: 1 alph, tokenId: amount}(
-            encodeToByteVec!(staker),
-            stakingTemplateId,
+            toByteVec!(staker),
+            stakingAccountTemplateId,
             encodedImmFields,
             encodedMutFields
         )
-    
-        emit StakingStarted(staker, tokenId, amount)
     }
 }
