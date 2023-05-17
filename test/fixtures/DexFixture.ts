@@ -218,6 +218,7 @@ export function createStaking(
       stakingAccountTemplateId: stakingAccountTemplate.contractId,
       lastUpdateTime: 0n,
       owner_: randomP2PKHAddress(),
+      paused_: false,
     },
     {
       alphAmount: oneAlph * 2n,
@@ -272,6 +273,8 @@ export function createLiquidStaking() {
       tokenId: token,
       currentXTokenPrice: ONE_ALPH,
       rewardPool: ONE_ALPH * 2n,
+      owner_: randomP2PKHAddress(),
+      paused_: false,
     },
     {
       alphAmount: ONE_ALPH,

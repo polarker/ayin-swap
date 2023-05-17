@@ -37,6 +37,7 @@ export namespace StakingTypes {
     rewardPerTokenStored: bigint;
     lastUpdateTime: bigint;
     owner_: Address;
+    paused_: boolean;
   };
 
   export type State = ContractState<Fields>;
@@ -88,6 +89,21 @@ class Factory extends ContractFactory<StakingInstance, StakingTypes.Fields> {
       >
     ): Promise<TestContractResult<null>> => {
       return testMethod(this, "createStakingAccount", params);
+    },
+    pause: async (
+      params: Omit<TestContractParams<StakingTypes.Fields, never>, "testArgs">
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "pause", params);
+    },
+    unpause: async (
+      params: Omit<TestContractParams<StakingTypes.Fields, never>, "testArgs">
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "unpause", params);
+    },
+    whenNotPaused: async (
+      params: Omit<TestContractParams<StakingTypes.Fields, never>, "testArgs">
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "whenNotPaused", params);
     },
     onlyOwner: async (
       params: TestContractParams<StakingTypes.Fields, { caller: Address }>
@@ -147,7 +163,7 @@ export const Staking = new Factory(
   Contract.fromJson(
     StakingContractJson,
     "",
-    "e0f605da74c924e60eb003a741cc2d89d3ec9fa5ecd0efa45d8f2e0431aca169"
+    "7652632b5d2242386ce1a7294e9c04d2e5ba69252f78d15b7b3dfece0b731222"
   )
 );
 

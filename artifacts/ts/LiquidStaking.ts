@@ -37,6 +37,8 @@ export namespace LiquidStakingTypes {
     currentXTokenPrice: bigint;
     rewardPool: bigint;
     totalSupply: bigint;
+    owner_: Address;
+    paused_: boolean;
   };
 
   export type State = ContractState<Fields>;
@@ -138,6 +140,43 @@ class Factory extends ContractFactory<
     ): Promise<TestContractResult<bigint>> => {
       return testMethod(this, "getTotalSupply", params);
     },
+    pause: async (
+      params: Omit<
+        TestContractParams<LiquidStakingTypes.Fields, never>,
+        "testArgs"
+      >
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "pause", params);
+    },
+    unpause: async (
+      params: Omit<
+        TestContractParams<LiquidStakingTypes.Fields, never>,
+        "testArgs"
+      >
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "unpause", params);
+    },
+    whenNotPaused: async (
+      params: Omit<
+        TestContractParams<LiquidStakingTypes.Fields, never>,
+        "testArgs"
+      >
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "whenNotPaused", params);
+    },
+    onlyOwner: async (
+      params: TestContractParams<LiquidStakingTypes.Fields, { caller: Address }>
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "onlyOwner", params);
+    },
+    changeOwner: async (
+      params: TestContractParams<
+        LiquidStakingTypes.Fields,
+        { newOwner: Address }
+      >
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "changeOwner", params);
+    },
     getCurrentRewardPerMillisecond: async (
       params: Omit<
         TestContractParams<LiquidStakingTypes.Fields, never>,
@@ -196,7 +235,7 @@ export const LiquidStaking = new Factory(
   Contract.fromJson(
     LiquidStakingContractJson,
     "",
-    "148a1f3afc807a4ef4e21ba07db124956203b7910db76027064987e9c0139a2b"
+    "c9dded58c422a0c164ddeae0a0331c5cba5bf89a22957bf68d6c97cbf5426d6a"
   )
 );
 

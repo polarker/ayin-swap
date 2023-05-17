@@ -1,8 +1,8 @@
 {
   "version": "v2.3.1",
   "name": "LiquidStaking",
-  "bytecode": "090b09121b40244037407040ad40e0411341284131010000000102ce0202010000000102ce0302010000000102131202010000000102a00302010000010108ce00a0022ca0032d170016000201000005011ea0030c2f4c02a001020004170056a0002b1701160016012c17021602a002334c02a0024a0116021703a00116032a170416040200000002001c000517001600a0012ba0032c13c40de0b6b3a76400002d1701a0021601324c030ca1024a04a00216012ba1021600a10156a10007a0015e0101010200180006160013c40de0b6b3a76400002ca0012d1701b4ce011600acb4b11601aba00316012aa10305b41601a0036001010102001800061600a0012c13c40de0b6b3a76400002d1701b4b11600acb4ce011601aba00316002ba10306b41600a003600101010100090006b4ce011600aca00216002aa102010000000102ce0102",
-  "codeHash": "148a1f3afc807a4ef4e21ba07db124956203b7910db76027064987e9c0139a2b",
+  "bytecode": "0b1009121b40244030403c4048405a4067407a40b340f04125415a4171417a010000000102ce0202010000000102ce0302010000000102131202010000000102a00302010000000004b4000703a105010000000004b4000704a105010000000005a005041c0c7b00000101000ab4b2450c7b1600a004450c7b010001010004b400071600a104010000010108ce00a0022ca0032d170016000201000005011ea0030c2f4c02a001020009170056a0002b1701160016012c17021602a002334c02a0024a0116021703a00116032a170416040200000002001c000a17001600a0012ba0032c13c40de0b6b3a76400002d1701a0021601324c030ca1024a04a00216012ba1021600a10156a10007a0015e0101010200190006000b160013c40de0b6b3a76400002ca0012d1701b4ce011600acb4b11601aba00316012aa10305b41601a003600101010200190006000b1600a0012c13c40de0b6b3a76400002d1701b4b11600acb4ce011601aba00316002ba10306b41600a0036001010101000a0006000bb4ce011600aca00216002aa102010000000102ce0102",
+  "codeHash": "c9dded58c422a0c164ddeae0a0331c5cba5bf89a22957bf68d6c97cbf5426d6a",
   "fieldsSig": {
     "names": [
       "gainPerMillisecond",
@@ -13,6 +13,8 @@
       "currentXTokenPrice",
       "rewardPool",
       "totalSupply",
+      "owner_",
+      "paused_",
       "__stdInterfaceId"
     ],
     "types": [
@@ -24,6 +26,8 @@
       "U256",
       "U256",
       "U256",
+      "Address",
+      "Bool",
       "ByteVec"
     ],
     "isMutable": [
@@ -31,6 +35,8 @@
       false,
       false,
       false,
+      true,
+      true,
       true,
       true,
       true,
@@ -123,6 +129,68 @@
       "returnTypes": [
         "U256"
       ]
+    },
+    {
+      "name": "pause",
+      "usePreapprovedAssets": false,
+      "useAssetsInContract": false,
+      "isPublic": true,
+      "paramNames": [],
+      "paramTypes": [],
+      "paramIsMutable": [],
+      "returnTypes": []
+    },
+    {
+      "name": "unpause",
+      "usePreapprovedAssets": false,
+      "useAssetsInContract": false,
+      "isPublic": true,
+      "paramNames": [],
+      "paramTypes": [],
+      "paramIsMutable": [],
+      "returnTypes": []
+    },
+    {
+      "name": "whenNotPaused",
+      "usePreapprovedAssets": false,
+      "useAssetsInContract": false,
+      "isPublic": true,
+      "paramNames": [],
+      "paramTypes": [],
+      "paramIsMutable": [],
+      "returnTypes": []
+    },
+    {
+      "name": "onlyOwner",
+      "usePreapprovedAssets": false,
+      "useAssetsInContract": false,
+      "isPublic": false,
+      "paramNames": [
+        "caller"
+      ],
+      "paramTypes": [
+        "Address"
+      ],
+      "paramIsMutable": [
+        false
+      ],
+      "returnTypes": []
+    },
+    {
+      "name": "changeOwner",
+      "usePreapprovedAssets": false,
+      "useAssetsInContract": false,
+      "isPublic": true,
+      "paramNames": [
+        "newOwner"
+      ],
+      "paramTypes": [
+        "Address"
+      ],
+      "paramIsMutable": [
+        false
+      ],
+      "returnTypes": []
     },
     {
       "name": "getCurrentRewardPerMillisecond",

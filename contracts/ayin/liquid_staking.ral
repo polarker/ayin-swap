@@ -8,8 +8,10 @@ Contract LiquidStaking(
     mut updatedAt: U256,
     mut currentXTokenPrice: U256,
     mut rewardPool: U256,
-    mut totalSupply: U256
-) implements IFungibleToken {
+    mut totalSupply: U256,
+    mut owner_: Address,
+    mut paused_: Bool
+) extends Pauseable(owner_, paused_) implements IFungibleToken {
     event Mint(sender: Address, amount: U256, newSupply: U256)
     event Burn(sender: Address, amount: U256, newSupply: U256)
     event PriceChanged(newPrice: U256)
@@ -55,6 +57,7 @@ Contract LiquidStaking(
 
     @using(assetsInContract = true, preapprovedAssets = true, updateFields = true, checkExternalCaller = false)
     pub fn mint(amount: U256) -> () {
+        whenNotPaused()
         updatePrice()
         let xTokenAmount = amount * 1e18 / currentXTokenPrice
         
@@ -68,6 +71,7 @@ Contract LiquidStaking(
 
     @using(assetsInContract = true, preapprovedAssets = true, updateFields = true, checkExternalCaller = false)
     pub fn burn(xTokenAmount: U256) -> () {
+        whenNotPaused()
         updatePrice()
         let tokenAmount = xTokenAmount * currentXTokenPrice / 1e18
 
@@ -81,6 +85,7 @@ Contract LiquidStaking(
 
     @using(assetsInContract = true, preapprovedAssets = true, updateFields = true, checkExternalCaller = false)
     pub fn topUpRewards(amount: U256) -> () {
+        whenNotPaused()
         updatePrice()
 
         transferTokenToSelf!(callerAddress!(), tokenId, amount)
