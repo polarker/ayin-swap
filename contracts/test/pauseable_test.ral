@@ -1,0 +1,7 @@
+Contract PauseableTest(mut owner: Address, mut paused_: Bool) extends Pauseable(owner, paused_) {
+    pub fn test_fn() -> U256 {
+        whenNotPaused()
+
+        return 42
+    }
+}
