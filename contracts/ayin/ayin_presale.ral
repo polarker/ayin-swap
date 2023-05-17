@@ -5,8 +5,8 @@ Contract AyinPresale (
     mut saleOpen: Bool,
     mut tokensSold: U256,
     mut alphBalance: U256,
-    mut owner: Address
-) extends Permissions(owner) {
+    mut owner_: Address
+) extends Permissions(owner_) {
     enum ErrorCodes {
         SaleNotOpen = 0
         NotEnoughTokens = 1

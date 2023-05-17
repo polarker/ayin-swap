@@ -5,7 +5,7 @@
   "codeHash": "9faa4a80ad67c7d8360699436106de3efe6b693f883be86e5e3b14e53dbb34a9",
   "fieldsSig": {
     "names": [
-      "owner"
+      "owner_"
     ],
     "types": [
       "Address"

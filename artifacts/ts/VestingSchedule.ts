@@ -24,7 +24,7 @@ import {
   ContractInstance,
   getContractEventsCurrentCount,
 } from "@alephium/web3";
-import { default as VestingScheduleContractJson } from "../dex/vesting_schedule.ral.json";
+import { default as VestingScheduleContractJson } from "../ayin/vesting_schedule.ral.json";
 
 // Custom types for the contract
 export namespace VestingScheduleTypes {

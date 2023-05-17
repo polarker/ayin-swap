@@ -217,7 +217,7 @@ export function createStaking(
       rewardPerTokenStored: rewardPerToken,
       stakingAccountTemplateId: stakingAccountTemplate.contractId,
       lastUpdateTime: 0n,
-      owner: randomP2PKHAddress(),
+      owner_: randomP2PKHAddress(),
     },
     {
       alphAmount: oneAlph * 2n,
@@ -293,7 +293,7 @@ export function createVestingScheduleFactory(owner: string) {
   const scheduleTemplate = createVestingSchedule();
   const state = VestingScheduleFactory.stateForTest({
     vestingScheduleTemplateId: scheduleTemplate.contractId,
-    owner,
+    owner_: owner,
   });
 
   return new ContractFixture(

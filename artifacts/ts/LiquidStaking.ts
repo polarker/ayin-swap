@@ -24,7 +24,7 @@ import {
   ContractInstance,
   getContractEventsCurrentCount,
 } from "@alephium/web3";
-import { default as LiquidStakingContractJson } from "../dex/liquid_staking.ral.json";
+import { default as LiquidStakingContractJson } from "../ayin/liquid_staking.ral.json";
 
 // Custom types for the contract
 export namespace LiquidStakingTypes {

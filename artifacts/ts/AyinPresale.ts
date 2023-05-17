@@ -24,7 +24,7 @@ import {
   ContractInstance,
   getContractEventsCurrentCount,
 } from "@alephium/web3";
-import { default as AyinPresaleContractJson } from "../dex/ayin_presale.ral.json";
+import { default as AyinPresaleContractJson } from "../ayin/ayin_presale.ral.json";
 
 // Custom types for the contract
 export namespace AyinPresaleTypes {
@@ -35,7 +35,7 @@ export namespace AyinPresaleTypes {
     saleOpen: boolean;
     tokensSold: bigint;
     alphBalance: bigint;
-    owner: Address;
+    owner_: Address;
   };
 
   export type State = ContractState<Fields>;

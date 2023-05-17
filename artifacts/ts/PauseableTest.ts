@@ -29,7 +29,7 @@ import { default as PauseableTestContractJson } from "../test/pauseable_test.ral
 // Custom types for the contract
 export namespace PauseableTestTypes {
   export type Fields = {
-    owner: Address;
+    owner_: Address;
     paused_: boolean;
   };
 

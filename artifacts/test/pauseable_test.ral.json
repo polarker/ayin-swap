@@ -5,7 +5,7 @@
   "codeHash": "60d12ba596d72a9549ac4beca935b53bb8a0e65c608ebe92fde5a51f78ec088d",
   "fieldsSig": {
     "names": [
-      "owner",
+      "owner_",
       "paused_"
     ],
     "types": [

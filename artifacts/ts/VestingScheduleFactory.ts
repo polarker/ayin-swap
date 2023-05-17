@@ -24,13 +24,13 @@ import {
   ContractInstance,
   getContractEventsCurrentCount,
 } from "@alephium/web3";
-import { default as VestingScheduleFactoryContractJson } from "../dex/vesting_schedule_factory.ral.json";
+import { default as VestingScheduleFactoryContractJson } from "../ayin/vesting_schedule_factory.ral.json";
 
 // Custom types for the contract
 export namespace VestingScheduleFactoryTypes {
   export type Fields = {
     vestingScheduleTemplateId: HexString;
-    owner: Address;
+    owner_: Address;
   };
 
   export type State = ContractState<Fields>;
@@ -118,7 +118,7 @@ export const VestingScheduleFactory = new Factory(
   Contract.fromJson(
     VestingScheduleFactoryContractJson,
     "",
-    "10a8bfd4f36dfd0f1238ccf396d6993e32d5483e68a250781fe5919ef0b13d36"
+    "e81f54e3e8c5776aad49ff648c69d78fb1df48f7fe14e7c3b3abf922121b49c4"
   )
 );
 

@@ -24,7 +24,7 @@ import {
   ContractInstance,
   getContractEventsCurrentCount,
 } from "@alephium/web3";
-import { default as StakingAccountContractJson } from "../dex/staking_account.ral.json";
+import { default as StakingAccountContractJson } from "../ayin/staking_account.ral.json";
 
 // Custom types for the contract
 export namespace StakingAccountTypes {

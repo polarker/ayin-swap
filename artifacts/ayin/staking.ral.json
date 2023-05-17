@@ -1,0 +1,245 @@
+{
+  "version": "v2.3.1",
+  "name": "Staking",
+  "bytecode": "080d101f406140734080409840a540e2410a4159417b41a641b3010001020107160047cb17011601c502010001020106160047cb17011601020003030500402016000000190c7bce00ce011600b2130464160116020c1303641704170316007a13c40de0b6b3a7640000a2ce001601a3160047ce0216031604c11800000101000ab4b2450c7b1600a004450c7b010001010004b400031600a10400000102000a00061600000717011601a0020e0c160001060000000000040008a10256a10300000106011d0c0d1600010317010c0d160001041702000817030c0d1600010517041601160316022b2c13c40de0b6b3a76400002d16042a1705160502000000000112a0010c2f4c02a00202a00256a0032ba0002c13c40de0b6b3a76400002ca0012d2a0201030103004024b41701160100004c0f160100011702160200051601ce001600a316000d0c160201074a0c000616017a13c40de0b6b3a7640000a2ce001600a316011600a0020002a00116002aa101010301030010b417011601000117021602000516000d0c16020108a00116002ba101010200040016b4170016000001170116010005b217020c0d1601010517031602ce011603a30c0c16010109010001010004b400031600a100",
+  "codeHash": "e0f605da74c924e60eb003a741cc2d89d3ec9fa5ecd0efa45d8f2e0431aca169",
+  "fieldsSig": {
+    "names": [
+      "tokenId",
+      "rewardsTokenId",
+      "stakingAccountTemplateId",
+      "rewardRate",
+      "totalAmountStaked",
+      "rewardPerTokenStored",
+      "lastUpdateTime",
+      "owner_"
+    ],
+    "types": [
+      "ByteVec",
+      "ByteVec",
+      "ByteVec",
+      "U256",
+      "U256",
+      "U256",
+      "U256",
+      "Address"
+    ],
+    "isMutable": [
+      false,
+      false,
+      false,
+      true,
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "eventsSig": [],
+  "functions": [
+    {
+      "name": "stakingAccountExists",
+      "usePreapprovedAssets": false,
+      "useAssetsInContract": false,
+      "isPublic": true,
+      "paramNames": [
+        "staker"
+      ],
+      "paramTypes": [
+        "Address"
+      ],
+      "paramIsMutable": [
+        false
+      ],
+      "returnTypes": [
+        "Bool"
+      ]
+    },
+    {
+      "name": "getStakingAccount",
+      "usePreapprovedAssets": false,
+      "useAssetsInContract": false,
+      "isPublic": true,
+      "paramNames": [
+        "staker"
+      ],
+      "paramTypes": [
+        "Address"
+      ],
+      "paramIsMutable": [
+        false
+      ],
+      "returnTypes": [
+        "ByteVec"
+      ]
+    },
+    {
+      "name": "createStakingAccount",
+      "usePreapprovedAssets": true,
+      "useAssetsInContract": false,
+      "isPublic": false,
+      "paramNames": [
+        "staker",
+        "amount",
+        "rewardPerTokenPaid"
+      ],
+      "paramTypes": [
+        "Address",
+        "U256",
+        "U256"
+      ],
+      "paramIsMutable": [
+        false,
+        false,
+        false
+      ],
+      "returnTypes": []
+    },
+    {
+      "name": "onlyOwner",
+      "usePreapprovedAssets": false,
+      "useAssetsInContract": false,
+      "isPublic": false,
+      "paramNames": [
+        "caller"
+      ],
+      "paramTypes": [
+        "Address"
+      ],
+      "paramIsMutable": [
+        false
+      ],
+      "returnTypes": []
+    },
+    {
+      "name": "changeOwner",
+      "usePreapprovedAssets": false,
+      "useAssetsInContract": false,
+      "isPublic": true,
+      "paramNames": [
+        "newOwner"
+      ],
+      "paramTypes": [
+        "Address"
+      ],
+      "paramIsMutable": [
+        false
+      ],
+      "returnTypes": []
+    },
+    {
+      "name": "updateStakerReward",
+      "usePreapprovedAssets": false,
+      "useAssetsInContract": false,
+      "isPublic": false,
+      "paramNames": [
+        "account"
+      ],
+      "paramTypes": [
+        "ByteVec"
+      ],
+      "paramIsMutable": [
+        false
+      ],
+      "returnTypes": []
+    },
+    {
+      "name": "updateReward",
+      "usePreapprovedAssets": false,
+      "useAssetsInContract": false,
+      "isPublic": false,
+      "paramNames": [],
+      "paramTypes": [],
+      "paramIsMutable": [],
+      "returnTypes": []
+    },
+    {
+      "name": "earned",
+      "usePreapprovedAssets": false,
+      "useAssetsInContract": false,
+      "isPublic": false,
+      "paramNames": [
+        "acc"
+      ],
+      "paramTypes": [
+        "ByteVec"
+      ],
+      "paramIsMutable": [
+        false
+      ],
+      "returnTypes": [
+        "U256"
+      ]
+    },
+    {
+      "name": "calculateRewardPerToken",
+      "usePreapprovedAssets": false,
+      "useAssetsInContract": false,
+      "isPublic": false,
+      "paramNames": [],
+      "paramTypes": [],
+      "paramIsMutable": [],
+      "returnTypes": [
+        "U256"
+      ]
+    },
+    {
+      "name": "stake",
+      "usePreapprovedAssets": true,
+      "useAssetsInContract": false,
+      "isPublic": true,
+      "paramNames": [
+        "amount"
+      ],
+      "paramTypes": [
+        "U256"
+      ],
+      "paramIsMutable": [
+        false
+      ],
+      "returnTypes": []
+    },
+    {
+      "name": "unstake",
+      "usePreapprovedAssets": true,
+      "useAssetsInContract": false,
+      "isPublic": true,
+      "paramNames": [
+        "amount"
+      ],
+      "paramTypes": [
+        "U256"
+      ],
+      "paramIsMutable": [
+        false
+      ],
+      "returnTypes": []
+    },
+    {
+      "name": "claimRewards",
+      "usePreapprovedAssets": false,
+      "useAssetsInContract": true,
+      "isPublic": true,
+      "paramNames": [],
+      "paramTypes": [],
+      "paramIsMutable": [],
+      "returnTypes": []
+    },
+    {
+      "name": "setRewardRate",
+      "usePreapprovedAssets": false,
+      "useAssetsInContract": false,
+      "isPublic": true,
+      "paramNames": [
+        "rate"
+      ],
+      "paramTypes": [
+        "U256"
+      ],
+      "paramIsMutable": [
+        false
+      ],
+      "returnTypes": []
+    }
+  ]
+}

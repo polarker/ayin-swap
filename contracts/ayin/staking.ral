@@ -6,8 +6,8 @@ Contract Staking(
     mut totalAmountStaked: U256,
     mut rewardPerTokenStored: U256,
     mut lastUpdateTime: U256,
-    mut owner: Address
-) extends Constants(), StakingAccountFactory(tokenId, rewardsTokenId, stakingAccountTemplateId), Permissions(owner) {
+    mut owner_: Address
+) extends Constants(), StakingAccountFactory(tokenId, rewardsTokenId, stakingAccountTemplateId), Permissions(owner_) {
     fn updateStakerReward(account: StakingAccount) -> () {
         updateReward()
         let reward = earned(account)

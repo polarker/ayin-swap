@@ -29,7 +29,7 @@ import { default as PermissionsTestContractJson } from "../test/permissions_test
 // Custom types for the contract
 export namespace PermissionsTestTypes {
   export type Fields = {
-    owner: Address;
+    owner_: Address;
   };
 
   export type State = ContractState<Fields>;

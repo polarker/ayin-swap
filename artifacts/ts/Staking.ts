@@ -24,7 +24,7 @@ import {
   ContractInstance,
   getContractEventsCurrentCount,
 } from "@alephium/web3";
-import { default as StakingContractJson } from "../dex/staking.ral.json";
+import { default as StakingContractJson } from "../ayin/staking.ral.json";
 
 // Custom types for the contract
 export namespace StakingTypes {
@@ -36,7 +36,7 @@ export namespace StakingTypes {
     totalAmountStaked: bigint;
     rewardPerTokenStored: bigint;
     lastUpdateTime: bigint;
-    owner: Address;
+    owner_: Address;
   };
 
   export type State = ContractState<Fields>;

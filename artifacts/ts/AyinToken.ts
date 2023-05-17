@@ -24,7 +24,7 @@ import {
   ContractInstance,
   getContractEventsCurrentCount,
 } from "@alephium/web3";
-import { default as AyinTokenContractJson } from "../dex/ayin_token.ral.json";
+import { default as AyinTokenContractJson } from "../ayin/ayin_token.ral.json";
 
 // Custom types for the contract
 export namespace AyinTokenTypes {

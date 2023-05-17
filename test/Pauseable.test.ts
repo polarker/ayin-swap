@@ -18,7 +18,7 @@ describe('Pauseable ', () => {
 
     const notPaused = PauseableTest.stateForTest(
       {
-        owner,
+        owner_: owner,
         paused_: false,
       },
       { alphAmount: ONE_ALPH },
@@ -27,7 +27,7 @@ describe('Pauseable ', () => {
 
     const paused = PauseableTest.stateForTest(
       {
-        owner,
+        owner_: owner,
         paused_: true,
       },
       { alphAmount: ONE_ALPH },

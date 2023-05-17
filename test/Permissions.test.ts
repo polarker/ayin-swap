@@ -35,7 +35,7 @@ describe('Permissions ', () => {
 
     const state = PermissionsTest.stateForTest(
       {
-        owner,
+        owner_: owner,
       },
       { alphAmount: ONE_ALPH },
       randomContractAddress()
