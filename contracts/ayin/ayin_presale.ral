@@ -12,6 +12,10 @@ Contract AyinPresale (
         NotEnoughTokens = 1
     }
 
+    pub fn getAyinTokenId() -> ByteVec {
+        return ayinToken
+    }
+
     pub fn getAlphBalance() -> U256 {
         return alphBalance
     }

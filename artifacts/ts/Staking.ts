@@ -51,6 +51,14 @@ export namespace StakingTypes {
       params: CallContractParams<{ staker: Address }>;
       result: CallContractResult<HexString>;
     };
+    getTokenId: {
+      params: Omit<CallContractParams<{}>, "args">;
+      result: CallContractResult<HexString>;
+    };
+    getRewardsTokenId: {
+      params: Omit<CallContractParams<{}>, "args">;
+      result: CallContractResult<HexString>;
+    };
   }
   export type CallMethodParams<T extends keyof CallMethodTable> =
     CallMethodTable[T]["params"];
@@ -115,6 +123,16 @@ class Factory extends ContractFactory<StakingInstance, StakingTypes.Fields> {
     ): Promise<TestContractResult<null>> => {
       return testMethod(this, "changeOwner", params);
     },
+    getTokenId: async (
+      params: Omit<TestContractParams<StakingTypes.Fields, never>, "testArgs">
+    ): Promise<TestContractResult<HexString>> => {
+      return testMethod(this, "getTokenId", params);
+    },
+    getRewardsTokenId: async (
+      params: Omit<TestContractParams<StakingTypes.Fields, never>, "testArgs">
+    ): Promise<TestContractResult<HexString>> => {
+      return testMethod(this, "getRewardsTokenId", params);
+    },
     updateStakerReward: async (
       params: TestContractParams<StakingTypes.Fields, { account: HexString }>
     ): Promise<TestContractResult<null>> => {
@@ -163,7 +181,7 @@ export const Staking = new Factory(
   Contract.fromJson(
     StakingContractJson,
     "",
-    "7652632b5d2242386ce1a7294e9c04d2e5ba69252f78d15b7b3dfece0b731222"
+    "dc15de6cab78009858fb60242af464c5cd20e8608c2a0442036c8d5e5f88577d"
   )
 );
 
@@ -187,6 +205,26 @@ export class StakingInstance extends ContractInstance {
       params: StakingTypes.CallMethodParams<"getStakingAccount">
     ): Promise<StakingTypes.CallMethodResult<"getStakingAccount">> => {
       return callMethod(Staking, this, "getStakingAccount", params);
+    },
+    getTokenId: async (
+      params?: StakingTypes.CallMethodParams<"getTokenId">
+    ): Promise<StakingTypes.CallMethodResult<"getTokenId">> => {
+      return callMethod(
+        Staking,
+        this,
+        "getTokenId",
+        params === undefined ? {} : params
+      );
+    },
+    getRewardsTokenId: async (
+      params?: StakingTypes.CallMethodParams<"getRewardsTokenId">
+    ): Promise<StakingTypes.CallMethodResult<"getRewardsTokenId">> => {
+      return callMethod(
+        Staking,
+        this,
+        "getRewardsTokenId",
+        params === undefined ? {} : params
+      );
     },
   };
 

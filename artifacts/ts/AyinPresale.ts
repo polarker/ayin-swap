@@ -41,6 +41,10 @@ export namespace AyinPresaleTypes {
   export type State = ContractState<Fields>;
 
   export interface CallMethodTable {
+    getAyinTokenId: {
+      params: Omit<CallContractParams<{}>, "args">;
+      result: CallContractResult<HexString>;
+    };
     getAlphBalance: {
       params: Omit<CallContractParams<{}>, "args">;
       result: CallContractResult<bigint>;
@@ -90,6 +94,14 @@ class Factory extends ContractFactory<
       params: TestContractParams<AyinPresaleTypes.Fields, { newOwner: Address }>
     ): Promise<TestContractResult<null>> => {
       return testMethod(this, "changeOwner", params);
+    },
+    getAyinTokenId: async (
+      params: Omit<
+        TestContractParams<AyinPresaleTypes.Fields, never>,
+        "testArgs"
+      >
+    ): Promise<TestContractResult<HexString>> => {
+      return testMethod(this, "getAyinTokenId", params);
     },
     getAlphBalance: async (
       params: Omit<
@@ -178,7 +190,7 @@ export const AyinPresale = new Factory(
   Contract.fromJson(
     AyinPresaleContractJson,
     "",
-    "f04cd5e69b5f9df848fb7dd1787e57da6ee6f8a31207bcdadba00462386ab8a6"
+    "c07cdd58767c1f1fe68abc65e6c097afb017a017999084ed469d206b546ac3f1"
   )
 );
 
@@ -193,6 +205,16 @@ export class AyinPresaleInstance extends ContractInstance {
   }
 
   methods = {
+    getAyinTokenId: async (
+      params?: AyinPresaleTypes.CallMethodParams<"getAyinTokenId">
+    ): Promise<AyinPresaleTypes.CallMethodResult<"getAyinTokenId">> => {
+      return callMethod(
+        AyinPresale,
+        this,
+        "getAyinTokenId",
+        params === undefined ? {} : params
+      );
+    },
     getAlphBalance: async (
       params?: AyinPresaleTypes.CallMethodParams<"getAlphBalance">
     ): Promise<AyinPresaleTypes.CallMethodResult<"getAlphBalance">> => {

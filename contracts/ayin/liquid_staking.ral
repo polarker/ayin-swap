@@ -1,10 +1,10 @@
 import "std/fungible_token_interface"
 
 Contract LiquidStaking(
-    gainPerMillisecond: U256, // Percentage of rewardPool to be paid as a reward each millisecond where 1e18 is 100% of the pool
     tokenId: ByteVec,
     symbol: ByteVec,
     name: ByteVec,
+    mut gainPerMillisecond: U256, // Percentage of rewardPool to be paid as a reward each millisecond where 1e18 is 100% of the pool
     mut updatedAt: U256,
     mut currentXTokenPrice: U256,
     mut rewardPool: U256,
@@ -91,6 +91,14 @@ Contract LiquidStaking(
         transferTokenToSelf!(callerAddress!(), tokenId, amount)
 
         rewardPool = rewardPool + amount
+    }
+
+    @using(updateFields = true)
+    pub fn setGainPerMillisecond(newGainPerMillisecond: U256) -> () {
+        onlyOwner(callerAddress!())
+        updatePrice()
+
+        gainPerMillisecond = newGainPerMillisecond
     }
 
     pub fn getTokenId() -> ByteVec {

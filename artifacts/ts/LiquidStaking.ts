@@ -29,10 +29,10 @@ import { default as LiquidStakingContractJson } from "../ayin/liquid_staking.ral
 // Custom types for the contract
 export namespace LiquidStakingTypes {
   export type Fields = {
-    gainPerMillisecond: bigint;
     tokenId: HexString;
     symbol: HexString;
     name: HexString;
+    gainPerMillisecond: bigint;
     updatedAt: bigint;
     currentXTokenPrice: bigint;
     rewardPool: bigint;
@@ -219,6 +219,14 @@ class Factory extends ContractFactory<
     ): Promise<TestContractResult<null>> => {
       return testMethod(this, "topUpRewards", params);
     },
+    setGainPerMillisecond: async (
+      params: TestContractParams<
+        LiquidStakingTypes.Fields,
+        { newGainPerMillisecond: bigint }
+      >
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "setGainPerMillisecond", params);
+    },
     getTokenId: async (
       params: Omit<
         TestContractParams<LiquidStakingTypes.Fields, never>,
@@ -235,7 +243,7 @@ export const LiquidStaking = new Factory(
   Contract.fromJson(
     LiquidStakingContractJson,
     "",
-    "c9dded58c422a0c164ddeae0a0331c5cba5bf89a22957bf68d6c97cbf5426d6a"
+    "5324e706f47416fa7e04ce35b164ee0915898de9fbfcacda2f9075aaeddf7541"
   )
 );
 

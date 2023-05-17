@@ -1,0 +1,5 @@
+TxScript Stake(staking: Staking, amount: U256) {
+    let tokenId = staking.getTokenId()
+
+    staking.stake{callerAddress!() -> tokenId: amount}(amount)
+}
