@@ -1,2 +1,2 @@
-Contract FullMathTest() extends FullMath() {
+Contract FullMathTest() embeds FullMath() {
 }

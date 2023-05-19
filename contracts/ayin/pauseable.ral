@@ -1,4 +1,4 @@
-Abstract Contract Pauseable(mut owner_: Address, mut paused_: Bool) extends Permissions(owner_) {
+Abstract Contract Pauseable(mut owner_: Address, mut paused_: Bool) embeds Permissions(owner_) {
     enum PauseableErrorCodes {
         Paused = 0
     }

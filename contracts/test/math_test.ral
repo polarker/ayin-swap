@@ -1,2 +1,2 @@
-Contract MathTest() extends Math() {
+Contract MathTest() embeds Math() {
 }

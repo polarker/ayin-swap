@@ -1,4 +1,4 @@
-Contract Router() extends Constants() {
+Contract Router() embeds Constants() {
   fn addLiquidity_(
     reserve0: U256,
     reserve1: U256,

@@ -5,7 +5,7 @@ Contract VestingSchedule(
   start: U256,
   duration: U256,
   mut released: U256
-) extends Constants() {
+) embeds Constants() {
 
   pub fn getTokenId() -> ByteVec {
     return tokenId

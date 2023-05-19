@@ -5,7 +5,7 @@ Contract ExampleOracleSimple(
   mut blockTimeStampLast: U256,
   mut price0Average: U256,
   mut price1Average: U256
-) extends FullMath() {
+) embeds FullMath() {
   const Period = 86400 // 24 hours in seconds
 
   fn currentCumulativePrices(currentBlockTimeStamp: U256) -> (U256, U256) {

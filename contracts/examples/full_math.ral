@@ -1,4 +1,4 @@
-Abstract Contract FullMath() extends OracleErrors() {
+Abstract Contract FullMath() embeds OracleErrors() {
   const Resolution = 112
 
   pub fn fullMul(x: U256, y: U256) -> (U256, U256) {

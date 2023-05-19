@@ -1,7 +1,7 @@
 Contract VestingScheduleFactory(
     vestingScheduleTemplateId: ByteVec,
     mut owner_: Address
-) extends Permissions(owner_) {
+) embeds Permissions(owner_) {
     event VestingScheduleCreated(schedule: ByteVec, token: ByteVec, beneiciary: Address, amount: U256, start: U256, duration: U256)
 
     enum ErrorCodes {
