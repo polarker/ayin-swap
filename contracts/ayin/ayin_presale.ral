@@ -32,13 +32,15 @@ Contract AyinPresale (
         return saleOpen
     }
 
-    @using(updateFields = true, checkExternalCaller = true)
+    // checkExternalCaller is true for public functions by default
+    @using(updateFields = true)
     pub fn setSaleOpen(open: Bool) -> () {
         onlyOwner(callerAddress!())
         saleOpen = open
     }
 
-    @using(updateFields = true, checkExternalCaller = true)
+    // checkExternalCaller is true for public functions by default
+    @using(updateFields = true)
     pub fn setAlphPerToken(apt: U256) -> () {
         onlyOwner(callerAddress!())
         alphPerToken = apt
@@ -63,22 +65,23 @@ Contract AyinPresale (
     }
 
     @using(assetsInContract = true)
-    fn withdrawToken_(tokenId: ByteVec, amount: U256, sendTo: Address) -> () {
-        onlyOwner(callerAddress!())
+    fn withdrawToken_(caller: Address, tokenId: ByteVec, amount: U256, sendTo: Address) -> () {
+        // onlyOwner(callerAddress!()) // callerAddress!() is `withdrawAlph` or `withdrawAyin`
+        onlyOwner(caller)
 
         transferTokenFromSelf!(sendTo, tokenId, amount)
     }
 
     @using(checkExternalCaller = true, updateFields = true)
     pub fn withdrawAlph(amount: U256, sendTo: Address) -> () {
-        withdrawToken_(ALPH, amount, sendTo)
+        withdrawToken_(callerAddress!(), ALPH, amount, sendTo)
 
         alphBalance = alphBalance - amount
     }
 
     @using(checkExternalCaller = true, updateFields = true)
     pub fn withdrawAyin(amount: U256, sendTo: Address) -> () {
-        withdrawToken_(ayinToken, amount, sendTo)
+        withdrawToken_(callerAddress!(), ayinToken, amount, sendTo)
 
         tokensForSale = tokensForSale - amount
     }

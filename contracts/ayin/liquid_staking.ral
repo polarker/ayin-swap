@@ -18,6 +18,7 @@ Contract LiquidStaking(
 
     // Reward paid per 1 xToken
     pub fn getCurrentRewardPerMillisecond() -> U256 {
+        // This might have precision issues? Better `gainPerMillisecond * rewardPool * elapsed / totalSupply`
         let rewardPerMillisecond = gainPerMillisecond * rewardPool / totalSupply
 
         return rewardPerMillisecond
@@ -28,9 +29,9 @@ Contract LiquidStaking(
             return currentXTokenPrice
         }
 
-        let rewardPerMillisecond = getCurrentRewardPerMillisecond()
+        // let rewardPerMillisecond = getCurrentRewardPerMillisecond()
         let elapsed = blockTimeStamp!() - updatedAt
-        let projectedReward = rewardPerMillisecond * elapsed
+        let projectedReward = gainPerMillisecond * rewardPool * elapsed / totalSupply // Multiple elapsed first
 
         let reward = if (projectedReward > rewardPool) rewardPool else projectedReward
 

@@ -7,10 +7,11 @@ Abstract Contract Permissions(
 
     fn onlyOwner(caller: Address) -> () {
         checkCaller!(callerAddress!() == selfAddress!(), PermissionsErrorCodes.Forbidden)
-        assert!(caller == owner_, PermissionsErrorCodes.Forbidden)
+        checkCaller!(caller == owner_, PermissionsErrorCodes.Forbidden)
     }
 
-    @using(checkExternalCaller = true, updateFields = true)
+    // checkExternalCaller is true for public functions, so we could remove the flag
+    @using(updateFields = true)
     pub fn changeOwner(newOwner: Address) -> () {
         onlyOwner(callerAddress!())
 
