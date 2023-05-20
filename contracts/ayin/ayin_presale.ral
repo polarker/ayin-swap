@@ -63,22 +63,22 @@ Contract AyinPresale (
     }
 
     @using(assetsInContract = true)
-    fn withdrawToken_(tokenId: ByteVec, amount: U256, sendTo: Address) -> () {
-        onlyOwner(callerAddress!())
+    fn withdrawToken_(caller: Address, tokenId: ByteVec, amount: U256, sendTo: Address) -> () {
+        onlyOwner(caller)
 
         transferTokenFromSelf!(sendTo, tokenId, amount)
     }
 
     @using(updateFields = true)
     pub fn withdrawAlph(amount: U256, sendTo: Address) -> () {
-        withdrawToken_(ALPH, amount, sendTo)
+        withdrawToken_(callerAddress!(), ALPH, amount, sendTo)
 
         alphBalance = alphBalance - amount
     }
 
     @using(updateFields = true)
     pub fn withdrawAyin(amount: U256, sendTo: Address) -> () {
-        withdrawToken_(ayinToken, amount, sendTo)
+        withdrawToken_(callerAddress!(), ayinToken, amount, sendTo)
 
         tokensForSale = tokensForSale - amount
     }
