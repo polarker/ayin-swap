@@ -32,13 +32,13 @@ Contract AyinPresale (
         return saleOpen
     }
 
-    @using(updateFields = true, checkExternalCaller = true)
+    @using(updateFields = true)
     pub fn setSaleOpen(open: Bool) -> () {
         onlyOwner(callerAddress!())
         saleOpen = open
     }
 
-    @using(updateFields = true, checkExternalCaller = true)
+    @using(updateFields = true)
     pub fn setAlphPerToken(apt: U256) -> () {
         onlyOwner(callerAddress!())
         alphPerToken = apt
@@ -69,21 +69,21 @@ Contract AyinPresale (
         transferTokenFromSelf!(sendTo, tokenId, amount)
     }
 
-    @using(checkExternalCaller = true, updateFields = true)
+    @using(updateFields = true)
     pub fn withdrawAlph(amount: U256, sendTo: Address) -> () {
         withdrawToken_(ALPH, amount, sendTo)
 
         alphBalance = alphBalance - amount
     }
 
-    @using(checkExternalCaller = true, updateFields = true)
+    @using(updateFields = true)
     pub fn withdrawAyin(amount: U256, sendTo: Address) -> () {
         withdrawToken_(ayinToken, amount, sendTo)
 
         tokensForSale = tokensForSale - amount
     }
 
-    @using(assetsInContract = true, checkExternalCaller = true)
+    @using(assetsInContract = true)
     pub fn destroy(remainingBalancesTo: Address) -> () {
         onlyOwner(callerAddress!())
 
