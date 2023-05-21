@@ -30,9 +30,13 @@ import { default as AyinTokenContractJson } from "../ayin/ayin_token.ral.json";
 export namespace AyinTokenTypes {
   export type Fields = {
     totalSupply: bigint;
+    owner_: Address;
   };
 
   export type State = ContractState<Fields>;
+
+  export type MintEvent = ContractEvent<{ to: Address; amount: bigint }>;
+  export type BurnEvent = ContractEvent<{ from: Address; amount: bigint }>;
 
   export interface CallMethodTable {
     getSymbol: {
@@ -95,6 +99,29 @@ class Factory extends ContractFactory<
     ): Promise<TestContractResult<bigint>> => {
       return testMethod(this, "getTotalSupply", params);
     },
+    onlyOwner: async (
+      params: TestContractParams<AyinTokenTypes.Fields, { caller: Address }>
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "onlyOwner", params);
+    },
+    changeOwner: async (
+      params: TestContractParams<AyinTokenTypes.Fields, { newOwner: Address }>
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "changeOwner", params);
+    },
+    mint: async (
+      params: TestContractParams<
+        AyinTokenTypes.Fields,
+        { to: Address; amount: bigint }
+      >
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "mint", params);
+    },
+    burn: async (
+      params: TestContractParams<AyinTokenTypes.Fields, { amount: bigint }>
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "burn", params);
+    },
   };
 }
 
@@ -103,7 +130,7 @@ export const AyinToken = new Factory(
   Contract.fromJson(
     AyinTokenContractJson,
     "",
-    "fb162e8a9cc0f20a5673b6cd85899a072c31c768e48865b4c354976845f572ea"
+    "252545ee6c280974e5b97a82afe89811e2ba606243c02025d33225622743c7a9"
   )
 );
 
@@ -115,6 +142,50 @@ export class AyinTokenInstance extends ContractInstance {
 
   async fetchState(): Promise<AyinTokenTypes.State> {
     return fetchContractState(AyinToken, this);
+  }
+
+  async getContractEventsCurrentCount(): Promise<number> {
+    return getContractEventsCurrentCount(this.address);
+  }
+
+  subscribeMintEvent(
+    options: SubscribeOptions<AyinTokenTypes.MintEvent>,
+    fromCount?: number
+  ): EventSubscription {
+    return subscribeContractEvent(
+      AyinToken.contract,
+      this,
+      options,
+      "Mint",
+      fromCount
+    );
+  }
+
+  subscribeBurnEvent(
+    options: SubscribeOptions<AyinTokenTypes.BurnEvent>,
+    fromCount?: number
+  ): EventSubscription {
+    return subscribeContractEvent(
+      AyinToken.contract,
+      this,
+      options,
+      "Burn",
+      fromCount
+    );
+  }
+
+  subscribeAllEvents(
+    options: SubscribeOptions<
+      AyinTokenTypes.MintEvent | AyinTokenTypes.BurnEvent
+    >,
+    fromCount?: number
+  ): EventSubscription {
+    return subscribeContractEvents(
+      AyinToken.contract,
+      this,
+      options,
+      fromCount
+    );
   }
 
   methods = {

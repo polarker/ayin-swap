@@ -10,10 +10,11 @@ import {
   SignerProvider,
   HexString,
 } from "@alephium/web3";
-import { default as BurnXTokenScriptJson } from "../ayin/liquid_staking/burn.ral.json";
-import { default as MintXTokenScriptJson } from "../ayin/liquid_staking/mint.ral.json";
-import { default as TopUpRewardsScriptJson } from "../ayin/liquid_staking/topup_rewards.ral.json";
-import { default as BuyAyinScriptJson } from "../ayin/presale/buy_ayin.ral.json";
+import { default as MintAyinScriptJson } from "../ayin/scripts/ayin/mint.ral.json";
+import { default as BurnXTokenScriptJson } from "../ayin/scripts/liquid_staking/burn.ral.json";
+import { default as MintXTokenScriptJson } from "../ayin/scripts/liquid_staking/mint.ral.json";
+import { default as TopUpRewardsScriptJson } from "../ayin/scripts/liquid_staking/topup_rewards.ral.json";
+import { default as BuyAyinScriptJson } from "../ayin/scripts/presale/buy_ayin.ral.json";
 import { default as ClaimRewardsScriptJson } from "../ayin/scripts/staking/claim_rewards.ral.json";
 import { default as StakeScriptJson } from "../ayin/scripts/staking/stake.ral.json";
 import { default as AddLiquidityScriptJson } from "../scripts/add_liquidity.ral.json";
@@ -22,6 +23,22 @@ import { default as RemoveLiquidityScriptJson } from "../scripts/remove_liquidit
 import { default as SwapMaxInScriptJson } from "../scripts/swap_max_in.ral.json";
 import { default as SwapMinOutScriptJson } from "../scripts/swap_min_out.ral.json";
 import { default as GetTokenScriptJson } from "../test/get_token.ral.json";
+
+export namespace MintAyin {
+  export async function execute(
+    signer: SignerProvider,
+    params: ExecuteScriptParams<{
+      ayin: HexString;
+      to: Address;
+      amount: bigint;
+    }>
+  ): Promise<ExecuteScriptResult> {
+    const signerParams = await script.txParamsForExecution(signer, params);
+    return await signer.signAndSubmitExecuteScriptTx(signerParams);
+  }
+
+  export const script = Script.fromJson(MintAyinScriptJson);
+}
 
 export namespace BurnXToken {
   export async function execute(

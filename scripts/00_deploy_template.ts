@@ -1,4 +1,5 @@
 import { Deployer, DeployFunction } from '@alephium/cli';
+import { randomContractId } from '@alephium/web3-test';
 import { StakingAccount, TokenPair, VestingSchedule } from '../artifacts/ts';
 import { randomP2PKHAddress } from '../test/fixtures/DexFixture';
 
@@ -51,6 +52,7 @@ const deployTokenPairTemplate: DeployFunction<undefined> = async (
       amountStaked: 0n,
       rewardPerTokenPaid: 0n,
       rewards: 0n,
+      parentContractAddress: randomP2PKHAddress(),
     },
   });
 };

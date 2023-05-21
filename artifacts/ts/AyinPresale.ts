@@ -153,7 +153,7 @@ class Factory extends ContractFactory<
     withdrawToken_: async (
       params: TestContractParams<
         AyinPresaleTypes.Fields,
-        { tokenId: HexString; amount: bigint; sendTo: Address }
+        { caller: Address; tokenId: HexString; amount: bigint; sendTo: Address }
       >
     ): Promise<TestContractResult<null>> => {
       return testMethod(this, "withdrawToken_", params);
@@ -190,7 +190,7 @@ export const AyinPresale = new Factory(
   Contract.fromJson(
     AyinPresaleContractJson,
     "",
-    "c07cdd58767c1f1fe68abc65e6c097afb017a017999084ed469d206b546ac3f1"
+    "c18282dde30457780cb05df9b4a6c156c2b0e407f6ec4739be7f7670f2e4d899"
   )
 );
 

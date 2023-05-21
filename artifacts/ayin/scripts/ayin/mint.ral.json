@@ -1,17 +1,20 @@
 {
   "version": "v2.3.1",
-  "name": "Unstake",
-  "bytecodeTemplate": "01010300000005{1}0d0c{0}010f",
+  "name": "MintAyin",
+  "bytecodeTemplate": "01010300000006{1}{2}0e0c{0}0106",
   "fieldsSig": {
     "names": [
-      "staking",
+      "ayin",
+      "to",
       "amount"
     ],
     "types": [
       "ByteVec",
+      "Address",
       "U256"
     ],
     "isMutable": [
+      false,
       false,
       false
     ]

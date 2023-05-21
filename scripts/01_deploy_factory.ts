@@ -1,9 +1,5 @@
 import { Deployer, DeployFunction } from '@alephium/cli';
-import {
-  StakingAccountFactory,
-  TokenPairFactory,
-  VestingScheduleFactory,
-} from '../artifacts/ts';
+import { TokenPairFactory, VestingScheduleFactory } from '../artifacts/ts';
 
 const deployFactory: DeployFunction<undefined> = async (
   deployer: Deployer
@@ -26,6 +22,7 @@ const deployFactory: DeployFunction<undefined> = async (
   const vestingInitialFields = {
     vestingScheduleTemplateId:
       vestingScheduleTemplate.contractInstance.contractId,
+    owner_: deployer.account.address,
   };
 
   const vestingScheduleFactoryResult = await deployer.deployContract(
@@ -37,19 +34,6 @@ const deployFactory: DeployFunction<undefined> = async (
 
   console.log(
     `VestingScheduleFactory contract address: ${vestingScheduleFactoryResult.contractInstance.address}, contract id: ${vestingScheduleFactoryResult.contractInstance.contractId}`
-  );
-
-  const stakingFactoryRes = await deployer.deployContract(
-    StakingAccountFactory,
-    {
-      initialFields: {
-        tokenId: '',
-        rewardTokenId: '',
-        stakingTemplateId:
-          deployer.getDeployContractResult('StakingAccount').contractInstance
-            .contractId,
-      },
-    }
   );
 };
 

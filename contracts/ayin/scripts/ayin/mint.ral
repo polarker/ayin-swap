@@ -1,0 +1,3 @@
+TxScript MintAyin(ayin: AyinToken, to: Address, amount: U256) {
+    ayin.mint(to, amount)
+}
