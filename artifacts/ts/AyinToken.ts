@@ -24,7 +24,7 @@ import {
   ContractInstance,
   getContractEventsCurrentCount,
 } from "@alephium/web3";
-import { default as AyinTokenContractJson } from "../ayin/ayin_token.ral.json";
+import { default as AyinTokenContractJson } from "../ayin/AyinToken.ral.json";
 
 // Custom types for the contract
 export namespace AyinTokenTypes {
@@ -74,6 +74,8 @@ class Factory extends ContractFactory<
   AyinTokenInstance,
   AyinTokenTypes.Fields
 > {
+  consts = { PermissionsErrorCodes: { Forbidden: BigInt(0) } };
+
   at(address: string): AyinTokenInstance {
     return new AyinTokenInstance(address);
   }

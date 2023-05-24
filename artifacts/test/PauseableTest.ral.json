@@ -1,5 +1,5 @@
 {
-  "version": "v2.3.1",
+  "version": "v2.3.3",
   "name": "PauseableTest",
   "bytecode": "02060c18402440364043404e010000000004b4000303a101010000000004b4000304a101010000000005a001041c0c7b00000101000ab4b2450c7b1600a000450c7b010001010004b400031600a1000100000001030002132a02",
   "codeHash": "60d12ba596d72a9549ac4beca935b53bb8a0e65c608ebe92fde5a51f78ec088d",
@@ -91,6 +91,33 @@
       "paramIsMutable": [],
       "returnTypes": [
         "U256"
+      ]
+    }
+  ],
+  "constants": [],
+  "enums": [
+    {
+      "name": "PermissionsErrorCodes",
+      "fields": [
+        {
+          "name": "Forbidden",
+          "value": {
+            "type": "U256",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    {
+      "name": "PauseableErrorCodes",
+      "fields": [
+        {
+          "name": "Paused",
+          "value": {
+            "type": "U256",
+            "value": "0"
+          }
+        }
       ]
     }
   ]

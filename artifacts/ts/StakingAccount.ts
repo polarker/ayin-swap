@@ -24,7 +24,7 @@ import {
   ContractInstance,
   getContractEventsCurrentCount,
 } from "@alephium/web3";
-import { default as StakingAccountContractJson } from "../ayin/staking_account.ral.json";
+import { default as StakingAccountContractJson } from "../ayin/StakingAccount.ral.json";
 
 // Custom types for the contract
 export namespace StakingAccountTypes {
@@ -84,6 +84,13 @@ class Factory extends ContractFactory<
   StakingAccountInstance,
   StakingAccountTypes.Fields
 > {
+  consts = {
+    ErrorCodes: {
+      UnauthorizedAccess: BigInt(0),
+      InsufficientBalance: BigInt(1),
+    },
+  };
+
   at(address: string): StakingAccountInstance {
     return new StakingAccountInstance(address);
   }

@@ -1,17 +1,26 @@
 {
-  "version": "v2.3.1",
-  "name": "TopUpRewards",
-  "bytecodeTemplate": "0101030001000e0c0d{0}01101700b41600{1}a3{1}0d0c{0}010e",
+  "version": "v2.3.3",
+  "name": "CreatePair",
+  "bytecodeTemplate": "01010300000013{0}7a7a{2}a2{3}0da3{4}0da3{0}{2}{3}{4}100c{1}0101",
   "fieldsSig": {
     "names": [
-      "liquidStaking",
-      "amount"
+      "payer",
+      "factory",
+      "alphAmount",
+      "tokenAId",
+      "tokenBId"
     ],
     "types": [
+      "Address",
       "ByteVec",
-      "U256"
+      "U256",
+      "ByteVec",
+      "ByteVec"
     ],
     "isMutable": [
+      false,
+      false,
+      false,
       false,
       false
     ]

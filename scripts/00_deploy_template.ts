@@ -1,5 +1,4 @@
 import { Deployer, DeployFunction } from '@alephium/cli';
-import { randomContractId } from '@alephium/web3-test';
 import { StakingAccount, TokenPair, VestingSchedule } from '../artifacts/ts';
 import { randomP2PKHAddress } from '../test/fixtures/DexFixture';
 
@@ -39,10 +38,6 @@ const deployTokenPairTemplate: DeployFunction<undefined> = async (
   console.log(
     `VestingSchedule template contract address: ${vestingScheduleResult.contractInstance.address}, contract id: ${vestingScheduleResult.contractInstance.contractId}`
   );
-
-  const scheduleResult = await deployer.deployContract(VestingSchedule, {
-    initialFields: scheduleInitialFields,
-  });
 
   await deployer.deployContract(StakingAccount, {
     initialFields: {

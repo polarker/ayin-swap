@@ -1,11 +1,11 @@
 {
-  "version": "v2.3.1",
-  "name": "BurnXToken",
-  "bytecodeTemplate": "0101030001000b{0}1700b41600{1}a3{1}0d0c{0}010d",
+  "version": "v2.3.3",
+  "name": "DepositAyin",
+  "bytecodeTemplate": "0101030000000cb40c0d{0}0102{1}a3{1}0d0c{0}0107",
   "fieldsSig": {
     "names": [
-      "liquidStaking",
-      "xTokenAmount"
+      "presale",
+      "amount"
     ],
     "types": [
       "ByteVec",

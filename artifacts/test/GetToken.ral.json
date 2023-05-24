@@ -1,31 +1,19 @@
 {
-  "version": "v2.3.1",
-  "name": "RemoveLiquidity",
-  "bytecodeTemplate": "01010300000010{0}{2}{3}a3{2}{0}{3}{4}{5}{6}13060e{1}01021818",
+  "version": "v2.3.3",
+  "name": "GetToken",
+  "bytecodeTemplate": "01010300000006{1}{2}0e0c{0}0104",
   "fieldsSig": {
     "names": [
+      "token",
       "sender",
-      "router",
-      "pairId",
-      "liquidity",
-      "amount0Min",
-      "amount1Min",
-      "deadline"
+      "amount"
     ],
     "types": [
+      "ByteVec",
       "Address",
-      "ByteVec",
-      "ByteVec",
-      "U256",
-      "U256",
-      "U256",
       "U256"
     ],
     "isMutable": [
-      false,
-      false,
-      false,
-      false,
       false,
       false,
       false

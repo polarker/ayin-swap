@@ -24,7 +24,7 @@ import {
   ContractInstance,
   getContractEventsCurrentCount,
 } from "@alephium/web3";
-import { default as AyinPresaleContractJson } from "../ayin/ayin_presale.ral.json";
+import { default as AyinPresaleContractJson } from "../ayin/AyinPresale.ral.json";
 
 // Custom types for the contract
 export namespace AyinPresaleTypes {
@@ -80,6 +80,11 @@ class Factory extends ContractFactory<
   AyinPresaleInstance,
   AyinPresaleTypes.Fields
 > {
+  consts = {
+    PermissionsErrorCodes: { Forbidden: BigInt(0) },
+    ErrorCodes: { SaleNotOpen: BigInt(0), NotEnoughTokens: BigInt(1) },
+  };
+
   at(address: string): AyinPresaleInstance {
     return new AyinPresaleInstance(address);
   }
@@ -134,6 +139,11 @@ class Factory extends ContractFactory<
       >
     ): Promise<TestContractResult<boolean>> => {
       return testMethod(this, "getSaleOpen", params);
+    },
+    depositAyin: async (
+      params: TestContractParams<AyinPresaleTypes.Fields, { amount: bigint }>
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "depositAyin", params);
     },
     setSaleOpen: async (
       params: TestContractParams<AyinPresaleTypes.Fields, { open: boolean }>
@@ -190,7 +200,7 @@ export const AyinPresale = new Factory(
   Contract.fromJson(
     AyinPresaleContractJson,
     "",
-    "c18282dde30457780cb05df9b4a6c156c2b0e407f6ec4739be7f7670f2e4d899"
+    "39002e705ef8f60a7238bbed5a07ef852b2f7a6ddd73255e17a5b616aa8c1b74"
   )
 );
 

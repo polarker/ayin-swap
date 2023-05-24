@@ -10,19 +10,21 @@ import {
   SignerProvider,
   HexString,
 } from "@alephium/web3";
-import { default as MintAyinScriptJson } from "../ayin/scripts/ayin/mint.ral.json";
-import { default as BurnXTokenScriptJson } from "../ayin/scripts/liquid_staking/burn.ral.json";
-import { default as MintXTokenScriptJson } from "../ayin/scripts/liquid_staking/mint.ral.json";
-import { default as TopUpRewardsScriptJson } from "../ayin/scripts/liquid_staking/topup_rewards.ral.json";
-import { default as BuyAyinScriptJson } from "../ayin/scripts/presale/buy_ayin.ral.json";
-import { default as ClaimRewardsScriptJson } from "../ayin/scripts/staking/claim_rewards.ral.json";
-import { default as StakeScriptJson } from "../ayin/scripts/staking/stake.ral.json";
-import { default as AddLiquidityScriptJson } from "../scripts/add_liquidity.ral.json";
-import { default as CreatePairScriptJson } from "../scripts/create_pair.ral.json";
-import { default as RemoveLiquidityScriptJson } from "../scripts/remove_liquidity.ral.json";
-import { default as SwapMaxInScriptJson } from "../scripts/swap_max_in.ral.json";
-import { default as SwapMinOutScriptJson } from "../scripts/swap_min_out.ral.json";
-import { default as GetTokenScriptJson } from "../test/get_token.ral.json";
+import { default as MintAyinScriptJson } from "../ayin/scripts/ayin/MintAyin.ral.json";
+import { default as BurnXTokenScriptJson } from "../ayin/scripts/liquid_staking/BurnXToken.ral.json";
+import { default as MintXTokenScriptJson } from "../ayin/scripts/liquid_staking/MintXToken.ral.json";
+import { default as TopUpRewardsScriptJson } from "../ayin/scripts/liquid_staking/TopUpRewards.ral.json";
+import { default as BuyAyinScriptJson } from "../ayin/scripts/presale/BuyAyin.ral.json";
+import { default as DepositAyinScriptJson } from "../ayin/scripts/presale/DepositAyin.ral.json";
+import { default as ClaimRewardsScriptJson } from "../ayin/scripts/staking/ClaimRewards.ral.json";
+import { default as StakeScriptJson } from "../ayin/scripts/staking/Stake.ral.json";
+import { default as UnstakeScriptJson } from "../ayin/scripts/staking/Unstake.ral.json";
+import { default as AddLiquidityScriptJson } from "../scripts/AddLiquidity.ral.json";
+import { default as CreatePairScriptJson } from "../scripts/CreatePair.ral.json";
+import { default as RemoveLiquidityScriptJson } from "../scripts/RemoveLiquidity.ral.json";
+import { default as SwapMaxInScriptJson } from "../scripts/SwapMaxIn.ral.json";
+import { default as SwapMinOutScriptJson } from "../scripts/SwapMinOut.ral.json";
+import { default as GetTokenScriptJson } from "../test/GetToken.ral.json";
 
 export namespace MintAyin {
   export async function execute(
@@ -91,6 +93,18 @@ export namespace BuyAyin {
   export const script = Script.fromJson(BuyAyinScriptJson);
 }
 
+export namespace DepositAyin {
+  export async function execute(
+    signer: SignerProvider,
+    params: ExecuteScriptParams<{ presale: HexString; amount: bigint }>
+  ): Promise<ExecuteScriptResult> {
+    const signerParams = await script.txParamsForExecution(signer, params);
+    return await signer.signAndSubmitExecuteScriptTx(signerParams);
+  }
+
+  export const script = Script.fromJson(DepositAyinScriptJson);
+}
+
 export namespace ClaimRewards {
   export async function execute(
     signer: SignerProvider,
@@ -113,6 +127,18 @@ export namespace Stake {
   }
 
   export const script = Script.fromJson(StakeScriptJson);
+}
+
+export namespace Unstake {
+  export async function execute(
+    signer: SignerProvider,
+    params: ExecuteScriptParams<{ staking: HexString; amount: bigint }>
+  ): Promise<ExecuteScriptResult> {
+    const signerParams = await script.txParamsForExecution(signer, params);
+    return await signer.signAndSubmitExecuteScriptTx(signerParams);
+  }
+
+  export const script = Script.fromJson(UnstakeScriptJson);
 }
 
 export namespace AddLiquidity {

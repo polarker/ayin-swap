@@ -32,6 +32,13 @@ Contract AyinPresale (
         return saleOpen
     }
 
+    @using(assetsInContract = true, preapprovedAssets = true)
+    pub fn depositAyin(amount: U256) -> () {
+        onlyOwner(callerAddress!())
+
+        transferTokenToSelf!(callerAddress!(), ayinToken, amount)
+    }
+
     @using(updateFields = true)
     pub fn setSaleOpen(open: Bool) -> () {
         onlyOwner(callerAddress!())

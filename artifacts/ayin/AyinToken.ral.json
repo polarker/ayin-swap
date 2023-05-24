@@ -1,5 +1,5 @@
 {
-  "version": "v2.3.1",
+  "version": "v2.3.3",
   "name": "AyinToken",
   "bytecode": "03080d1a4023402c403e404b4067408301000000010214044159494e0201000000010214044159494e02010000000102131202010000000102a0000200000101000ab4b2450c7b1600a001450c7b010001010004b400041600a10101020202000eb400041600b11601aba00016012aa10005160016015f01010102000eb417011601b11600aca00016002ba10006160116005f",
   "codeHash": "252545ee6c280974e5b97a82afe89811e2ba606243c02025d33225622743c7a9",
@@ -159,6 +159,21 @@
         false
       ],
       "returnTypes": []
+    }
+  ],
+  "constants": [],
+  "enums": [
+    {
+      "name": "PermissionsErrorCodes",
+      "fields": [
+        {
+          "name": "Forbidden",
+          "value": {
+            "type": "U256",
+            "value": "0"
+          }
+        }
+      ]
     }
   ],
   "stdInterfaceId": "0001"

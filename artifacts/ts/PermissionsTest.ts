@@ -24,7 +24,7 @@ import {
   ContractInstance,
   getContractEventsCurrentCount,
 } from "@alephium/web3";
-import { default as PermissionsTestContractJson } from "../test/permissions_test.ral.json";
+import { default as PermissionsTestContractJson } from "../test/PermissionsTest.ral.json";
 
 // Custom types for the contract
 export namespace PermissionsTestTypes {
@@ -58,6 +58,8 @@ class Factory extends ContractFactory<
   PermissionsTestInstance,
   PermissionsTestTypes.Fields
 > {
+  consts = { PermissionsErrorCodes: { Forbidden: BigInt(0) } };
+
   at(address: string): PermissionsTestInstance {
     return new PermissionsTestInstance(address);
   }

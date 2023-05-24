@@ -24,7 +24,7 @@ import {
   ContractInstance,
   getContractEventsCurrentCount,
 } from "@alephium/web3";
-import { default as VestingScheduleFactoryContractJson } from "../ayin/vesting_schedule_factory.ral.json";
+import { default as VestingScheduleFactoryContractJson } from "../ayin/VestingScheduleFactory.ral.json";
 
 // Custom types for the contract
 export namespace VestingScheduleFactoryTypes {
@@ -68,6 +68,11 @@ class Factory extends ContractFactory<
   VestingScheduleFactoryInstance,
   VestingScheduleFactoryTypes.Fields
 > {
+  consts = {
+    PermissionsErrorCodes: { Forbidden: BigInt(0) },
+    ErrorCodes: { InvalidDuration: BigInt(0), InvalidAmount: BigInt(1) },
+  };
+
   at(address: string): VestingScheduleFactoryInstance {
     return new VestingScheduleFactoryInstance(address);
   }

@@ -11,6 +11,20 @@ import {
   VestingScheduleInstance,
   StakingAccount,
   StakingAccountInstance,
+  TokenPairFactory,
+  TokenPairFactoryInstance,
+  VestingScheduleFactory,
+  VestingScheduleFactoryInstance,
+  Router,
+  RouterInstance,
+  AyinToken,
+  AyinTokenInstance,
+  Staking,
+  StakingInstance,
+  LiquidStaking,
+  LiquidStakingInstance,
+  AyinPresale,
+  AyinPresaleInstance,
 } from ".";
 import { default as devnetDeployments } from "../.deployments.devnet.json";
 
@@ -20,7 +34,15 @@ export type Deployments = {
     TokenPair: DeployContractExecutionResult<TokenPairInstance>;
     VestingSchedule: DeployContractExecutionResult<VestingScheduleInstance>;
     StakingAccount: DeployContractExecutionResult<StakingAccountInstance>;
+    TokenPairFactory: DeployContractExecutionResult<TokenPairFactoryInstance>;
+    VestingScheduleFactory: DeployContractExecutionResult<VestingScheduleFactoryInstance>;
+    Router: DeployContractExecutionResult<RouterInstance>;
+    AyinToken: DeployContractExecutionResult<AyinTokenInstance>;
+    Staking: DeployContractExecutionResult<StakingInstance>;
+    LiquidStaking: DeployContractExecutionResult<LiquidStakingInstance>;
+    AyinPresale: DeployContractExecutionResult<AyinPresaleInstance>;
   };
+  scripts: { MintAyin: RunScriptResult };
 };
 
 function toDeployments(json: any): Deployments {
@@ -41,6 +63,48 @@ function toDeployments(json: any): Deployments {
       ...json.contracts.StakingAccount,
       contractInstance: StakingAccount.at(
         json.contracts.StakingAccount.contractInstance.address
+      ),
+    },
+    TokenPairFactory: {
+      ...json.contracts.TokenPairFactory,
+      contractInstance: TokenPairFactory.at(
+        json.contracts.TokenPairFactory.contractInstance.address
+      ),
+    },
+    VestingScheduleFactory: {
+      ...json.contracts.VestingScheduleFactory,
+      contractInstance: VestingScheduleFactory.at(
+        json.contracts.VestingScheduleFactory.contractInstance.address
+      ),
+    },
+    Router: {
+      ...json.contracts.Router,
+      contractInstance: Router.at(
+        json.contracts.Router.contractInstance.address
+      ),
+    },
+    AyinToken: {
+      ...json.contracts.AyinToken,
+      contractInstance: AyinToken.at(
+        json.contracts.AyinToken.contractInstance.address
+      ),
+    },
+    Staking: {
+      ...json.contracts.Staking,
+      contractInstance: Staking.at(
+        json.contracts.Staking.contractInstance.address
+      ),
+    },
+    LiquidStaking: {
+      ...json.contracts.LiquidStaking,
+      contractInstance: LiquidStaking.at(
+        json.contracts.LiquidStaking.contractInstance.address
+      ),
+    },
+    AyinPresale: {
+      ...json.contracts.AyinPresale,
+      contractInstance: AyinPresale.at(
+        json.contracts.AyinPresale.contractInstance.address
       ),
     },
   };

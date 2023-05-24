@@ -8,7 +8,6 @@ import {
   prettifyTokenAmount,
   DUST_AMOUNT,
   ExplorerProvider,
-  ONE_ALPH,
 } from '@alephium/web3';
 import alephiumIcon from '../icons/alephium.svg';
 import { PollingInterval, network, networkId } from './consts';
@@ -21,9 +20,6 @@ import {
   AddLiquidity,
   RemoveLiquidity,
   CreatePair,
-  AlfAlfaCoin,
-  BuyAlfAlfa,
-  AlfAlfaCoinTypes,
 } from '../../artifacts/ts';
 import { genLogo } from './avatar_images';
 import {
@@ -33,7 +29,6 @@ import {
   ALPH as ALPHInfo,
 } from '@alephium/token-list';
 import { default as devnetTokenList } from './devnet-token-list.json';
-import { loadDeployments } from '../../artifacts/ts/deployments';
 
 const MINIMUM_LIQUIDITY = 1000n;
 export const PairTokenDecimals = 18;
@@ -781,30 +776,4 @@ export function tokenPairMatch(
     (tokenPairState?.token1Info.id === token0Info?.id &&
       tokenPairState?.token0Info.id === token1Info?.id)
   );
-}
-
-export async function buyAlfAlfa(
-  alfAlfaState: AlfAlfaCoinTypes.State,
-  signer: SignerProvider,
-  sender: string,
-  amount: string
-) {
-  const amountNumber = stringToBigInt(amount, 18);
-
-  const price = (alfAlfaState.fields.alphPerToken * amountNumber) / ONE_ALPH;
-
-  await BuyAlfAlfa.execute(signer, {
-    initialFields: {
-      token: alfAlfaState.contractId,
-      amount: amountNumber,
-      sender,
-    },
-    tokens: [
-      {
-        id: ALPH_TOKEN_ID,
-        amount: price,
-      },
-    ],
-    attoAlphAmount: DUST_AMOUNT,
-  });
 }

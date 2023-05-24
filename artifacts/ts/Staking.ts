@@ -24,7 +24,7 @@ import {
   ContractInstance,
   getContractEventsCurrentCount,
 } from "@alephium/web3";
-import { default as StakingContractJson } from "../ayin/staking.ral.json";
+import { default as StakingContractJson } from "../ayin/Staking.ral.json";
 
 // Custom types for the contract
 export namespace StakingTypes {
@@ -75,6 +75,31 @@ export namespace StakingTypes {
 }
 
 class Factory extends ContractFactory<StakingInstance, StakingTypes.Fields> {
+  consts = {
+    PermissionsErrorCodes: { Forbidden: BigInt(0) },
+    ErrorCodes: {
+      ReserveOverflow: BigInt(0),
+      InsufficientInitLiquidity: BigInt(1),
+      InsufficientLiquidityMinted: BigInt(2),
+      InsufficientLiquidityBurned: BigInt(3),
+      InvalidToAddress: BigInt(4),
+      InsufficientLiquidity: BigInt(5),
+      InvalidTokenInId: BigInt(6),
+      InvalidCalleeId: BigInt(7),
+      InvalidK: BigInt(8),
+      InsufficientOutputAmount: BigInt(9),
+      InsufficientInputAmount: BigInt(10),
+      IdenticalTokenIds: BigInt(11),
+      Expired: BigInt(12),
+      InsufficientToken0Amount: BigInt(13),
+      InsufficientToken1Amount: BigInt(14),
+      TokenNotExist: BigInt(15),
+      InvalidCallerAddress: BigInt(16),
+    },
+    PauseableErrorCodes: { Paused: BigInt(0) },
+    StakingAccountErrorCodes: { AlreadyExists: BigInt(0) },
+  };
+
   at(address: string): StakingInstance {
     return new StakingInstance(address);
   }

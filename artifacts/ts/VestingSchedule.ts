@@ -24,7 +24,7 @@ import {
   ContractInstance,
   getContractEventsCurrentCount,
 } from "@alephium/web3";
-import { default as VestingScheduleContractJson } from "../ayin/vesting_schedule.ral.json";
+import { default as VestingScheduleContractJson } from "../ayin/VestingSchedule.ral.json";
 
 // Custom types for the contract
 export namespace VestingScheduleTypes {
@@ -83,6 +83,28 @@ class Factory extends ContractFactory<
   VestingScheduleInstance,
   VestingScheduleTypes.Fields
 > {
+  consts = {
+    ErrorCodes: {
+      ReserveOverflow: BigInt(0),
+      InsufficientInitLiquidity: BigInt(1),
+      InsufficientLiquidityMinted: BigInt(2),
+      InsufficientLiquidityBurned: BigInt(3),
+      InvalidToAddress: BigInt(4),
+      InsufficientLiquidity: BigInt(5),
+      InvalidTokenInId: BigInt(6),
+      InvalidCalleeId: BigInt(7),
+      InvalidK: BigInt(8),
+      InsufficientOutputAmount: BigInt(9),
+      InsufficientInputAmount: BigInt(10),
+      IdenticalTokenIds: BigInt(11),
+      Expired: BigInt(12),
+      InsufficientToken0Amount: BigInt(13),
+      InsufficientToken1Amount: BigInt(14),
+      TokenNotExist: BigInt(15),
+      InvalidCallerAddress: BigInt(16),
+    },
+  };
+
   at(address: string): VestingScheduleInstance {
     return new VestingScheduleInstance(address);
   }

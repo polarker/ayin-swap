@@ -24,7 +24,7 @@ import {
   ContractInstance,
   getContractEventsCurrentCount,
 } from "@alephium/web3";
-import { default as PauseableTestContractJson } from "../test/pauseable_test.ral.json";
+import { default as PauseableTestContractJson } from "../test/PauseableTest.ral.json";
 
 // Custom types for the contract
 export namespace PauseableTestTypes {
@@ -59,6 +59,11 @@ class Factory extends ContractFactory<
   PauseableTestInstance,
   PauseableTestTypes.Fields
 > {
+  consts = {
+    PermissionsErrorCodes: { Forbidden: BigInt(0) },
+    PauseableErrorCodes: { Paused: BigInt(0) },
+  };
+
   at(address: string): PauseableTestInstance {
     return new PauseableTestInstance(address);
   }

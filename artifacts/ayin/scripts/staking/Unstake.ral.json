@@ -1,32 +1,17 @@
 {
-  "version": "v2.3.1",
-  "name": "SwapMinOut",
-  "bytecodeTemplate": "0101030000000f{0}{3}{4}a3{2}{0}{3}{4}{5}{0}{6}13070c{1}0104",
+  "version": "v2.3.3",
+  "name": "Unstake",
+  "bytecodeTemplate": "01010300000005{1}0d0c{0}010f",
   "fieldsSig": {
     "names": [
-      "sender",
-      "router",
-      "pair",
-      "tokenInId",
-      "amountIn",
-      "amountOutMin",
-      "deadline"
+      "staking",
+      "amount"
     ],
     "types": [
-      "Address",
       "ByteVec",
-      "ByteVec",
-      "ByteVec",
-      "U256",
-      "U256",
       "U256"
     ],
     "isMutable": [
-      false,
-      false,
-      false,
-      false,
-      false,
       false,
       false
     ]

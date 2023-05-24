@@ -1,8 +1,8 @@
 {
-  "version": "v2.3.1",
+  "version": "v2.3.3",
   "name": "AyinPresale",
-  "bytecode": "070e121f40284031403d4046404f405c406940b140c240d740ed40f900000101000ab4b2450c7b1600a005450c7b010001010004b400001600a105010000000102ce0002010000000102a00402010000000104a000a0032b02010000000102a00102010000000102a00202010001010004b400001600a102010001010004b400001600a10101010102004025a0020c7b000416002b0c340d7b1600a0012c13c40de0b6b3a76400002d1701b41601a9a00416012aa104a00316002aa103a003a0002f4c0204a102b4ce001600ab00020404000616000000160316011602ab010002020009b4cd16001601000aa00416002ba104010002020009b4ce0016001601000aa00016002ba100010201010004b400001600b0",
-  "codeHash": "c18282dde30457780cb05df9b4a6c156c2b0e407f6ec4739be7f7670f2e4d899",
+  "bytecode": "070f121f40284031403d4046404f405e406b407840c040d140e640fc410800000101000ab4b2450c7b1600a005450c7b010001010004b400001600a105010000000102ce0002010000000102a00402010000000104a000a0032b02010000000102a00102010000000102a00202010101010006b40000b4ce001600ac010001010004b400001600a102010001010004b400001600a10101010102004025a0020c7b000416002b0c340d7b1600a0012c13c40de0b6b3a76400002d1701b41601a9a00416012aa104a00316002aa103a003a0002f4c0204a102b4ce001600ab00020404000616000000160316011602ab010002020009b4cd16001601000ba00416002ba104010002020009b4ce0016001601000ba00016002ba100010201010004b400001600b0",
+  "codeHash": "39002e705ef8f60a7238bbed5a07ef852b2f7a6ddd73255e17a5b616aa8c1b74",
   "fieldsSig": {
     "names": [
       "ayinToken",
@@ -125,6 +125,22 @@
       "returnTypes": [
         "Bool"
       ]
+    },
+    {
+      "name": "depositAyin",
+      "usePreapprovedAssets": true,
+      "useAssetsInContract": true,
+      "isPublic": true,
+      "paramNames": [
+        "amount"
+      ],
+      "paramTypes": [
+        "U256"
+      ],
+      "paramIsMutable": [
+        false
+      ],
+      "returnTypes": []
     },
     {
       "name": "setSaleOpen",
@@ -252,6 +268,40 @@
         false
       ],
       "returnTypes": []
+    }
+  ],
+  "constants": [],
+  "enums": [
+    {
+      "name": "PermissionsErrorCodes",
+      "fields": [
+        {
+          "name": "Forbidden",
+          "value": {
+            "type": "U256",
+            "value": "0"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ErrorCodes",
+      "fields": [
+        {
+          "name": "SaleNotOpen",
+          "value": {
+            "type": "U256",
+            "value": "0"
+          }
+        },
+        {
+          "name": "NotEnoughTokens",
+          "value": {
+            "type": "U256",
+            "value": "1"
+          }
+        }
+      ]
     }
   ]
 }

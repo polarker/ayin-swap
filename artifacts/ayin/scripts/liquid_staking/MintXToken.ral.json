@@ -1,15 +1,18 @@
 {
-  "version": "v2.3.1",
-  "name": "ClaimRewards",
-  "bytecodeTemplate": "010103000000040c0c{0}0110",
+  "version": "v2.3.3",
+  "name": "MintXToken",
+  "bytecodeTemplate": "0101030001000e0c0d{0}01101700b41600{1}a3{1}0d0c{0}010c",
   "fieldsSig": {
     "names": [
-      "staking"
+      "liquidStaking",
+      "amount"
     ],
     "types": [
-      "ByteVec"
+      "ByteVec",
+      "U256"
     ],
     "isMutable": [
+      false,
       false
     ]
   },

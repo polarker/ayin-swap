@@ -24,7 +24,7 @@ import {
   ContractInstance,
   getContractEventsCurrentCount,
 } from "@alephium/web3";
-import { default as LiquidStakingContractJson } from "../ayin/liquid_staking.ral.json";
+import { default as LiquidStakingContractJson } from "../ayin/LiquidStaking.ral.json";
 
 // Custom types for the contract
 export namespace LiquidStakingTypes {
@@ -103,6 +103,11 @@ class Factory extends ContractFactory<
   LiquidStakingInstance,
   LiquidStakingTypes.Fields
 > {
+  consts = {
+    PermissionsErrorCodes: { Forbidden: BigInt(0) },
+    PauseableErrorCodes: { Paused: BigInt(0) },
+  };
+
   at(address: string): LiquidStakingInstance {
     return new LiquidStakingInstance(address);
   }
