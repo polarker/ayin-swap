@@ -25,6 +25,7 @@ import {
   getContractEventsCurrentCount,
 } from "@alephium/web3";
 import { default as VestingScheduleContractJson } from "../ayin/VestingSchedule.ral.json";
+import { getContractByCodeHash } from "./contracts";
 
 // Custom types for the contract
 export namespace VestingScheduleTypes {
@@ -196,7 +197,8 @@ export class VestingScheduleInstance extends ContractInstance {
         VestingSchedule,
         this,
         "getTokenId",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getVestedTotalAmount: async (
@@ -208,7 +210,8 @@ export class VestingScheduleInstance extends ContractInstance {
         VestingSchedule,
         this,
         "getVestedTotalAmount",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getReleaseableAmount: async (
@@ -220,7 +223,8 @@ export class VestingScheduleInstance extends ContractInstance {
         VestingSchedule,
         this,
         "getReleaseableAmount",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getReleased: async (
@@ -230,7 +234,8 @@ export class VestingScheduleInstance extends ContractInstance {
         VestingSchedule,
         this,
         "getReleased",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getBeneficiary: async (
@@ -240,7 +245,8 @@ export class VestingScheduleInstance extends ContractInstance {
         VestingSchedule,
         this,
         "getBeneficiary",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getReleaseAt: async (
@@ -250,7 +256,8 @@ export class VestingScheduleInstance extends ContractInstance {
         VestingSchedule,
         this,
         "getReleaseAt",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
   };
@@ -261,7 +268,8 @@ export class VestingScheduleInstance extends ContractInstance {
     return (await multicallMethods(
       VestingSchedule,
       this,
-      calls
+      calls,
+      getContractByCodeHash
     )) as VestingScheduleTypes.MultiCallResults<Calls>;
   }
 }

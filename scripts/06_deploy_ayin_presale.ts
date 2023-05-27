@@ -10,7 +10,7 @@ async function deployAyin(deployer: Deployer) {
   const tokensForSale = 100_000n * ONE_ALPH;
   const alphPerToken = ONE_ALPH;
 
-  const mintTx = await deployer.runScript(MintAyin.execute, MintAyin.script, {
+  const mintTx = await deployer.runScript(MintAyin, {
     initialFields: {
       ayin: ayin.contractInstance.contractId,
       amount: tokensForSale,

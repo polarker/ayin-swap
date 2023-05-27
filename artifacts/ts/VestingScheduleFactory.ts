@@ -25,6 +25,7 @@ import {
   getContractEventsCurrentCount,
 } from "@alephium/web3";
 import { default as VestingScheduleFactoryContractJson } from "../ayin/VestingScheduleFactory.ral.json";
+import { getContractByCodeHash } from "./contracts";
 
 // Custom types for the contract
 export namespace VestingScheduleFactoryTypes {
@@ -164,7 +165,8 @@ export class VestingScheduleFactoryInstance extends ContractInstance {
         VestingScheduleFactory,
         this,
         "getVestingScheduleByAddress",
-        params
+        params,
+        getContractByCodeHash
       );
     },
   };
@@ -175,7 +177,8 @@ export class VestingScheduleFactoryInstance extends ContractInstance {
     return (await multicallMethods(
       VestingScheduleFactory,
       this,
-      calls
+      calls,
+      getContractByCodeHash
     )) as VestingScheduleFactoryTypes.MultiCallResults<Calls>;
   }
 }

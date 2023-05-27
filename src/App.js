@@ -1,8 +1,7 @@
-// import Home from './views/Home';
-import Presale from './views/Presale';
+import Home from './views/Home';
 
 function App() {
-  return <Presale />;
+  return <Home />;
 }
 
 export default App;

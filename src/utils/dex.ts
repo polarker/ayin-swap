@@ -712,7 +712,13 @@ export function getTokenInfos(): TokenInfo[] {
         logoURI: genLogo(tokenInfo.name),
       };
     })
-    .concat([ALPHTokenInfo]);
+    .concat([ALPHTokenInfo])
+    .concat({
+      id: network.ayinTokenId,
+      name: 'Ayin',
+      symbol: 'Ayin',
+      decimals: 18,
+    });
 }
 
 // This is only used for user inputs

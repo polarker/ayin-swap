@@ -25,6 +25,7 @@ import {
   getContractEventsCurrentCount,
 } from "@alephium/web3";
 import { default as AyinTokenContractJson } from "../ayin/AyinToken.ral.json";
+import { getContractByCodeHash } from "./contracts";
 
 // Custom types for the contract
 export namespace AyinTokenTypes {
@@ -198,7 +199,8 @@ export class AyinTokenInstance extends ContractInstance {
         AyinToken,
         this,
         "getSymbol",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getName: async (
@@ -208,7 +210,8 @@ export class AyinTokenInstance extends ContractInstance {
         AyinToken,
         this,
         "getName",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getDecimals: async (
@@ -218,7 +221,8 @@ export class AyinTokenInstance extends ContractInstance {
         AyinToken,
         this,
         "getDecimals",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getTotalSupply: async (
@@ -228,7 +232,8 @@ export class AyinTokenInstance extends ContractInstance {
         AyinToken,
         this,
         "getTotalSupply",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
   };
@@ -239,7 +244,8 @@ export class AyinTokenInstance extends ContractInstance {
     return (await multicallMethods(
       AyinToken,
       this,
-      calls
+      calls,
+      getContractByCodeHash
     )) as AyinTokenTypes.MultiCallResults<Calls>;
   }
 }

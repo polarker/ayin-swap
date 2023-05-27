@@ -25,6 +25,7 @@ import {
   getContractEventsCurrentCount,
 } from "@alephium/web3";
 import { default as AyinPresaleContractJson } from "../ayin/AyinPresale.ral.json";
+import { getContractByCodeHash } from "./contracts";
 
 // Custom types for the contract
 export namespace AyinPresaleTypes {
@@ -222,7 +223,8 @@ export class AyinPresaleInstance extends ContractInstance {
         AyinPresale,
         this,
         "getAyinTokenId",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getAlphBalance: async (
@@ -232,7 +234,8 @@ export class AyinPresaleInstance extends ContractInstance {
         AyinPresale,
         this,
         "getAlphBalance",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getTokensLeft: async (
@@ -242,7 +245,8 @@ export class AyinPresaleInstance extends ContractInstance {
         AyinPresale,
         this,
         "getTokensLeft",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getAlphPerToken: async (
@@ -252,7 +256,8 @@ export class AyinPresaleInstance extends ContractInstance {
         AyinPresale,
         this,
         "getAlphPerToken",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getSaleOpen: async (
@@ -262,7 +267,8 @@ export class AyinPresaleInstance extends ContractInstance {
         AyinPresale,
         this,
         "getSaleOpen",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
   };
@@ -273,7 +279,8 @@ export class AyinPresaleInstance extends ContractInstance {
     return (await multicallMethods(
       AyinPresale,
       this,
-      calls
+      calls,
+      getContractByCodeHash
     )) as AyinPresaleTypes.MultiCallResults<Calls>;
   }
 }

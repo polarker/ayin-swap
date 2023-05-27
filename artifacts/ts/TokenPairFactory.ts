@@ -25,6 +25,7 @@ import {
   getContractEventsCurrentCount,
 } from "@alephium/web3";
 import { default as TokenPairFactoryContractJson } from "../dex/TokenPairFactory.ral.json";
+import { getContractByCodeHash } from "./contracts";
 
 // Custom types for the contract
 export namespace TokenPairFactoryTypes {

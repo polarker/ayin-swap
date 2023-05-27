@@ -25,6 +25,7 @@ import {
   getContractEventsCurrentCount,
 } from "@alephium/web3";
 import { default as PauseableTestContractJson } from "../test/PauseableTest.ral.json";
+import { getContractByCodeHash } from "./contracts";
 
 // Custom types for the contract
 export namespace PauseableTestTypes {
@@ -144,7 +145,8 @@ export class PauseableTestInstance extends ContractInstance {
         PauseableTest,
         this,
         "test_fn",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
   };
@@ -155,7 +157,8 @@ export class PauseableTestInstance extends ContractInstance {
     return (await multicallMethods(
       PauseableTest,
       this,
-      calls
+      calls,
+      getContractByCodeHash
     )) as PauseableTestTypes.MultiCallResults<Calls>;
   }
 }

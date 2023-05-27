@@ -25,6 +25,7 @@ import {
   getContractEventsCurrentCount,
 } from "@alephium/web3";
 import { default as StakingContractJson } from "../ayin/Staking.ral.json";
+import { getContractByCodeHash } from "./contracts";
 
 // Custom types for the contract
 export namespace StakingTypes {
@@ -224,12 +225,24 @@ export class StakingInstance extends ContractInstance {
     stakingAccountExists: async (
       params: StakingTypes.CallMethodParams<"stakingAccountExists">
     ): Promise<StakingTypes.CallMethodResult<"stakingAccountExists">> => {
-      return callMethod(Staking, this, "stakingAccountExists", params);
+      return callMethod(
+        Staking,
+        this,
+        "stakingAccountExists",
+        params,
+        getContractByCodeHash
+      );
     },
     getStakingAccount: async (
       params: StakingTypes.CallMethodParams<"getStakingAccount">
     ): Promise<StakingTypes.CallMethodResult<"getStakingAccount">> => {
-      return callMethod(Staking, this, "getStakingAccount", params);
+      return callMethod(
+        Staking,
+        this,
+        "getStakingAccount",
+        params,
+        getContractByCodeHash
+      );
     },
     getTokenId: async (
       params?: StakingTypes.CallMethodParams<"getTokenId">
@@ -238,7 +251,8 @@ export class StakingInstance extends ContractInstance {
         Staking,
         this,
         "getTokenId",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getRewardsTokenId: async (
@@ -248,7 +262,8 @@ export class StakingInstance extends ContractInstance {
         Staking,
         this,
         "getRewardsTokenId",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
   };
@@ -259,7 +274,8 @@ export class StakingInstance extends ContractInstance {
     return (await multicallMethods(
       Staking,
       this,
-      calls
+      calls,
+      getContractByCodeHash
     )) as StakingTypes.MultiCallResults<Calls>;
   }
 }

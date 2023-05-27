@@ -9,14 +9,35 @@ import {
   TopUpRewards,
 } from '../../artifacts/ts';
 import { network } from '../utils/consts';
-import { useAlephiumWallet } from './useAlephiumWallet';
+import { bigIntToString } from '../utils/dex';
+import { useAlephiumWallet, useAvailableBalances } from './useAlephiumWallet';
 
 export function useXAyin() {
   const wallet = useAlephiumWallet();
   const [xAyinState, setXAyinState] = useState<LiquidStakingTypes.State>();
+  const [ayinBalance, setAyinBalance] = useState('0.0');
+  const [xAyinBalance, setXAyinBalance] = useState('0.0');
+  const balance = useAvailableBalances();
 
   const contractAddress = addressFromContractId(network.xAyinId);
   const contract = LiquidStaking.at(contractAddress);
+
+  useEffect(() => {
+    if (balance === undefined) return;
+    if (xAyinState === undefined) return;
+
+    const { tokenId } = xAyinState.fields;
+    const ayinBalance = balance.get(tokenId);
+    const xAyinBalance = balance.get(contract.contractId);
+
+    if (ayinBalance) {
+      setAyinBalance(bigIntToString(ayinBalance, 18));
+    }
+
+    if (xAyinBalance) {
+      setXAyinBalance(bigIntToString(xAyinBalance, 18));
+    }
+  }, [balance, xAyinState]);
 
   const fetchXAyinState = async () => {
     const state = await contract.fetchState();
@@ -101,5 +122,12 @@ export function useXAyin() {
     fetchXAyinState();
   }, [wallet]);
 
-  return { xAyinState, mintXAyin, burnXAyin, topUpRewards };
+  return {
+    xAyinState,
+    ayinBalance,
+    xAyinBalance,
+    mintXAyin,
+    burnXAyin,
+    topUpRewards,
+  };
 }

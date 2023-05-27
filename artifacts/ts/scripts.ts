@@ -4,6 +4,7 @@
 
 import {
   Address,
+  ExecutableScript,
   ExecuteScriptParams,
   ExecuteScriptResult,
   Script,
@@ -26,232 +27,88 @@ import { default as SwapMaxInScriptJson } from "../scripts/SwapMaxIn.ral.json";
 import { default as SwapMinOutScriptJson } from "../scripts/SwapMinOut.ral.json";
 import { default as GetTokenScriptJson } from "../test/GetToken.ral.json";
 
-export namespace MintAyin {
-  export async function execute(
-    signer: SignerProvider,
-    params: ExecuteScriptParams<{
-      ayin: HexString;
-      to: Address;
-      amount: bigint;
-    }>
-  ): Promise<ExecuteScriptResult> {
-    const signerParams = await script.txParamsForExecution(signer, params);
-    return await signer.signAndSubmitExecuteScriptTx(signerParams);
-  }
-
-  export const script = Script.fromJson(MintAyinScriptJson);
-}
-
-export namespace BurnXToken {
-  export async function execute(
-    signer: SignerProvider,
-    params: ExecuteScriptParams<{
-      liquidStaking: HexString;
-      xTokenAmount: bigint;
-    }>
-  ): Promise<ExecuteScriptResult> {
-    const signerParams = await script.txParamsForExecution(signer, params);
-    return await signer.signAndSubmitExecuteScriptTx(signerParams);
-  }
-
-  export const script = Script.fromJson(BurnXTokenScriptJson);
-}
-
-export namespace MintXToken {
-  export async function execute(
-    signer: SignerProvider,
-    params: ExecuteScriptParams<{ liquidStaking: HexString; amount: bigint }>
-  ): Promise<ExecuteScriptResult> {
-    const signerParams = await script.txParamsForExecution(signer, params);
-    return await signer.signAndSubmitExecuteScriptTx(signerParams);
-  }
-
-  export const script = Script.fromJson(MintXTokenScriptJson);
-}
-
-export namespace TopUpRewards {
-  export async function execute(
-    signer: SignerProvider,
-    params: ExecuteScriptParams<{ liquidStaking: HexString; amount: bigint }>
-  ): Promise<ExecuteScriptResult> {
-    const signerParams = await script.txParamsForExecution(signer, params);
-    return await signer.signAndSubmitExecuteScriptTx(signerParams);
-  }
-
-  export const script = Script.fromJson(TopUpRewardsScriptJson);
-}
-
-export namespace BuyAyin {
-  export async function execute(
-    signer: SignerProvider,
-    params: ExecuteScriptParams<{ presale: HexString; amount: bigint }>
-  ): Promise<ExecuteScriptResult> {
-    const signerParams = await script.txParamsForExecution(signer, params);
-    return await signer.signAndSubmitExecuteScriptTx(signerParams);
-  }
-
-  export const script = Script.fromJson(BuyAyinScriptJson);
-}
-
-export namespace DepositAyin {
-  export async function execute(
-    signer: SignerProvider,
-    params: ExecuteScriptParams<{ presale: HexString; amount: bigint }>
-  ): Promise<ExecuteScriptResult> {
-    const signerParams = await script.txParamsForExecution(signer, params);
-    return await signer.signAndSubmitExecuteScriptTx(signerParams);
-  }
-
-  export const script = Script.fromJson(DepositAyinScriptJson);
-}
-
-export namespace ClaimRewards {
-  export async function execute(
-    signer: SignerProvider,
-    params: ExecuteScriptParams<{ staking: HexString }>
-  ): Promise<ExecuteScriptResult> {
-    const signerParams = await script.txParamsForExecution(signer, params);
-    return await signer.signAndSubmitExecuteScriptTx(signerParams);
-  }
-
-  export const script = Script.fromJson(ClaimRewardsScriptJson);
-}
-
-export namespace Stake {
-  export async function execute(
-    signer: SignerProvider,
-    params: ExecuteScriptParams<{ staking: HexString; amount: bigint }>
-  ): Promise<ExecuteScriptResult> {
-    const signerParams = await script.txParamsForExecution(signer, params);
-    return await signer.signAndSubmitExecuteScriptTx(signerParams);
-  }
-
-  export const script = Script.fromJson(StakeScriptJson);
-}
-
-export namespace Unstake {
-  export async function execute(
-    signer: SignerProvider,
-    params: ExecuteScriptParams<{ staking: HexString; amount: bigint }>
-  ): Promise<ExecuteScriptResult> {
-    const signerParams = await script.txParamsForExecution(signer, params);
-    return await signer.signAndSubmitExecuteScriptTx(signerParams);
-  }
-
-  export const script = Script.fromJson(UnstakeScriptJson);
-}
-
-export namespace AddLiquidity {
-  export async function execute(
-    signer: SignerProvider,
-    params: ExecuteScriptParams<{
-      sender: Address;
-      router: HexString;
-      pair: HexString;
-      amount0Desired: bigint;
-      amount1Desired: bigint;
-      amount0Min: bigint;
-      amount1Min: bigint;
-      deadline: bigint;
-    }>
-  ): Promise<ExecuteScriptResult> {
-    const signerParams = await script.txParamsForExecution(signer, params);
-    return await signer.signAndSubmitExecuteScriptTx(signerParams);
-  }
-
-  export const script = Script.fromJson(AddLiquidityScriptJson);
-}
-
-export namespace CreatePair {
-  export async function execute(
-    signer: SignerProvider,
-    params: ExecuteScriptParams<{
-      payer: Address;
-      factory: HexString;
-      alphAmount: bigint;
-      tokenAId: HexString;
-      tokenBId: HexString;
-    }>
-  ): Promise<ExecuteScriptResult> {
-    const signerParams = await script.txParamsForExecution(signer, params);
-    return await signer.signAndSubmitExecuteScriptTx(signerParams);
-  }
-
-  export const script = Script.fromJson(CreatePairScriptJson);
-}
-
-export namespace RemoveLiquidity {
-  export async function execute(
-    signer: SignerProvider,
-    params: ExecuteScriptParams<{
-      sender: Address;
-      router: HexString;
-      pairId: HexString;
-      liquidity: bigint;
-      amount0Min: bigint;
-      amount1Min: bigint;
-      deadline: bigint;
-    }>
-  ): Promise<ExecuteScriptResult> {
-    const signerParams = await script.txParamsForExecution(signer, params);
-    return await signer.signAndSubmitExecuteScriptTx(signerParams);
-  }
-
-  export const script = Script.fromJson(RemoveLiquidityScriptJson);
-}
-
-export namespace SwapMaxIn {
-  export async function execute(
-    signer: SignerProvider,
-    params: ExecuteScriptParams<{
-      sender: Address;
-      router: HexString;
-      pair: HexString;
-      tokenInId: HexString;
-      amountInMax: bigint;
-      amountOut: bigint;
-      deadline: bigint;
-    }>
-  ): Promise<ExecuteScriptResult> {
-    const signerParams = await script.txParamsForExecution(signer, params);
-    return await signer.signAndSubmitExecuteScriptTx(signerParams);
-  }
-
-  export const script = Script.fromJson(SwapMaxInScriptJson);
-}
-
-export namespace SwapMinOut {
-  export async function execute(
-    signer: SignerProvider,
-    params: ExecuteScriptParams<{
-      sender: Address;
-      router: HexString;
-      pair: HexString;
-      tokenInId: HexString;
-      amountIn: bigint;
-      amountOutMin: bigint;
-      deadline: bigint;
-    }>
-  ): Promise<ExecuteScriptResult> {
-    const signerParams = await script.txParamsForExecution(signer, params);
-    return await signer.signAndSubmitExecuteScriptTx(signerParams);
-  }
-
-  export const script = Script.fromJson(SwapMinOutScriptJson);
-}
-
-export namespace GetToken {
-  export async function execute(
-    signer: SignerProvider,
-    params: ExecuteScriptParams<{
-      token: HexString;
-      sender: Address;
-      amount: bigint;
-    }>
-  ): Promise<ExecuteScriptResult> {
-    const signerParams = await script.txParamsForExecution(signer, params);
-    return await signer.signAndSubmitExecuteScriptTx(signerParams);
-  }
-
-  export const script = Script.fromJson(GetTokenScriptJson);
-}
+export const MintAyin = new ExecutableScript<{
+  ayin: HexString;
+  to: Address;
+  amount: bigint;
+}>(Script.fromJson(MintAyinScriptJson));
+export const BurnXToken = new ExecutableScript<{
+  liquidStaking: HexString;
+  xTokenAmount: bigint;
+}>(Script.fromJson(BurnXTokenScriptJson));
+export const MintXToken = new ExecutableScript<{
+  liquidStaking: HexString;
+  amount: bigint;
+}>(Script.fromJson(MintXTokenScriptJson));
+export const TopUpRewards = new ExecutableScript<{
+  liquidStaking: HexString;
+  amount: bigint;
+}>(Script.fromJson(TopUpRewardsScriptJson));
+export const BuyAyin = new ExecutableScript<{
+  presale: HexString;
+  amount: bigint;
+}>(Script.fromJson(BuyAyinScriptJson));
+export const DepositAyin = new ExecutableScript<{
+  presale: HexString;
+  amount: bigint;
+}>(Script.fromJson(DepositAyinScriptJson));
+export const ClaimRewards = new ExecutableScript<{ staking: HexString }>(
+  Script.fromJson(ClaimRewardsScriptJson)
+);
+export const Stake = new ExecutableScript<{
+  staking: HexString;
+  amount: bigint;
+}>(Script.fromJson(StakeScriptJson));
+export const Unstake = new ExecutableScript<{
+  staking: HexString;
+  amount: bigint;
+}>(Script.fromJson(UnstakeScriptJson));
+export const AddLiquidity = new ExecutableScript<{
+  sender: Address;
+  router: HexString;
+  pair: HexString;
+  amount0Desired: bigint;
+  amount1Desired: bigint;
+  amount0Min: bigint;
+  amount1Min: bigint;
+  deadline: bigint;
+}>(Script.fromJson(AddLiquidityScriptJson));
+export const CreatePair = new ExecutableScript<{
+  payer: Address;
+  factory: HexString;
+  alphAmount: bigint;
+  tokenAId: HexString;
+  tokenBId: HexString;
+}>(Script.fromJson(CreatePairScriptJson));
+export const RemoveLiquidity = new ExecutableScript<{
+  sender: Address;
+  router: HexString;
+  pairId: HexString;
+  liquidity: bigint;
+  amount0Min: bigint;
+  amount1Min: bigint;
+  deadline: bigint;
+}>(Script.fromJson(RemoveLiquidityScriptJson));
+export const SwapMaxIn = new ExecutableScript<{
+  sender: Address;
+  router: HexString;
+  pair: HexString;
+  tokenInId: HexString;
+  amountInMax: bigint;
+  amountOut: bigint;
+  deadline: bigint;
+}>(Script.fromJson(SwapMaxInScriptJson));
+export const SwapMinOut = new ExecutableScript<{
+  sender: Address;
+  router: HexString;
+  pair: HexString;
+  tokenInId: HexString;
+  amountIn: bigint;
+  amountOutMin: bigint;
+  deadline: bigint;
+}>(Script.fromJson(SwapMinOutScriptJson));
+export const GetToken = new ExecutableScript<{
+  token: HexString;
+  sender: Address;
+  amount: bigint;
+}>(Script.fromJson(GetTokenScriptJson));

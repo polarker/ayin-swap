@@ -1,18 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useAyinPresale } from '../hooks/useAyinPresale';
-import { useStaking } from '../hooks/useStaking';
-import { useXAyin } from '../hooks/useXAyin';
 import { bigIntToString } from '../utils/dex';
 
 function Presale() {
   const [buyAmount, setBuyAmount] = useState('0.0');
   const { presaleState, ayinLeft, buyAyin, calculatePriceInAlph } =
     useAyinPresale();
-
-  const { mintXAyin, burnXAyin, topUpRewards } = useXAyin();
-  const { stakingAccountState } = useStaking();
-
-  useEffect(() => console.log(stakingAccountState), [stakingAccountState]);
 
   const onAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value;
@@ -36,12 +29,9 @@ function Presale() {
       </div>
       <input type="number" value={buyAmount} onChange={onAmountChange} />
       <div>
-        Total price: {bigIntToString(calculatePriceInAlph(buyAmount), 18)}
+        Total price: {bigIntToString(calculatePriceInAlph(buyAmount), 18)} ALPH
       </div>
       <button onClick={() => buyAyin(buyAmount)}>Buy</button>
-      <button onClick={() => mintXAyin(buyAmount)}>Mint xAyin</button>
-      <button onClick={() => burnXAyin(buyAmount)}>Burn xAyin</button>
-      <button onClick={() => topUpRewards(buyAmount)}>Topup rewards</button>
     </div>
   );
 }

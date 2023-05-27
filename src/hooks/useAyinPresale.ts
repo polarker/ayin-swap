@@ -11,19 +11,16 @@ export function useAyinPresale() {
   const [ayinLeft, setAyinLeft] = useState('');
   const wallet = useAlephiumWallet();
 
-  const fetchPresaleState = async () => {
-    const contractAddress = addressFromContractId(network.ayinPresaleId);
-    const contract = AyinPresale.at(contractAddress);
+  const contractAddress = addressFromContractId(network.ayinPresaleId);
+  const contract = AyinPresale.at(contractAddress);
 
+  const fetchPresaleState = async () => {
     const state = await contract.fetchState();
 
     setPresaleState(state);
   };
 
   const getAyinLeft = async () => {
-    const contractAddress = addressFromContractId(network.ayinPresaleId);
-    const contract = AyinPresale.at(contractAddress);
-
     const ayinLeft = await contract.methods.getTokensLeft();
 
     setAyinLeft(bigIntToString(ayinLeft.returns, 18));
@@ -67,6 +64,7 @@ export function useAyinPresale() {
     if (wallet === undefined) return;
 
     fetchPresaleState();
+    getAyinLeft();
   }, [wallet]);
 
   return { presaleState, ayinLeft, calculatePriceInAlph, buyAyin };

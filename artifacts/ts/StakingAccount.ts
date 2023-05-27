@@ -25,6 +25,7 @@ import {
   getContractEventsCurrentCount,
 } from "@alephium/web3";
 import { default as StakingAccountContractJson } from "../ayin/StakingAccount.ral.json";
+import { getContractByCodeHash } from "./contracts";
 
 // Custom types for the contract
 export namespace StakingAccountTypes {
@@ -200,7 +201,8 @@ export class StakingAccountInstance extends ContractInstance {
         StakingAccount,
         this,
         "getTokenId",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getRewardsTokenId: async (
@@ -210,7 +212,8 @@ export class StakingAccountInstance extends ContractInstance {
         StakingAccount,
         this,
         "getRewardsTokenId",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getStaker: async (
@@ -220,7 +223,8 @@ export class StakingAccountInstance extends ContractInstance {
         StakingAccount,
         this,
         "getStaker",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getAmountStaked: async (
@@ -230,7 +234,8 @@ export class StakingAccountInstance extends ContractInstance {
         StakingAccount,
         this,
         "getAmountStaked",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getRewardPerTokenPaid: async (
@@ -242,7 +247,8 @@ export class StakingAccountInstance extends ContractInstance {
         StakingAccount,
         this,
         "getRewardPerTokenPaid",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getRewards: async (
@@ -252,7 +258,8 @@ export class StakingAccountInstance extends ContractInstance {
         StakingAccount,
         this,
         "getRewards",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
   };
@@ -263,7 +270,8 @@ export class StakingAccountInstance extends ContractInstance {
     return (await multicallMethods(
       StakingAccount,
       this,
-      calls
+      calls,
+      getContractByCodeHash
     )) as StakingAccountTypes.MultiCallResults<Calls>;
   }
 }

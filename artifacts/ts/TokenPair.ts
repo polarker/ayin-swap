@@ -25,6 +25,7 @@ import {
   getContractEventsCurrentCount,
 } from "@alephium/web3";
 import { default as TokenPairContractJson } from "../dex/TokenPair.ral.json";
+import { getContractByCodeHash } from "./contracts";
 
 // Custom types for the contract
 export namespace TokenPairTypes {
@@ -352,7 +353,8 @@ export class TokenPairInstance extends ContractInstance {
         TokenPair,
         this,
         "getSymbol",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getName: async (
@@ -362,7 +364,8 @@ export class TokenPairInstance extends ContractInstance {
         TokenPair,
         this,
         "getName",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getDecimals: async (
@@ -372,7 +375,8 @@ export class TokenPairInstance extends ContractInstance {
         TokenPair,
         this,
         "getDecimals",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getTotalSupply: async (
@@ -382,18 +386,25 @@ export class TokenPairInstance extends ContractInstance {
         TokenPair,
         this,
         "getTotalSupply",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     uqdiv: async (
       params: TokenPairTypes.CallMethodParams<"uqdiv">
     ): Promise<TokenPairTypes.CallMethodResult<"uqdiv">> => {
-      return callMethod(TokenPair, this, "uqdiv", params);
+      return callMethod(
+        TokenPair,
+        this,
+        "uqdiv",
+        params,
+        getContractByCodeHash
+      );
     },
     sqrt: async (
       params: TokenPairTypes.CallMethodParams<"sqrt">
     ): Promise<TokenPairTypes.CallMethodResult<"sqrt">> => {
-      return callMethod(TokenPair, this, "sqrt", params);
+      return callMethod(TokenPair, this, "sqrt", params, getContractByCodeHash);
     },
     getTokenPair: async (
       params?: TokenPairTypes.CallMethodParams<"getTokenPair">
@@ -402,7 +413,8 @@ export class TokenPairInstance extends ContractInstance {
         TokenPair,
         this,
         "getTokenPair",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getReserves: async (
@@ -412,7 +424,8 @@ export class TokenPairInstance extends ContractInstance {
         TokenPair,
         this,
         "getReserves",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getBlockTimeStampLast: async (
@@ -422,7 +435,8 @@ export class TokenPairInstance extends ContractInstance {
         TokenPair,
         this,
         "getBlockTimeStampLast",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getPrice0CumulativeLast: async (
@@ -432,7 +446,8 @@ export class TokenPairInstance extends ContractInstance {
         TokenPair,
         this,
         "getPrice0CumulativeLast",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getPrice1CumulativeLast: async (
@@ -442,18 +457,19 @@ export class TokenPairInstance extends ContractInstance {
         TokenPair,
         this,
         "getPrice1CumulativeLast",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     mint: async (
       params: TokenPairTypes.CallMethodParams<"mint">
     ): Promise<TokenPairTypes.CallMethodResult<"mint">> => {
-      return callMethod(TokenPair, this, "mint", params);
+      return callMethod(TokenPair, this, "mint", params, getContractByCodeHash);
     },
     burn: async (
       params: TokenPairTypes.CallMethodParams<"burn">
     ): Promise<TokenPairTypes.CallMethodResult<"burn">> => {
-      return callMethod(TokenPair, this, "burn", params);
+      return callMethod(TokenPair, this, "burn", params, getContractByCodeHash);
     },
   };
 
@@ -463,7 +479,8 @@ export class TokenPairInstance extends ContractInstance {
     return (await multicallMethods(
       TokenPair,
       this,
-      calls
+      calls,
+      getContractByCodeHash
     )) as TokenPairTypes.MultiCallResults<Calls>;
   }
 }

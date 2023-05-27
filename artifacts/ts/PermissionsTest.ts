@@ -25,6 +25,7 @@ import {
   getContractEventsCurrentCount,
 } from "@alephium/web3";
 import { default as PermissionsTestContractJson } from "../test/PermissionsTest.ral.json";
+import { getContractByCodeHash } from "./contracts";
 
 // Custom types for the contract
 export namespace PermissionsTestTypes {
@@ -119,7 +120,8 @@ export class PermissionsTestInstance extends ContractInstance {
         PermissionsTest,
         this,
         "something_private",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
   };
@@ -130,7 +132,8 @@ export class PermissionsTestInstance extends ContractInstance {
     return (await multicallMethods(
       PermissionsTest,
       this,
-      calls
+      calls,
+      getContractByCodeHash
     )) as PermissionsTestTypes.MultiCallResults<Calls>;
   }
 }

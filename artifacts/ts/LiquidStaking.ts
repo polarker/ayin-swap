@@ -25,6 +25,7 @@ import {
   getContractEventsCurrentCount,
 } from "@alephium/web3";
 import { default as LiquidStakingContractJson } from "../ayin/LiquidStaking.ral.json";
+import { getContractByCodeHash } from "./contracts";
 
 // Custom types for the contract
 export namespace LiquidStakingTypes {
@@ -329,7 +330,8 @@ export class LiquidStakingInstance extends ContractInstance {
         LiquidStaking,
         this,
         "getSymbol",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getName: async (
@@ -339,7 +341,8 @@ export class LiquidStakingInstance extends ContractInstance {
         LiquidStaking,
         this,
         "getName",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getDecimals: async (
@@ -349,7 +352,8 @@ export class LiquidStakingInstance extends ContractInstance {
         LiquidStaking,
         this,
         "getDecimals",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getTotalSupply: async (
@@ -359,7 +363,8 @@ export class LiquidStakingInstance extends ContractInstance {
         LiquidStaking,
         this,
         "getTotalSupply",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getCurrentRewardPerMillisecond: async (
@@ -371,7 +376,8 @@ export class LiquidStakingInstance extends ContractInstance {
         LiquidStaking,
         this,
         "getCurrentRewardPerMillisecond",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getCurrentPrice: async (
@@ -381,7 +387,8 @@ export class LiquidStakingInstance extends ContractInstance {
         LiquidStaking,
         this,
         "getCurrentPrice",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
     getTokenId: async (
@@ -391,7 +398,8 @@ export class LiquidStakingInstance extends ContractInstance {
         LiquidStaking,
         this,
         "getTokenId",
-        params === undefined ? {} : params
+        params === undefined ? {} : params,
+        getContractByCodeHash
       );
     },
   };
@@ -402,7 +410,8 @@ export class LiquidStakingInstance extends ContractInstance {
     return (await multicallMethods(
       LiquidStaking,
       this,
-      calls
+      calls,
+      getContractByCodeHash
     )) as LiquidStakingTypes.MultiCallResults<Calls>;
   }
 }
