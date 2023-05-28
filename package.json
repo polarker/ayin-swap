@@ -2,7 +2,6 @@
   "name": "ayin-swap",
   "version": "0.1.0",
   "license": "GPL",
-  "homepage": "https://github.com/0dd431c8/ayin-swap",
   "scripts": {
     "compile": "npx @alephium/cli@0.12.4 compile",
     "test": "npx @alephium/cli@0.12.4 test",
