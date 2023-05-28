@@ -700,7 +700,16 @@ export function getTokenInfos(): TokenInfo[] {
     return [ALPHTokenInfo, ...mainnetTokensMetadata.tokens];
   }
   if (networkId === 'testnet') {
-    return [ALPHTokenInfo, ...testnetTokensMetadata.tokens];
+    return [
+      ALPHTokenInfo,
+      {
+        id: network.ayinTokenId,
+        name: 'Ayin',
+        symbol: 'Ayin',
+        decimals: 18,
+      },
+      ...testnetTokensMetadata.tokens,
+    ];
   }
   return (devnetTokenList as TokenInfo[])
     .map<TokenInfo>((tokenInfo) => {
