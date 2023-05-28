@@ -1,7 +1,7 @@
 import { addressFromContractId, DUST_AMOUNT, ONE_ALPH } from '@alephium/web3';
 import { parseUnits } from 'ethers/lib/utils';
 import { useCallback, useEffect, useState } from 'react';
-import { AyinPresale, AyinPresaleTypes, BuyAyin } from '../../artifacts/ts';
+import { AyinPresale, AyinPresaleTypes, BuyAyin } from '../contracts/ts';
 import { network } from '../utils/consts';
 import { bigIntToString } from '../utils/dex';
 import { useAlephiumWallet } from './useAlephiumWallet';

@@ -7,7 +7,7 @@ import {
   LiquidStakingTypes,
   MintXToken,
   TopUpRewards,
-} from '../../artifacts/ts';
+} from '../contracts/ts';
 import { network } from '../utils/consts';
 import { bigIntToString } from '../utils/dex';
 import { useAlephiumWallet, useAvailableBalances } from './useAlephiumWallet';

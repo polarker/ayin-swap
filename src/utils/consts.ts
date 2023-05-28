@@ -1,5 +1,5 @@
 import { NetworkId } from '@alephium/web3';
-import { loadDeployments } from '../../artifacts/ts/deployments';
+import { loadDeployments } from '../contracts/ts/deployments';
 
 export interface NetworkConfig {
   groupIndex: number;

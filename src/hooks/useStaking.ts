@@ -6,7 +6,6 @@ import {
   ONE_ALPH,
   subContractId,
 } from '@alephium/web3';
-import { useBalance } from '@alephium/web3-react';
 import { parseUnits } from 'ethers/lib/utils';
 import { useCallback, useEffect, useState } from 'react';
 import {
@@ -17,9 +16,9 @@ import {
   StakingAccountTypes,
   StakingTypes,
   Unstake,
-} from '../../artifacts/ts';
+} from '../contracts/ts';
 import { network } from '../utils/consts';
-import { bigIntToString, tryGetBalance } from '../utils/dex';
+import { bigIntToString } from '../utils/dex';
 import { useAlephiumWallet, useAvailableBalances } from './useAlephiumWallet';
 
 export function useStaking() {

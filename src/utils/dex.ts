@@ -20,7 +20,7 @@ import {
   AddLiquidity,
   RemoveLiquidity,
   CreatePair,
-} from '../../artifacts/ts';
+} from '../contracts/ts';
 import { genLogo } from './avatar_images';
 import {
   mainnetTokensMetadata,
@@ -110,8 +110,8 @@ export function getExplorerLink(txId: string): string {
   return networkId === 'mainnet'
     ? `https://explorer.alephium.org/transactions/${txId}`
     : networkId === 'testnet'
-    ? `https://explorer.testnet.alephium.org/transactions/${txId}`
-    : `http://localhost:3000/${txId}`;
+      ? `https://explorer.testnet.alephium.org/transactions/${txId}`
+      : `http://localhost:3000/${txId}`;
 }
 
 export interface TokenPairState {
@@ -300,15 +300,15 @@ export function getSwapDetails(
   };
   return swapType === 'ExactIn'
     ? {
-        ...result,
-        minimalTokenOutAmount: minimalAmount(tokenOutAmount, slippage),
-        maximalTokenInAmount: undefined,
-      }
+      ...result,
+      minimalTokenOutAmount: minimalAmount(tokenOutAmount, slippage),
+      maximalTokenInAmount: undefined,
+    }
     : {
-        ...result,
-        maximalTokenInAmount: maximalAmount(tokenInAmount, slippage),
-        minimalTokenOutAmount: undefined,
-      };
+      ...result,
+      maximalTokenInAmount: maximalAmount(tokenInAmount, slippage),
+      minimalTokenOutAmount: undefined,
+    };
 }
 
 function calcPriceImpact(
@@ -346,8 +346,7 @@ export async function swap(
   const available = balances.get(swapDetails.tokenInInfo.id) ?? 0n;
   if (available < swapDetails.tokenInAmount) {
     throw new Error(
-      `not enough ${
-        swapDetails.tokenInInfo.symbol
+      `not enough ${swapDetails.tokenInInfo.symbol
       } balance, available: ${bigIntToString(
         available,
         swapDetails.tokenInInfo.decimals
@@ -513,16 +512,14 @@ export async function addLiquidity(
   const tokenAAvailable = balances.get(tokenAInfo.id) ?? 0n;
   if (tokenAAvailable < amountADesired) {
     throw new Error(
-      `not enough balance for token ${
-        tokenAInfo.name
+      `not enough balance for token ${tokenAInfo.name
       }, available: ${bigIntToString(tokenAAvailable, tokenAInfo.decimals)}`
     );
   }
   const tokenBAvailable = balances.get(tokenBInfo.id) ?? 0n;
   if (tokenBAvailable < amountBDesired) {
     throw new Error(
-      `not enough balance for token ${
-        tokenBInfo.name
+      `not enough balance for token ${tokenBInfo.name
       }, available: ${bigIntToString(tokenBAvailable, tokenBInfo.decimals)}`
     );
   }
