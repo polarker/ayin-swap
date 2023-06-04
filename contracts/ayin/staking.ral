@@ -50,10 +50,9 @@ Contract Staking(
     }
 
     @using(preapprovedAssets = true, updateFields = true, checkExternalCaller = false)
-    pub fn stake(amount: U256) -> () {
+    pub fn stake(staker: Address, amount: U256) -> () {
         whenNotPaused()
 
-        let staker = callerAddress!()
         if (stakingAccountExists(staker)) {
             let stakingAccount = getStakingAccount(staker)
             updateStakerReward(stakingAccount)
@@ -68,23 +67,22 @@ Contract Staking(
     }
 
     @using(updateFields = true, checkExternalCaller = false)
-    pub fn unstake(amount: U256) -> () {
+    pub fn unstake(staker: Address, amount: U256) -> () {
         whenNotPaused()
 
-        let staker = callerAddress!()
         let stakingAccount = getStakingAccount(staker)
 
         updateStakerReward(stakingAccount)
+        claimRewards(staker)
 
         stakingAccount.unstake(amount)
         totalAmountStaked = totalAmountStaked - amount
     }
 
     @using(assetsInContract = true, checkExternalCaller = false)
-    pub fn claimRewards() -> () {
+    pub fn claimRewards(staker: Address) -> () {
         whenNotPaused()
 
-        let staker = callerAddress!()
         let stakingAccount = getStakingAccount(staker)
 
         updateStakerReward(stakingAccount)
@@ -100,5 +98,12 @@ Contract Staking(
         onlyOwner(callerAddress!())
 
         rewardRate = rate
+    }
+
+    @using(updateFields = true)
+    pub fn upgrade(newBytecode: ByteVec, newEncodedImmFields: ByteVec, newEncodedMutFields: ByteVec) -> () {
+        onlyOwner(callerAddress!())
+
+        migrateWithFields!(newBytecode, newEncodedImmFields, newEncodedMutFields)
     }
 }
