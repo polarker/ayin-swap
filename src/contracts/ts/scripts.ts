@@ -20,6 +20,7 @@ import { default as DepositAyinScriptJson } from "../ayin/scripts/presale/Deposi
 import { default as ClaimRewardsScriptJson } from "../ayin/scripts/staking/ClaimRewards.ral.json";
 import { default as StakeScriptJson } from "../ayin/scripts/staking/Stake.ral.json";
 import { default as UnstakeScriptJson } from "../ayin/scripts/staking/Unstake.ral.json";
+import { default as UpgradeStakingScriptJson } from "../ayin/scripts/staking/UpgradeStaking.ral.json";
 import { default as AddLiquidityScriptJson } from "../scripts/AddLiquidity.ral.json";
 import { default as CreatePairScriptJson } from "../scripts/CreatePair.ral.json";
 import { default as RemoveLiquidityScriptJson } from "../scripts/RemoveLiquidity.ral.json";
@@ -63,6 +64,12 @@ export const Unstake = new ExecutableScript<{
   staking: HexString;
   amount: bigint;
 }>(Script.fromJson(UnstakeScriptJson));
+export const UpgradeStaking = new ExecutableScript<{
+  staking: HexString;
+  newBytecode: HexString;
+  newEncodedImmFields: HexString;
+  newEncodedMutFields: HexString;
+}>(Script.fromJson(UpgradeStakingScriptJson));
 export const AddLiquidity = new ExecutableScript<{
   sender: Address;
   router: HexString;

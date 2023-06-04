@@ -14,21 +14,20 @@ import { useAlephiumWallet, useAvailableBalances } from './useAlephiumWallet';
 
 export function useXAyin() {
   const wallet = useAlephiumWallet();
-  const [xAyinState, setXAyinState] = useState<LiquidStakingTypes.State>();
+  const [xAyinState, setXAyinState] = useState<LiquidStakingTypes.Fields>();
   const [ayinBalance, setAyinBalance] = useState('0.0');
   const [xAyinBalance, setXAyinBalance] = useState('0.0');
   const balance = useAvailableBalances();
 
-  const contractAddress = addressFromContractId(network.xAyinId);
-  const contract = LiquidStaking.at(contractAddress);
+  const { xAyin } = network;
 
   useEffect(() => {
     if (balance === undefined) return;
     if (xAyinState === undefined) return;
 
-    const { tokenId } = xAyinState.fields;
+    const { tokenId } = xAyinState;
     const ayinBalance = balance.get(tokenId);
-    const xAyinBalance = balance.get(contract.contractId);
+    const xAyinBalance = balance.get(xAyin.contractId);
 
     if (ayinBalance) {
       setAyinBalance(bigIntToString(ayinBalance, 18));
@@ -37,12 +36,27 @@ export function useXAyin() {
     if (xAyinBalance) {
       setXAyinBalance(bigIntToString(xAyinBalance, 18));
     }
+
+    xAyin.subscribePriceChangedEvent({
+      pollingInterval: 1000,
+      messageCallback: (event) => {
+        const newPrice = event.fields.newPrice;
+
+        setXAyinState({
+          ...xAyinState,
+          currentXTokenPrice: newPrice,
+        });
+
+        return Promise.resolve();
+      },
+      errorCallback: () => Promise.resolve(),
+    });
   }, [balance, xAyinState]);
 
   const fetchXAyinState = async () => {
-    const state = await contract.fetchState();
+    const state = await xAyin.fetchState();
 
-    setXAyinState(state);
+    setXAyinState(state.fields);
   };
 
   const mintXAyin = useCallback(
@@ -54,13 +68,13 @@ export function useXAyin() {
 
       await MintXToken.execute(wallet.signer, {
         initialFields: {
-          liquidStaking: xAyinState.contractId,
+          liquidStaking: xAyin.contractId,
           amount,
         },
         attoAlphAmount: DUST_AMOUNT,
         tokens: [
           {
-            id: xAyinState.fields.tokenId,
+            id: xAyinState.tokenId,
             amount,
           },
         ],
@@ -78,13 +92,13 @@ export function useXAyin() {
 
       await BurnXToken.execute(wallet.signer, {
         initialFields: {
-          liquidStaking: xAyinState.contractId,
+          liquidStaking: xAyin.contractId,
           xTokenAmount,
         },
         attoAlphAmount: DUST_AMOUNT,
         tokens: [
           {
-            id: xAyinState.contractId,
+            id: xAyin.contractId,
             amount: xTokenAmount,
           },
         ],
@@ -102,13 +116,13 @@ export function useXAyin() {
 
       await TopUpRewards.execute(wallet.signer, {
         initialFields: {
-          liquidStaking: xAyinState.contractId,
+          liquidStaking: xAyin.contractId,
           amount,
         },
         attoAlphAmount: DUST_AMOUNT,
         tokens: [
           {
-            id: xAyinState.fields.tokenId,
+            id: xAyinState.tokenId,
             amount,
           },
         ],
@@ -116,6 +130,7 @@ export function useXAyin() {
     },
     [wallet, xAyinState]
   );
+
   useEffect(() => {
     if (wallet === undefined) return;
 

@@ -1,14 +1,20 @@
 import { NetworkId } from '@alephium/web3';
+import {
+  AyinPresaleInstance,
+  AyinTokenInstance,
+  LiquidStakingInstance,
+  StakingInstance,
+} from '../contracts/ts';
 import { loadDeployments } from '../contracts/ts/deployments';
 
 export interface NetworkConfig {
   groupIndex: number;
   factoryId: string;
   routerId: string;
-  ayinTokenId: string;
-  ayinPresaleId: string;
-  xAyinId: string;
-  stakingId: string;
+  ayinToken: AyinTokenInstance;
+  ayinPresale: AyinPresaleInstance;
+  xAyin: LiquidStakingInstance;
+  staking: StakingInstance;
 }
 
 export const networkId: NetworkId = process.env.REACT_APP_NETWORK as NetworkId;
@@ -25,11 +31,10 @@ function getNetworkConfig(networkId: NetworkId): NetworkConfig {
       factoryId:
         deployments.contracts.TokenPairFactory.contractInstance.contractId,
       routerId: deployments.contracts.Router.contractInstance.contractId,
-      ayinTokenId: deployments.contracts.AyinToken.contractInstance.contractId,
-      ayinPresaleId:
-        deployments.contracts.AyinPresale.contractInstance.contractId,
-      xAyinId: deployments.contracts.LiquidStaking.contractInstance.contractId,
-      stakingId: deployments.contracts.Staking.contractInstance.contractId,
+      ayinToken: deployments.contracts.AyinToken.contractInstance,
+      ayinPresale: deployments.contracts.AyinPresale.contractInstance,
+      xAyin: deployments.contracts.LiquidStaking.contractInstance,
+      staking: deployments.contracts.Staking.contractInstance,
     };
   } catch (error) {
     console.log(`Failed to load deployments on ${networkId}, error: ${error}`);

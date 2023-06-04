@@ -25,10 +25,7 @@ function LiquidStaking() {
     }
   };
 
-  const xAyinPrice = bigIntToString(
-    xAyinState?.fields.currentXTokenPrice ?? 0n,
-    18
-  );
+  const xAyinPrice = bigIntToString(xAyinState?.currentXTokenPrice ?? 0n, 18);
 
   return (
     <div>

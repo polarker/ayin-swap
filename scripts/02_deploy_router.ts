@@ -1,5 +1,5 @@
 import { Deployer, DeployFunction } from '@alephium/cli';
-import { Router } from '../artifacts/ts';
+import { Router } from '../src/contracts/ts';
 
 const deployRouter: DeployFunction<undefined> = async (
   deployer: Deployer

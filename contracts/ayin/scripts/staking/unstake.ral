@@ -1,3 +1,4 @@
 TxScript Unstake(staking: Staking, amount: U256) {
-    staking.unstake(amount)
+    let staker = callerAddress!()
+    staking.unstake(staker, amount)
 }

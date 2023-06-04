@@ -180,17 +180,23 @@ class Factory extends ContractFactory<StakingInstance, StakingTypes.Fields> {
       return testMethod(this, "calculateRewardPerToken", params);
     },
     stake: async (
-      params: TestContractParams<StakingTypes.Fields, { amount: bigint }>
+      params: TestContractParams<
+        StakingTypes.Fields,
+        { staker: Address; amount: bigint }
+      >
     ): Promise<TestContractResult<null>> => {
       return testMethod(this, "stake", params);
     },
     unstake: async (
-      params: TestContractParams<StakingTypes.Fields, { amount: bigint }>
+      params: TestContractParams<
+        StakingTypes.Fields,
+        { staker: Address; amount: bigint }
+      >
     ): Promise<TestContractResult<null>> => {
       return testMethod(this, "unstake", params);
     },
     claimRewards: async (
-      params: Omit<TestContractParams<StakingTypes.Fields, never>, "testArgs">
+      params: TestContractParams<StakingTypes.Fields, { staker: Address }>
     ): Promise<TestContractResult<null>> => {
       return testMethod(this, "claimRewards", params);
     },
@@ -198,6 +204,18 @@ class Factory extends ContractFactory<StakingInstance, StakingTypes.Fields> {
       params: TestContractParams<StakingTypes.Fields, { rate: bigint }>
     ): Promise<TestContractResult<null>> => {
       return testMethod(this, "setRewardRate", params);
+    },
+    upgrade: async (
+      params: TestContractParams<
+        StakingTypes.Fields,
+        {
+          newBytecode: HexString;
+          newEncodedImmFields: HexString;
+          newEncodedMutFields: HexString;
+        }
+      >
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "upgrade", params);
     },
   };
 }
@@ -207,7 +225,7 @@ export const Staking = new Factory(
   Contract.fromJson(
     StakingContractJson,
     "",
-    "dc15de6cab78009858fb60242af464c5cd20e8608c2a0442036c8d5e5f88577d"
+    "583bc6323307d5e7ee0809090ad71d8b9fe22cfab88b6e04ee32ba6506ff0e5e"
   )
 );
 

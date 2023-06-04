@@ -1,5 +1,5 @@
 import { Deployer, DeployFunction } from '@alephium/cli';
-import { TokenPairFactory, VestingScheduleFactory } from '../artifacts/ts';
+import { TokenPairFactory, VestingScheduleFactory } from '../src/contracts/ts';
 
 const deployFactory: DeployFunction<undefined> = async (
   deployer: Deployer

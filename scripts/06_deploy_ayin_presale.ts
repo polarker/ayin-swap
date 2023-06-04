@@ -1,6 +1,6 @@
 import { Deployer } from '@alephium/cli';
 import { ONE_ALPH } from '@alephium/web3';
-import { AyinPresale, MintAyin } from '../artifacts/ts';
+import { AyinPresale, MintAyin } from '../src/contracts/ts';
 
 async function deployAyin(deployer: Deployer) {
   const owner = deployer.account.address;

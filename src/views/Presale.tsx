@@ -25,7 +25,7 @@ function Presale() {
       <div>
         Alph per Ayin:{' '}
         {presaleState !== undefined &&
-          bigIntToString(presaleState.fields.alphPerToken, 18)}
+          bigIntToString(presaleState.alphPerToken, 18)}
       </div>
       <input type="number" value={buyAmount} onChange={onAmountChange} />
       <div>

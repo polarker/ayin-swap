@@ -1,10 +1,11 @@
 TxScript Stake(staking: Staking, amount: U256) {
+    let staker = callerAddress!()
     let tokenId = staking.getTokenId()
-    let stakingAccExists = staking.stakingAccountExists(callerAddress!())
+    let stakingAccExists = staking.stakingAccountExists(staker)
 
     if (stakingAccExists) {
-        staking.stake{callerAddress!() -> tokenId: amount}(amount)
+        staking.stake{staker -> tokenId: amount}(staker, amount)
     } else {
-        staking.stake{callerAddress!() -> tokenId: amount, ALPH: 1 alph}(amount)
+        staking.stake{staker -> tokenId: amount, ALPH: 1 alph}(staker, amount)
     }
 }

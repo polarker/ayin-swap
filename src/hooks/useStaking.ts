@@ -1,17 +1,9 @@
-import {
-  addressFromContractId,
-  binToHex,
-  DUST_AMOUNT,
-  encodeAddress,
-  ONE_ALPH,
-  subContractId,
-} from '@alephium/web3';
+import { DUST_AMOUNT, ONE_ALPH } from '@alephium/web3';
 import { parseUnits } from 'ethers/lib/utils';
 import { useCallback, useEffect, useState } from 'react';
 import {
   ClaimRewards,
   Stake,
-  Staking,
   StakingAccount,
   StakingAccountTypes,
   StakingTypes,
@@ -23,22 +15,21 @@ import { useAlephiumWallet, useAvailableBalances } from './useAlephiumWallet';
 
 export function useStaking() {
   const wallet = useAlephiumWallet();
-  const [stakingState, setStakingState] = useState<StakingTypes.State>();
+  const [stakingState, setStakingState] = useState<StakingTypes.Fields>();
   const [lpTokenBalance, setLpTokenBalance] = useState('0.0');
   const [stakingAccountState, setStakingAccountState] =
-    useState<StakingAccountTypes.State>();
+    useState<StakingAccountTypes.Fields>();
   const [currentRewards, setCurrentRewards] = useState('0.0');
 
   const balance = useAvailableBalances();
 
-  const contractAddress = addressFromContractId(network.stakingId);
-  const contract = Staking.at(contractAddress);
+  const { staking } = network;
 
   useEffect(() => {
     if (balance === undefined) return;
     if (stakingState === undefined) return;
 
-    const { tokenId } = stakingState.fields;
+    const { tokenId } = stakingState;
     const lpBalance = balance.get(tokenId);
 
     if (lpBalance) {
@@ -50,10 +41,9 @@ export function useStaking() {
     if (stakingAccountState === undefined) return;
     if (stakingState === undefined) return;
 
-    const { rewards, amountStaked } = stakingAccountState.fields;
+    const { rewards, amountStaked } = stakingAccountState;
 
-    const { rewardRate, totalAmountStaked, lastUpdateTime } =
-      stakingState.fields;
+    const { rewardRate, totalAmountStaked, lastUpdateTime } = stakingState;
 
     const interval = setInterval(() => {
       const timeDelta = BigInt(Date.now()) - lastUpdateTime;
@@ -67,37 +57,33 @@ export function useStaking() {
     return () => clearInterval(interval);
   }, [stakingState, stakingAccountState]);
 
-  const getStakingAccount = (address: string) => {
-    const path = binToHex(encodeAddress(address));
+  const getStakingAccount = async (address: string) => {
+    const result = await staking.methods.getStakingAccount({
+      args: {
+        staker: address,
+      },
+    });
 
-    const stakingAccountId = subContractId(
-      network.stakingId,
-      path,
-      network.groupIndex
-    );
-
-    const stakingAcc = StakingAccount.at(
-      addressFromContractId(stakingAccountId)
-    );
+    const stakingAcc = StakingAccount.at(result.returns);
 
     return stakingAcc;
   };
 
   const fetchStakingState = async () => {
-    const state = await contract.fetchState();
+    const state = await staking.fetchState();
 
-    setStakingState(state);
+    setStakingState(state.fields);
   };
 
   const fetchStakingAccountState = async () => {
     if (wallet === undefined || wallet.signer.explorerProvider === undefined)
       return;
 
-    const stakingAcc = getStakingAccount(wallet.address);
+    const stakingAcc = await getStakingAccount(wallet.address);
 
     try {
       const res = await stakingAcc.fetchState();
-      setStakingAccountState(res);
+      setStakingAccountState(res.fields);
     } catch {
       void 0;
     }
@@ -117,13 +103,13 @@ export function useStaking() {
 
       await Stake.execute(wallet.signer, {
         initialFields: {
-          staking: stakingState.contractId,
+          staking: staking.contractId,
           amount,
         },
         attoAlphAmount: alphAmount,
         tokens: [
           {
-            id: stakingState.fields.tokenId,
+            id: stakingState.tokenId,
             amount,
           },
         ],
@@ -141,7 +127,7 @@ export function useStaking() {
 
       await Unstake.execute(wallet.signer, {
         initialFields: {
-          staking: stakingState.contractId,
+          staking: staking.contractId,
           amount,
         },
       });
@@ -155,7 +141,7 @@ export function useStaking() {
 
     await ClaimRewards.execute(wallet.signer, {
       initialFields: {
-        staking: contract.contractId,
+        staking: staking.contractId,
       },
       attoAlphAmount: DUST_AMOUNT,
     });

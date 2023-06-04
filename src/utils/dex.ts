@@ -703,7 +703,7 @@ export function getTokenInfos(): TokenInfo[] {
     return [
       ALPHTokenInfo,
       {
-        id: network.ayinTokenId,
+        id: network.ayinToken.contractId,
         name: 'Ayin',
         symbol: 'Ayin',
         decimals: 18,
@@ -720,7 +720,7 @@ export function getTokenInfos(): TokenInfo[] {
     })
     .concat([ALPHTokenInfo])
     .concat({
-      id: network.ayinTokenId,
+      id: network.ayinToken.contractId,
       name: 'Ayin',
       symbol: 'Ayin',
       decimals: 18,

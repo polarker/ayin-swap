@@ -1,5 +1,5 @@
 import { Deployer } from '@alephium/cli';
-import { AyinToken } from '../artifacts/ts';
+import { AyinToken } from '../src/contracts/ts';
 
 async function deployAyin(deployer: Deployer) {
   const owner = deployer.account.address;

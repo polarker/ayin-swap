@@ -5,7 +5,7 @@ import {
   ONE_ALPH,
   subContractId,
 } from '@alephium/web3';
-import { CreatePair, MintAyin, Staking } from '../artifacts/ts';
+import { CreatePair, MintAyin, Staking } from '../src/contracts/ts';
 
 const deployStaking: DeployFunction<undefined> = async (
   deployer: Deployer

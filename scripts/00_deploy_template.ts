@@ -1,5 +1,9 @@
 import { Deployer, DeployFunction } from '@alephium/cli';
-import { StakingAccount, TokenPair, VestingSchedule } from '../artifacts/ts';
+import {
+  StakingAccount,
+  TokenPair,
+  VestingSchedule,
+} from '../src/contracts/ts';
 import { randomP2PKHAddress } from '../test/fixtures/DexFixture';
 
 const deployTokenPairTemplate: DeployFunction<undefined> = async (

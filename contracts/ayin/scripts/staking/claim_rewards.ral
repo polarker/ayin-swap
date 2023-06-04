@@ -1,3 +1,4 @@
 TxScript ClaimRewards(staking: Staking) {
-    staking.claimRewards()
+    let staker = callerAddress!()
+    staking.claimRewards(staker)
 }

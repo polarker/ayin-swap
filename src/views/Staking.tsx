@@ -28,8 +28,7 @@ function Staking() {
     <div>
       <div>AYIN-ALPH LP tokens balance: {lpTokenBalance}</div>
       <div>
-        LP staked:{' '}
-        {bigIntToString(stakingAccountState?.fields.amountStaked ?? 0n, 18)}
+        LP staked: {bigIntToString(stakingAccountState?.amountStaked ?? 0n, 18)}
       </div>
       <input type="number" value={amount} onChange={onAmountChange} />
       <div>Rewards: {currentRewards} $AYIN</div>

@@ -33,6 +33,8 @@ export namespace LiquidStakingTypes {
     tokenId: HexString;
     symbol: HexString;
     name: HexString;
+    inflationPool: bigint;
+    inflationRate: bigint;
     gainPerMillisecond: bigint;
     updatedAt: bigint;
     currentXTokenPrice: bigint;
@@ -183,6 +185,14 @@ class Factory extends ContractFactory<
     ): Promise<TestContractResult<null>> => {
       return testMethod(this, "changeOwner", params);
     },
+    getInflationPerMillisecond: async (
+      params: Omit<
+        TestContractParams<LiquidStakingTypes.Fields, never>,
+        "testArgs"
+      >
+    ): Promise<TestContractResult<bigint>> => {
+      return testMethod(this, "getInflationPerMillisecond", params);
+    },
     getCurrentRewardPerMillisecond: async (
       params: Omit<
         TestContractParams<LiquidStakingTypes.Fields, never>,
@@ -190,6 +200,22 @@ class Factory extends ContractFactory<
       >
     ): Promise<TestContractResult<bigint>> => {
       return testMethod(this, "getCurrentRewardPerMillisecond", params);
+    },
+    getCurrentReward: async (
+      params: Omit<
+        TestContractParams<LiquidStakingTypes.Fields, never>,
+        "testArgs"
+      >
+    ): Promise<TestContractResult<bigint>> => {
+      return testMethod(this, "getCurrentReward", params);
+    },
+    getCurrentInflation: async (
+      params: Omit<
+        TestContractParams<LiquidStakingTypes.Fields, never>,
+        "testArgs"
+      >
+    ): Promise<TestContractResult<bigint>> => {
+      return testMethod(this, "getCurrentInflation", params);
     },
     getCurrentPrice: async (
       params: Omit<
@@ -233,6 +259,14 @@ class Factory extends ContractFactory<
     ): Promise<TestContractResult<null>> => {
       return testMethod(this, "setGainPerMillisecond", params);
     },
+    setInflationRate: async (
+      params: TestContractParams<
+        LiquidStakingTypes.Fields,
+        { newInflationRate: bigint }
+      >
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "setInflationRate", params);
+    },
     getTokenId: async (
       params: Omit<
         TestContractParams<LiquidStakingTypes.Fields, never>,
@@ -249,7 +283,7 @@ export const LiquidStaking = new Factory(
   Contract.fromJson(
     LiquidStakingContractJson,
     "",
-    "5324e706f47416fa7e04ce35b164ee0915898de9fbfcacda2f9075aaeddf7541"
+    "008d5e3b5535b82c25f6762590c04870e7b4f1af5b97495d69db62a3d6d96a7b"
   )
 );
 
