@@ -1,5 +1,5 @@
 import { ONE_ALPH, web3 } from '@alephium/web3';
-import { LiquidStaking, LiquidStakingTypes } from '../artifacts/ts';
+import { LiquidStaking, LiquidStakingTypes } from '../src/contracts/ts';
 import {
   buildProject,
   createLiquidStaking,

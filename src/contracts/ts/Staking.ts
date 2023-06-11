@@ -95,7 +95,7 @@ class Factory extends ContractFactory<StakingInstance, StakingTypes.Fields> {
       InsufficientToken0Amount: BigInt(13),
       InsufficientToken1Amount: BigInt(14),
       TokenNotExist: BigInt(15),
-      InvalidCallerAddress: BigInt(16),
+      InvalidCaller: BigInt(16),
     },
     PauseableErrorCodes: { Paused: BigInt(0) },
     StakingAccountErrorCodes: { AlreadyExists: BigInt(0) },

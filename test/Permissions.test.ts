@@ -3,7 +3,7 @@ import {
   expectAssertionError,
   randomContractAddress,
 } from '@alephium/web3-test';
-import { PermissionsTest, PermissionsTestTypes } from '../artifacts/ts';
+import { PermissionsTest, PermissionsTestTypes } from '../src/contracts/ts';
 import { buildProject, randomP2PKHAddress } from './fixtures/DexFixture';
 
 describe('Permissions ', () => {

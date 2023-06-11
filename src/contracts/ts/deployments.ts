@@ -13,18 +13,22 @@ import {
   StakingAccountInstance,
   TokenPairFactory,
   TokenPairFactoryInstance,
-  VestingScheduleFactory,
-  VestingScheduleFactoryInstance,
   Router,
   RouterInstance,
+  FeeCollectorPerTokenPairImpl,
+  FeeCollectorPerTokenPairImplInstance,
+  FeeCollectorFactoryImpl,
+  FeeCollectorFactoryImplInstance,
   AyinToken,
   AyinTokenInstance,
-  Staking,
-  StakingInstance,
   LiquidStaking,
   LiquidStakingInstance,
   AyinPresale,
   AyinPresaleInstance,
+  Staking,
+  StakingInstance,
+  VestingScheduleFactory,
+  VestingScheduleFactoryInstance,
 } from ".";
 import { default as devnetDeployments } from "../.deployments.devnet.json";
 
@@ -35,12 +39,14 @@ export type Deployments = {
     VestingSchedule: DeployContractExecutionResult<VestingScheduleInstance>;
     StakingAccount: DeployContractExecutionResult<StakingAccountInstance>;
     TokenPairFactory: DeployContractExecutionResult<TokenPairFactoryInstance>;
-    VestingScheduleFactory: DeployContractExecutionResult<VestingScheduleFactoryInstance>;
     Router: DeployContractExecutionResult<RouterInstance>;
+    FeeCollectorPerTokenPairImpl: DeployContractExecutionResult<FeeCollectorPerTokenPairImplInstance>;
+    FeeCollectorFactoryImpl: DeployContractExecutionResult<FeeCollectorFactoryImplInstance>;
     AyinToken: DeployContractExecutionResult<AyinTokenInstance>;
-    Staking: DeployContractExecutionResult<StakingInstance>;
     LiquidStaking: DeployContractExecutionResult<LiquidStakingInstance>;
     AyinPresale: DeployContractExecutionResult<AyinPresaleInstance>;
+    Staking: DeployContractExecutionResult<StakingInstance>;
+    VestingScheduleFactory: DeployContractExecutionResult<VestingScheduleFactoryInstance>;
   };
   scripts: { MintAyin: RunScriptResult; CreatePair: RunScriptResult };
 };
@@ -71,28 +77,28 @@ function toDeployments(json: any): Deployments {
         json.contracts.TokenPairFactory.contractInstance.address
       ),
     },
-    VestingScheduleFactory: {
-      ...json.contracts.VestingScheduleFactory,
-      contractInstance: VestingScheduleFactory.at(
-        json.contracts.VestingScheduleFactory.contractInstance.address
-      ),
-    },
     Router: {
       ...json.contracts.Router,
       contractInstance: Router.at(
         json.contracts.Router.contractInstance.address
       ),
     },
+    FeeCollectorPerTokenPairImpl: {
+      ...json.contracts.FeeCollectorPerTokenPairImpl,
+      contractInstance: FeeCollectorPerTokenPairImpl.at(
+        json.contracts.FeeCollectorPerTokenPairImpl.contractInstance.address
+      ),
+    },
+    FeeCollectorFactoryImpl: {
+      ...json.contracts.FeeCollectorFactoryImpl,
+      contractInstance: FeeCollectorFactoryImpl.at(
+        json.contracts.FeeCollectorFactoryImpl.contractInstance.address
+      ),
+    },
     AyinToken: {
       ...json.contracts.AyinToken,
       contractInstance: AyinToken.at(
         json.contracts.AyinToken.contractInstance.address
-      ),
-    },
-    Staking: {
-      ...json.contracts.Staking,
-      contractInstance: Staking.at(
-        json.contracts.Staking.contractInstance.address
       ),
     },
     LiquidStaking: {
@@ -105,6 +111,18 @@ function toDeployments(json: any): Deployments {
       ...json.contracts.AyinPresale,
       contractInstance: AyinPresale.at(
         json.contracts.AyinPresale.contractInstance.address
+      ),
+    },
+    Staking: {
+      ...json.contracts.Staking,
+      contractInstance: Staking.at(
+        json.contracts.Staking.contractInstance.address
+      ),
+    },
+    VestingScheduleFactory: {
+      ...json.contracts.VestingScheduleFactory,
+      contractInstance: VestingScheduleFactory.at(
+        json.contracts.VestingScheduleFactory.contractInstance.address
       ),
     },
   };

@@ -3,7 +3,7 @@ import {
   expectAssertionError,
   randomContractAddress,
 } from '@alephium/web3-test';
-import { PauseableTest } from '../artifacts/ts';
+import { PauseableTest } from '../src/contracts/ts';
 import { buildProject, randomP2PKHAddress } from './fixtures/DexFixture';
 
 describe('Pauseable ', () => {

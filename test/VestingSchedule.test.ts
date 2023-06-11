@@ -2,13 +2,12 @@ import { web3 } from '@alephium/web3';
 import {
   buildProject,
   createVestingSchedule,
-  ErrorCodes,
   expandTo18Decimals,
   oneAlph,
   randomP2PKHAddress,
   randomTokenId,
 } from './fixtures/DexFixture';
-import { VestingSchedule } from '../artifacts/ts';
+import { VestingSchedule } from '../src/contracts/ts';
 import { expectAssertionError } from '@alephium/web3-test';
 
 describe('test vesting schedule', () => {
@@ -113,7 +112,7 @@ describe('test vesting schedule', () => {
     expectAssertionError(
       releaseFailResult,
       fixture.address,
-      ErrorCodes.InvalidCallerAddress
+      Number(VestingSchedule.consts.ErrorCodes.InvalidCaller)
     );
   }, 10000);
 });

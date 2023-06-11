@@ -1,4 +1,5 @@
 import { Deployer, DeployFunction } from '@alephium/cli';
+import { Settings } from '../alephium.config';
 import {
   StakingAccount,
   TokenPair,
@@ -6,10 +7,11 @@ import {
 } from '../src/contracts/ts';
 import { randomP2PKHAddress } from '../test/fixtures/DexFixture';
 
-const deployTokenPairTemplate: DeployFunction<undefined> = async (
+const deployTokenPairTemplate: DeployFunction<Settings> = async (
   deployer: Deployer
 ): Promise<void> => {
   const initialFields = {
+    tokenPairFactory: '',
     token0Id: '',
     token1Id: '',
     reserve0: 0n,
@@ -18,6 +20,8 @@ const deployTokenPairTemplate: DeployFunction<undefined> = async (
     price0CumulativeLast: 0n,
     price1CumulativeLast: 0n,
     totalSupply: 0n,
+    kLast: 0n,
+    feeCollectorId: '',
   };
   const tokenPairResult = await deployer.deployContract(TokenPair, {
     initialFields: initialFields,

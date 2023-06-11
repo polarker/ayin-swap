@@ -34,7 +34,7 @@ Contract VestingSchedule(
 
   @using(assetsInContract = true, updateFields = true)
   pub fn claimVestedTokens() -> () {
-    checkCaller!(callerAddress!() == beneficiary, ErrorCodes.InvalidCallerAddress)
+    checkCaller!(callerAddress!() == beneficiary, ErrorCodes.InvalidCaller)
     
     let releaseableAmount = getReleaseableAmount()
     released = released + releaseableAmount

@@ -1,4 +1,5 @@
 import {
+  Address,
   addressFromContractId,
   ALPH_TOKEN_ID,
   Asset,
@@ -18,12 +19,13 @@ import {
   TokenPair,
   Router,
   TokenPairTypes,
+  TokenPairFactoryTypes,
   VestingSchedule,
-  VestingScheduleFactory,
-  Staking,
   StakingAccount,
+  Staking,
   LiquidStaking,
-} from '../../artifacts/ts';
+  VestingScheduleFactory,
+} from '../../src/contracts/ts';
 
 export const oneAlph = 10n ** 18n;
 export const minimalAlphInContract = oneAlph;
@@ -31,26 +33,7 @@ export const maxAlphAmount = 10n ** 18n * 1000000000n;
 export const gasPrice = 100000000000n;
 export const maxGasPerTx = 625000n;
 export const defaultGasFee = gasPrice * maxGasPerTx;
-
-export enum ErrorCodes {
-  ReserveOverflow,
-  InsufficientInitLiquidity,
-  InsufficientLiquidityMinted,
-  InsufficientLiquidityBurned,
-  InvalidToAddress,
-  InsufficientLiquidity,
-  InvalidTokenInId,
-  InvalidCalleeId,
-  InvalidK,
-  InsufficientOutputAmount,
-  InsufficientInputAmount,
-  IdenticalTokenIds,
-  Expired,
-  InsufficientToken0Amount,
-  InsufficientToken1Amount,
-  TokenNotExist,
-  InvalidCallerAddress,
-}
+export const minimumLiquidity = 1000n;
 
 export class ContractFixture<F extends Fields> {
   selfState: ContractState<F>;
@@ -128,13 +111,15 @@ export function bigintToHex(num: bigint): string {
 export function createTokenPair(
   token0Id: string,
   token1Id: string,
-  contractId?: string
+  contractId?: string,
+  tokenPairFactoryFixture?: ContractFixture<TokenPairFactoryTypes.Fields>
 ) {
   const address = contractId
     ? addressFromContractId(contractId)
     : randomContractAddress();
   const contractState = TokenPair.stateForTest(
     {
+      tokenPairFactory: tokenPairFactoryFixture?.contractId ?? '',
       token0Id: token0Id,
       token1Id: token1Id,
       reserve0: 0n,
@@ -143,6 +128,8 @@ export function createTokenPair(
       price0CumulativeLast: 0n,
       price1CumulativeLast: 0n,
       totalSupply: 0n,
+      kLast: 0n,
+      feeCollectorId: '',
     },
     {
       alphAmount: oneAlph,
@@ -152,14 +139,26 @@ export function createTokenPair(
     },
     address
   );
-  return new ContractFixture(contractState, [], address);
+  return new ContractFixture(
+    contractState,
+    tokenPairFactoryFixture?.states() ?? [],
+    address
+  );
 }
 
-export function createTokenPairFactory() {
+export function createTokenPairFactory(
+  feeSetter: Address,
+  feeCollectorFactoryId?: string
+) {
   const pairTemplate = createTokenPair(randomTokenId(), randomTokenId());
   const address = randomContractAddress();
   const contractState = TokenPairFactory.stateForTest(
-    { pairTemplateId: pairTemplate.contractId, pairSize: 0n },
+    {
+      pairTemplateId: pairTemplate.contractId,
+      pairSize: 0n,
+      feeSetter: feeSetter,
+      feeCollectorFactory: feeCollectorFactoryId ?? '',
+    },
     { alphAmount: oneAlph },
     address
   );
@@ -273,6 +272,8 @@ export function createLiquidStaking() {
       tokenId: token,
       currentXTokenPrice: ONE_ALPH,
       rewardPool: ONE_ALPH * 2n,
+      inflationPool: 0n,
+      inflationRate: 0n,
       owner_: randomP2PKHAddress(),
       paused_: false,
     },

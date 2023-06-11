@@ -1,7 +1,8 @@
 import { Deployer, DeployFunction } from '@alephium/cli';
+import { Settings } from '../alephium.config';
 import { Router } from '../src/contracts/ts';
 
-const deployRouter: DeployFunction<undefined> = async (
+const deployRouter: DeployFunction<Settings> = async (
   deployer: Deployer
 ): Promise<void> => {
   const result = await deployer.deployContract(Router, { initialFields: {} });

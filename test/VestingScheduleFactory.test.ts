@@ -9,7 +9,7 @@ import {
 import {
   VestingScheduleFactory,
   VestingScheduleFactoryTypes,
-} from '../artifacts/ts';
+} from '../src/contracts/ts';
 
 describe('test vesting schedule factory', () => {
   web3.setCurrentNodeProvider('http://127.0.0.1:22973');

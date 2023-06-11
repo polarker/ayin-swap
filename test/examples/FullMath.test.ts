@@ -1,7 +1,10 @@
 import { web3 } from '@alephium/web3';
-import { FullMathTest } from '../../artifacts/ts';
+import { FullMathTest } from '../../src/contracts/ts';
 import { buildProject, randomBigInt } from '../fixtures/DexFixture';
-import { expectAssertionError, randomContractAddress } from '@alephium/web3-test';
+import {
+  expectAssertionError,
+  randomContractAddress,
+} from '@alephium/web3-test';
 import { OracleErrorCodes } from '../fixtures/ExampleOracleFixture';
 
 describe('test math', () => {
@@ -21,7 +24,9 @@ describe('test math', () => {
       const result = x * y;
       const [l, h] = [result % UpperBound, result / UpperBound];
 
-      const testResult = await FullMathTest.tests.fullMul({ testArgs: { x, y } });
+      const testResult = await FullMathTest.tests.fullMul({
+        testArgs: { x, y },
+      });
       expect(testResult.returns).toEqual([l, h]);
     }
   }, 10000);
@@ -33,20 +38,36 @@ describe('test math', () => {
     async function test(a: bigint, b: bigint, denominator: bigint) {
       return FullMathTest.tests.mulDiv({
         address: address,
-        testArgs: { a, b, denominator }
+        testArgs: { a, b, denominator },
       });
     }
 
-    expectAssertionError(test(Q128, 5n, 0n), address, OracleErrorCodes.DivByZero);
-    expectAssertionError(test(Q128, Q128, 0n), address, OracleErrorCodes.DivByZero);
-    expectAssertionError(test(Q128, Q128, 1n), address, OracleErrorCodes.FullDivOverflow);
-    expectAssertionError(test(U256Max, U256Max, U256Max - 1n), address, OracleErrorCodes.FullDivOverflow);
+    expectAssertionError(
+      test(Q128, 5n, 0n),
+      address,
+      OracleErrorCodes.DivByZero
+    );
+    expectAssertionError(
+      test(Q128, Q128, 0n),
+      address,
+      OracleErrorCodes.DivByZero
+    );
+    expectAssertionError(
+      test(Q128, Q128, 1n),
+      address,
+      OracleErrorCodes.FullDivOverflow
+    );
+    expectAssertionError(
+      test(U256Max, U256Max, U256Max - 1n),
+      address,
+      OracleErrorCodes.FullDivOverflow
+    );
 
     const cases: [bigint, bigint, bigint, bigint][] = [
-      [ U256Max, U256Max, U256Max, U256Max ],
-      [ Q128, (50n * Q128) / 100n, (150n * Q128) / 100n, Q128 / 3n ],
-      [ Q128, 35n * Q128, 8n * Q128, (4375n * Q128) / 1000n ],
-      [ Q128, 1000n * Q128, 3000n * Q128, Q128 / 3n ]
+      [U256Max, U256Max, U256Max, U256Max],
+      [Q128, (50n * Q128) / 100n, (150n * Q128) / 100n, Q128 / 3n],
+      [Q128, 35n * Q128, 8n * Q128, (4375n * Q128) / 1000n],
+      [Q128, 1000n * Q128, 3000n * Q128, Q128 / 3n],
     ];
 
     for (const c of cases) {
@@ -62,18 +83,18 @@ describe('test math', () => {
     async function test(numerator: bigint, denominator: bigint) {
       return FullMathTest.tests.fraction({
         address: address,
-        testArgs: { numerator, denominator }
+        testArgs: { numerator, denominator },
       });
     }
 
     const cases: [bigint, bigint, bigint][] = [
-      [ 4n, 100n, (4n * Q112) / 100n ],
-      [ 100n, 4n, (100n * Q112) / 4n ],
-      [ Q112 * 2359n, 6950n, (Q112 * Q112 * 2359n) / 6950n ],
-      [ 2359n, Q112 * 2359n, 1n ],
-      [ 2359n * Q112 * (2n ** 32n), Q112 * 50n, (2359n * Q112 * (2n ** 32n)) / 50n ],
-      [ 2359n * Q112, Q112 * 50n, (2359n * Q112) / 50n ],
-      [ 0n, Q112 * Q112 * 2360n, 0n ],
+      [4n, 100n, (4n * Q112) / 100n],
+      [100n, 4n, (100n * Q112) / 4n],
+      [Q112 * 2359n, 6950n, (Q112 * Q112 * 2359n) / 6950n],
+      [2359n, Q112 * 2359n, 1n],
+      [2359n * Q112 * 2n ** 32n, Q112 * 50n, (2359n * Q112 * 2n ** 32n) / 50n],
+      [2359n * Q112, Q112 * 50n, (2359n * Q112) / 50n],
+      [0n, Q112 * Q112 * 2360n, 0n],
     ];
     for (const c of cases) {
       const testResult = await test(c[0], c[1]);
@@ -81,14 +102,18 @@ describe('test math', () => {
     }
 
     expectAssertionError(test(1n, 0n), address, OracleErrorCodes.DivByZero);
-    expectAssertionError(test(Q112 * 2359n, 50n), address, OracleErrorCodes.FractionOverflow);
+    expectAssertionError(
+      test(Q112 * 2359n, 50n),
+      address,
+      OracleErrorCodes.FractionOverflow
+    );
 
     // the tests are different with eth, eth only test the gas cost of the function
     const gasCostCases: [bigint, bigint, number][] = [
       [0n, 569n, 1081],
       [239n, 569n, 1154],
       [Q112 * 2359n, Q112 * 2360n, 1154],
-      [Q112 * 2359n * (2n ** 32n), Q112 * 2360n, 2140]
+      [Q112 * 2359n * 2n ** 32n, Q112 * 2360n, 2140],
     ];
     for (const c of gasCostCases) {
       const testResult = await test(c[0], c[1]);

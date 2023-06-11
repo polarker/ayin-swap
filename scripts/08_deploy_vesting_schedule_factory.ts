@@ -1,24 +1,13 @@
 import { Deployer, DeployFunction } from '@alephium/cli';
-import { TokenPairFactory, VestingScheduleFactory } from '../src/contracts/ts';
+import { Settings } from '../alephium.config';
+import { VestingScheduleFactory } from '../src/contracts/ts';
 
-const deployFactory: DeployFunction<undefined> = async (
+const deployFactory: DeployFunction<Settings> = async (
   deployer: Deployer
 ): Promise<void> => {
-  const tokenPairTemplate = deployer.getDeployContractResult('TokenPair');
-  const initialFields = {
-    pairTemplateId: tokenPairTemplate.contractInstance.contractId,
-    pairSize: 0n,
-  };
-  const tokenPairFactoryResult = await deployer.deployContract(
-    TokenPairFactory,
-    { initialFields: initialFields }
-  );
-  console.log(
-    `TokenPairFactory contract address: ${tokenPairFactoryResult.contractInstance.address}, contract id: ${tokenPairFactoryResult.contractInstance.contractId}`
-  );
-
   const vestingScheduleTemplate =
     deployer.getDeployContractResult('VestingSchedule');
+
   const vestingInitialFields = {
     vestingScheduleTemplateId:
       vestingScheduleTemplate.contractInstance.contractId,

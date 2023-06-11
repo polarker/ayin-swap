@@ -23,7 +23,9 @@ import { default as UnstakeScriptJson } from "../ayin/scripts/staking/Unstake.ra
 import { default as UpgradeStakingScriptJson } from "../ayin/scripts/staking/UpgradeStaking.ral.json";
 import { default as AddLiquidityScriptJson } from "../scripts/AddLiquidity.ral.json";
 import { default as CreatePairScriptJson } from "../scripts/CreatePair.ral.json";
+import { default as EnableFeeCollectorScriptJson } from "../scripts/EnableFeeCollector.ral.json";
 import { default as RemoveLiquidityScriptJson } from "../scripts/RemoveLiquidity.ral.json";
+import { default as SetFeeCollectorFactoryScriptJson } from "../scripts/SetFeeCollectorFactory.ral.json";
 import { default as SwapMaxInScriptJson } from "../scripts/SwapMaxIn.ral.json";
 import { default as SwapMinOutScriptJson } from "../scripts/SwapMinOut.ral.json";
 import { default as GetTokenScriptJson } from "../test/GetToken.ral.json";
@@ -87,6 +89,10 @@ export const CreatePair = new ExecutableScript<{
   tokenAId: HexString;
   tokenBId: HexString;
 }>(Script.fromJson(CreatePairScriptJson));
+export const EnableFeeCollector = new ExecutableScript<{
+  tokenPairFactory: HexString;
+  tokenPair: HexString;
+}>(Script.fromJson(EnableFeeCollectorScriptJson));
 export const RemoveLiquidity = new ExecutableScript<{
   sender: Address;
   router: HexString;
@@ -96,6 +102,10 @@ export const RemoveLiquidity = new ExecutableScript<{
   amount1Min: bigint;
   deadline: bigint;
 }>(Script.fromJson(RemoveLiquidityScriptJson));
+export const SetFeeCollectorFactory = new ExecutableScript<{
+  tokenPairFactory: HexString;
+  feeCollectorFactory: HexString;
+}>(Script.fromJson(SetFeeCollectorFactoryScriptJson));
 export const SwapMaxIn = new ExecutableScript<{
   sender: Address;
   router: HexString;

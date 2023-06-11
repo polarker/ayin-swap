@@ -102,7 +102,7 @@ class Factory extends ContractFactory<
       InsufficientToken0Amount: BigInt(13),
       InsufficientToken1Amount: BigInt(14),
       TokenNotExist: BigInt(15),
-      InvalidCallerAddress: BigInt(16),
+      InvalidCaller: BigInt(16),
     },
   };
 
