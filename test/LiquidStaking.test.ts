@@ -15,7 +15,8 @@ describe('XAyin ', () => {
   });
 
   test('create staking account', async () => {
-    const state = createLiquidStaking();
+    const inflationRate = ONE_ALPH / 1000n;
+    const state = createLiquidStaking(inflationRate);
     const sender = randomP2PKHAddress();
 
     const testResult = await LiquidStaking.tests.mint({
@@ -84,7 +85,7 @@ describe('XAyin ', () => {
       (t) => t.id === state.selfState.fields.tokenId
     );
 
-    expect(token?.amount).toEqual(oneAlph * 3n);
+    expect(token?.amount).toEqual(oneAlph * 4n);
 
     updatedState = withdrawResult.contracts.find(
       (c) => c.address === state.address
@@ -119,8 +120,7 @@ describe('XAyin ', () => {
     );
 
     token = outputs?.tokens?.find((t) => t.id === state.contractId);
-    console.log(token);
 
-    expect(token?.amount).toEqual(oneAlph / 3n);
+    expect(token?.amount).toEqual(oneAlph / 4n);
   }, 10000);
 });

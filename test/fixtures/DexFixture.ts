@@ -259,7 +259,7 @@ export function createStakingAccount(
   return new ContractFixture(state, [], address);
 }
 
-export function createLiquidStaking() {
+export function createLiquidStaking(inflationRate = 0n) {
   const address = randomContractAddress();
   const token = randomTokenId();
   const state = LiquidStaking.stateForTest(
@@ -272,8 +272,8 @@ export function createLiquidStaking() {
       tokenId: token,
       currentXTokenPrice: ONE_ALPH,
       rewardPool: ONE_ALPH * 2n,
-      inflationPool: 0n,
-      inflationRate: 0n,
+      inflationPool: ONE_ALPH,
+      inflationRate,
       owner_: randomP2PKHAddress(),
       paused_: false,
     },
@@ -284,7 +284,7 @@ export function createLiquidStaking() {
           id: binToHex(contractIdFromAddress(address)),
           amount: 1n << 255n,
         },
-        { id: token, amount: 2n * ONE_ALPH },
+        { id: token, amount: 3n * ONE_ALPH },
       ],
     },
     address
