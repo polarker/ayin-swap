@@ -43,4 +43,10 @@ Contract AyinToken(
     pub fn getTotalSupply() -> U256 {
         return totalSupply
     }
+
+    pub fn upgrade(newBytecode: ByteVec) -> () {
+        onlyOwner(callerAddress!())
+
+        migrate!(newBytecode)
+    }
 }

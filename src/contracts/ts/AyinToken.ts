@@ -125,6 +125,14 @@ class Factory extends ContractFactory<
     ): Promise<TestContractResult<null>> => {
       return testMethod(this, "burn", params);
     },
+    upgrade: async (
+      params: TestContractParams<
+        AyinTokenTypes.Fields,
+        { newBytecode: HexString }
+      >
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "upgrade", params);
+    },
   };
 }
 
@@ -133,7 +141,7 @@ export const AyinToken = new Factory(
   Contract.fromJson(
     AyinTokenContractJson,
     "",
-    "252545ee6c280974e5b97a82afe89811e2ba606243c02025d33225622743c7a9"
+    "7f75ea9e77d1465402dcfe91491e82ba5ff773bafc132c3a5ee695589d42ac3b"
   )
 );
 

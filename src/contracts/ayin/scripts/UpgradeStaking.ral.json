@@ -1,15 +1,18 @@
 {
   "version": "v2.3.3",
-  "name": "ClaimRewards",
-  "bytecodeTemplate": "01010300010007b4170016000d0c{0}0111",
+  "name": "UpgradeStaking",
+  "bytecodeTemplate": "01010300000005{1}0d0c{0}0100",
   "fieldsSig": {
     "names": [
-      "staking"
+      "upgradeable",
+      "newBytecode"
     ],
     "types": [
+      "ByteVec",
       "ByteVec"
     ],
     "isMutable": [
+      false,
       false
     ]
   },

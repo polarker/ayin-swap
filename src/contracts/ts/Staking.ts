@@ -106,6 +106,14 @@ class Factory extends ContractFactory<StakingInstance, StakingTypes.Fields> {
   }
 
   tests = {
+    upgrade: async (
+      params: TestContractParams<
+        StakingTypes.Fields,
+        { newBytecode: HexString }
+      >
+    ): Promise<TestContractResult<null>> => {
+      return testMethod(this, "upgrade", params);
+    },
     stakingAccountExists: async (
       params: TestContractParams<StakingTypes.Fields, { staker: Address }>
     ): Promise<TestContractResult<boolean>> => {
@@ -205,18 +213,6 @@ class Factory extends ContractFactory<StakingInstance, StakingTypes.Fields> {
     ): Promise<TestContractResult<null>> => {
       return testMethod(this, "setRewardRate", params);
     },
-    upgrade: async (
-      params: TestContractParams<
-        StakingTypes.Fields,
-        {
-          newBytecode: HexString;
-          newEncodedImmFields: HexString;
-          newEncodedMutFields: HexString;
-        }
-      >
-    ): Promise<TestContractResult<null>> => {
-      return testMethod(this, "upgrade", params);
-    },
   };
 }
 
@@ -225,7 +221,7 @@ export const Staking = new Factory(
   Contract.fromJson(
     StakingContractJson,
     "",
-    "583bc6323307d5e7ee0809090ad71d8b9fe22cfab88b6e04ee32ba6506ff0e5e"
+    "a308d8358a8ec7af0127f7d543026425c342d827d9d07fdc9e7b7157fa62c064"
   )
 );
 

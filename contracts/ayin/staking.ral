@@ -8,7 +8,7 @@ Contract Staking(
     mut lastUpdateTime: U256,
     mut owner_: Address,
     mut paused_: Bool
-) extends Constants(), StakingAccountFactory(tokenId, rewardsTokenId, stakingAccountTemplateId), Pauseable(owner_, paused_) {
+) extends Constants(), StakingAccountFactory(tokenId, rewardsTokenId, stakingAccountTemplateId), Pauseable(owner_, paused_) implements IUpgradeable {
     pub fn getTokenId() -> ByteVec {
         return tokenId
     }
@@ -100,10 +100,9 @@ Contract Staking(
         rewardRate = rate
     }
 
-    @using(updateFields = true)
-    pub fn upgrade(newBytecode: ByteVec, newEncodedImmFields: ByteVec, newEncodedMutFields: ByteVec) -> () {
+    pub fn upgrade(newBytecode: ByteVec) -> () {
         onlyOwner(callerAddress!())
 
-        migrateWithFields!(newBytecode, newEncodedImmFields, newEncodedMutFields)
+        migrate!(newBytecode)
     }
 }

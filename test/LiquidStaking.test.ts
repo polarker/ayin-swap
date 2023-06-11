@@ -14,7 +14,7 @@ describe('XAyin ', () => {
     await buildProject();
   });
 
-  test('create staking account', async () => {
+  test('mint and burn', async () => {
     const inflationRate = ONE_ALPH / 1000n;
     const state = createLiquidStaking(inflationRate);
     const sender = randomP2PKHAddress();

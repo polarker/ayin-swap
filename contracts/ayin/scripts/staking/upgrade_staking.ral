@@ -1,3 +1,0 @@
-TxScript UpgradeStaking(staking: Staking, newBytecode: ByteVec, newEncodedImmFields: ByteVec, newEncodedMutFields: ByteVec) {
-    staking.upgrade(newBytecode, newEncodedImmFields, newEncodedMutFields)
-}

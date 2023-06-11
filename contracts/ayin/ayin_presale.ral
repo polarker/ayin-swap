@@ -6,7 +6,7 @@ Contract AyinPresale (
     mut tokensSold: U256,
     mut alphBalance: U256,
     mut owner_: Address
-) extends Permissions(owner_) {
+) extends Permissions(owner_) implements IUpgradeable {
     enum ErrorCodes {
         SaleNotOpen = 0
         NotEnoughTokens = 1
@@ -95,5 +95,11 @@ Contract AyinPresale (
         onlyOwner(callerAddress!())
 
         destroySelf!(remainingBalancesTo)
+    }
+
+    pub fn upgrade(newBytecode: ByteVec) -> () {
+        onlyOwner(callerAddress!())
+
+        migrate!(newBytecode)
     }
 }
