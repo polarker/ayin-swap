@@ -1,3 +1,15 @@
-TxScript UpgradeStaking(upgradeable: IUpgradeable, newBytecode: ByteVec) {
-    upgradeable.upgrade(newBytecode)
+// Ralph only supports single interface inheritance for better contract performance and simple code generation.
+// So we will have to upgrade each contract manually.
+// Manual update is safer as the following script can potentially upgrade Presale contract while the goal is to upgrade the staking contract.
+// 
+// TxScript UpgradeStaking(upgradeable: Upgradeable, newBytecode: ByteVec) {
+//     upgradeable.upgrade(newBytecode)
+// }
+
+TxScript UpgradePresale(current: AyinPresale, newBytecode: ByteVec) {
+    current.upgrade(newBytecode)
+}
+
+TxScript UpgradeStatking(current: Staking, newBytecode: ByteVec) {
+    current.upgrade(newBytecode)
 }

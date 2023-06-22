@@ -1,3 +1,4 @@
+// We need a test for the contract
 Contract AyinPresale (
     ayinToken: ByteVec,
     mut tokensForSale: U256,
@@ -6,7 +7,7 @@ Contract AyinPresale (
     mut tokensSold: U256,
     mut alphBalance: U256,
     mut owner_: Address
-) extends Permissions(owner_) implements IUpgradeable {
+) extends Permissions(owner_), Upgradeable() {
     enum ErrorCodes {
         SaleNotOpen = 0
         NotEnoughTokens = 1
@@ -16,6 +17,7 @@ Contract AyinPresale (
         return ayinToken
     }
 
+    // This is not used and seems not needed as well. For testing, we better check the balance of the contract
     pub fn getAlphBalance() -> U256 {
         return alphBalance
     }

@@ -2,7 +2,7 @@ Contract StakingAccount(
     tokenId: ByteVec,
     rewardsTokenId: ByteVec,
     staker: Address,
-    parentContractAddress: Address,
+    parentContractAddress: Address, // Type safe version: factory: StakingAccountFactory; then check with `callerContractId!() == contractId!(factory)`
     mut amountStaked: U256,
     mut rewardPerTokenPaid: U256,
     mut rewards: U256

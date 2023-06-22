@@ -1,0 +1,4 @@
+// Ralph only supports single interface inheritance for simplicity, but we could use abstract contract here
+Abstract Contract Upgradeable() {
+    pub fn upgrade(newBytecode: ByteVec) -> ()
+}
