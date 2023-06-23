@@ -72,13 +72,15 @@ Contract Staking(
 
         let stakingAccount = getStakingAccount(staker)
 
-        updateStakerReward(stakingAccount)
+        // updateStakerReward(stakingAccount) // this is called in the next function `claimRewards`
         claimRewards(staker)
 
         stakingAccount.unstake(amount)
         totalAmountStaked = totalAmountStaked - amount
     }
 
+    // This function seems should be private as it can be called multiple times to drain the reward pool because it does not unstake
+    // Anyway, I feel it would be better to merge unstake and claim rewards into one function
     @using(assetsInContract = true, checkExternalCaller = false)
     pub fn claimRewards(staker: Address) -> () {
         whenNotPaused()

@@ -56,6 +56,8 @@ Contract StakingAccount(
         amountStaked = amountStaked + amount
     }
 
+    // Question: is it better to expose a single function for both unstake and claimRewards?
+    // Whenever unstake happens, calimRewards is called too
     @using(assetsInContract = true, updateFields = true)
     pub fn unstake(amount: U256) -> () {
         let caller = callerAddress!()
@@ -67,7 +69,7 @@ Contract StakingAccount(
 
         transferTokenFromSelf!(staker, tokenId, amount)
 
-        if (amountStaked < 1) {
+        if (amountStaked == 0) {
            destroySelf!(staker)
         }
     }
@@ -78,8 +80,7 @@ Contract StakingAccount(
 
         checkCaller!(caller == parentContractAddress, ErrorCodes.UnauthorizedAccess)
 
-        let rewardToTransfer = rewards
+        transferToken!(caller, staker, rewardsTokenId, rewards)
         rewards = 0
-        transferToken!(caller, staker, rewardsTokenId, rewardToTransfer)
     }
 }
